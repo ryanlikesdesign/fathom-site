@@ -39,7 +39,7 @@ export default function PrivacyPage() {
       <p>Fathom is not directed at children under 13 and we do not knowingly collect their data.</p>
 
       <h2>Contact</h2>
-      <p><a className="underline" href="mailto:privacy@fathomvision.app">privacy@fathomvision.app</a></p>
+      <p><a className="underline" href="mailto:support@fathomvision.app">support@fathomvision.app</a></p>
     </Section>
   );
 }

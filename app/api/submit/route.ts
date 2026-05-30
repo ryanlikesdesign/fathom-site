@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Server not configured." }, { status: 500 });
   }
 
-  const from = process.env.FROM_EMAIL ?? "Fathom <onboarding@resend.dev>";
+  const from = process.env.FROM_EMAIL ?? "Fathom <support@fathomvision.app>";
   const isFeedback = body.formType === "feedback";
   const subject = isFeedback
     ? `Fathom feedback${body.category ? ` — ${body.category}` : ""}`
