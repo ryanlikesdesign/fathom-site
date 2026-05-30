@@ -33,6 +33,7 @@ Rejected: Astro (less Vercel-idiomatic, form glue heavier) and plain HTML/CSS (n
 | `/feedback` | Feedback | Open to all users; emails Ryan |
 | `/privacy` | Privacy Policy | Apple requirement |
 | `/terms` | Terms of Use (EULA) | Apple requirement (subscription pricing) |
+| `/release-notes` | Release Notes | Version history / "What's New" |
 
 Global: sticky header (brand + nav + theme toggle), footer (nav + legal links + contact), skip-to-content link on every page.
 
@@ -48,6 +49,10 @@ Ported and lightly restructured from the live page. Sections:
 6. **Early-access CTA** — Email capture form, founding-member framing, launch summer 2026.
 
 All copy follows Ryan's brand voice: minimal, direct, no AI tells, no listicle energy.
+
+## Release notes page
+
+A reverse-chronological list of app versions, each with version number, date, and grouped notes (New · Improved · Fixed). Content lives as a typed data file (or one Markdown file per release) in the repo, so adding a release is a small, copy-paste-shaped edit you can do without touching layout code. Newest version anchored at top; each entry is a Lift-register card. Styled to match the App Store "What's New" tone so the copy is reusable.
 
 ## Visual system (FathomUI port)
 
