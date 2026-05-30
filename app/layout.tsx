@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Source_Serif_4, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const serif = Source_Serif_4({
   subsets: ["latin"],
@@ -33,7 +35,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <a href="#main" className="skip-link">Skip to content</a>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
