@@ -1,31 +1,38 @@
 import Link from "next/link";
-
-const groups = [
-  { heading: "Product", links: [["/", "Home"], ["/release-notes", "Release notes"]] },
-  { heading: "Help", links: [["/support", "Support"], ["/feedback", "Feedback"]] },
-  { heading: "Legal", links: [["/privacy", "Privacy"], ["/terms", "Terms"]] },
-];
+import { BrandMark } from "@/components/BrandMark";
 
 export function Footer() {
   return (
-    <footer className="border-t px-6 py-12">
-      <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3">
-        {groups.map((g) => (
-          <nav key={g.heading} aria-label={g.heading}>
-            <h2 className="uppercase tracking-[0.08em] text-[var(--text-secondary)]" style={{ fontSize: "12px" }}>{g.heading}</h2>
-            <ul className="mt-3 space-y-2">
-              {g.links.map(([href, label]) => (
-                <li key={href}>
-                  <Link href={href} className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">{label}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        ))}
+    <footer className="site-footer" role="contentinfo">
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <BrandMark className="brand-mark brand-mark-lg" />
+          <p className="footer-tag">Navigate any building. Your first time in.</p>
+        </div>
+        <nav className="footer-cols" aria-label="Footer">
+          <div>
+            <h4>Product</h4>
+            <Link href="/">Home</Link>
+            <Link href="/release-notes">Release notes</Link>
+            <Link href="/#signup">Early access</Link>
+          </div>
+          <div>
+            <h4>Help</h4>
+            <Link href="/support">Support</Link>
+            <Link href="/feedback">Feedback</Link>
+            <a href="mailto:support@fathomvision.app">support@fathomvision.app</a>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+          </div>
+        </nav>
       </div>
-      <p className="mx-auto mt-10 max-w-5xl text-sm text-[var(--text-muted)]">
-        © {new Date().getFullYear()} Fathom. Built with lived experience.
-      </p>
+      <div className="footer-base">
+        <span className="footnote">© 2026 Fathom</span>
+        <span className="footnote">Built with lived experience.</span>
+      </div>
     </footer>
   );
 }
