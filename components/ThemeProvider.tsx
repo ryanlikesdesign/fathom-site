@@ -3,33 +3,33 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 
 type Theme = "light" | "dark";
 const ThemeContext = createContext<{ theme: Theme; toggle: () => void }>({
-  theme: "light",
+  theme: "dark",
   toggle: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Start at "light" so the server-rendered markup and the client's first
-  // render agree (no hydration mismatch). The real theme is applied to <html>
-  // before paint by the inline anti-flash script in the document head.
-  const [theme, setTheme] = useState<Theme>("light");
+  // Start at "dark" to match the server-rendered default (:root = dark), so
+  // hydration agrees. The real theme is applied to <html data-theme> before
+  // paint by the inline anti-flash script in the document head.
+  const [theme, setTheme] = useState<Theme>("dark");
 
-  // After hydration, adopt whatever the anti-flash script already put on <html>.
+  // After hydration, adopt whatever the anti-flash script put on <html>.
   useEffect(() => {
-    const applied: Theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+    const applied = document.documentElement.getAttribute("data-theme");
     // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing with client-only DOM state post-hydration
-    setTheme(applied);
+    setTheme(applied === "light" ? "light" : "dark");
   }, []);
 
-  // Drive the DOM class and persistence from the toggle directly, so we never
-  // clobber the pre-paint theme on mount.
   const toggle = useCallback(() => {
-    const next: Theme = document.documentElement.classList.contains("dark") ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
+    const next: Theme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
     try {
-      localStorage.setItem("theme", next);
+      localStorage.setItem("fathom-theme", next);
     } catch {
       /* storage unavailable (private mode, etc.) — theme still applies for the session */
     }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", next === "dark" ? "#0e1013" : "#f2ede4");
     setTheme(next);
   }, []);
 

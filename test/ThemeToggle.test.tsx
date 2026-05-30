@@ -4,13 +4,18 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  document.documentElement.removeAttribute("data-theme");
+});
 
 describe("ThemeToggle", () => {
-  it("toggles the dark class on the html element", async () => {
+  it("toggles the data-theme attribute on the html element", async () => {
     render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
     const btn = screen.getByRole("button", { name: /switch to (dark|light) theme/i });
+    // Default is dark; first activation flips to light and persists the choice.
     await userEvent.click(btn);
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(localStorage.getItem("fathom-theme")).toBe("light");
   });
 });
