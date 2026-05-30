@@ -25,8 +25,8 @@ export default function Home() {
       <Section labelledBy="hero-h" className="text-center">
         <h1 id="hero-h" className="font-display text-5xl sm:text-6xl">Navigate any building. Your first time in.</h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-[var(--text-secondary)]">
-          Fathom is an AI companion for blind and low-vision people. It sees what's ahead and guides you where
-          you're going, straight from your iPhone — no maps, no beacons, no setup.
+          Fathom is an AI companion for blind and low-vision people. It sees what&apos;s ahead and guides you where
+          you&apos;re going, straight from your iPhone — no maps, no beacons, no setup.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button href="#early-access" variant="primary" size="xl">Request early access</Button>
@@ -38,7 +38,7 @@ export default function Home() {
         <h2 id="gap-h" className="font-display text-4xl">Indoor navigation is still unsolved</h2>
         <p className="mt-4 max-w-3xl text-lg text-[var(--text-secondary)]">
           GPS dies the moment you step inside. The tools that try to fill the gap need pre-built maps most
-          buildings don't have, or a sighted person on the other end. Fathom needs neither. It's a full sensory
+          buildings don&apos;t have, or a sighted person on the other end. Fathom needs neither. It&apos;s a full sensory
           companion — for getting around, understanding a space, and finishing the task you came to do.
         </p>
       </Section>
@@ -62,7 +62,7 @@ export default function Home() {
       </Section>
 
       <Section labelledBy="a11y-h">
-        <h2 id="a11y-h" className="font-display text-4xl">Accessibility isn't a setting. It's the design.</h2>
+        <h2 id="a11y-h" className="font-display text-4xl">Accessibility isn&apos;t a setting. It&apos;s the design.</h2>
         <p className="mt-4 max-w-3xl text-lg text-[var(--text-secondary)]">
           High-contrast visuals, large targets, and full VoiceOver support are the starting point, not an
           afterthought. Fathom is built low-vision-first, by a designer who navigates the world with impaired

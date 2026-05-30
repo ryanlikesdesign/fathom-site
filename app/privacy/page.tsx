@@ -13,7 +13,7 @@ export default function PrivacyPage() {
       <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: March 2026</p>
 
       <h2>The short version</h2>
-      <p>Fathom uses your iPhone camera to describe your surroundings and guide you. We process what we need to do that, we don't sell your data, and we keep as little as possible.</p>
+      <p>Fathom uses your iPhone camera to describe your surroundings and guide you. We process what we need to do that, we don&apos;t sell your data, and we keep as little as possible.</p>
 
       <h2>What Fathom processes</h2>
       <ul>
@@ -23,16 +23,16 @@ export default function PrivacyPage() {
       </ul>
 
       <h2>What we store</h2>
-      <p>Fathom is designed to keep your camera feed and audio transient — used to generate guidance in the moment, not stored as a record of where you've been. We do not build a profile of your movements. If you contact us or request early access, we keep the email and message you send so we can reply.</p>
+      <p>Fathom is designed to keep your camera feed and audio transient — used to generate guidance in the moment, not stored as a record of where you&apos;ve been. We do not build a profile of your movements. If you contact us or request early access, we keep the email and message you send so we can reply.</p>
 
       <h2>Third-party processing</h2>
-      <p>Cloud descriptions are handled by Google's Gemini API under their data terms. We share only what's needed to generate a response and request that data not be used to train models where that option is available.</p>
+      <p>Cloud descriptions are handled by Google&apos;s Gemini API under their data terms. We share only what&apos;s needed to generate a response and request that data not be used to train models where that option is available.</p>
 
       <h2>Your choices and rights</h2>
       <ul>
         <li>You can use core on-device features without a network connection.</li>
-        <li>You can request deletion of any contact information you've shared with us.</li>
-        <li>If account features are added in the future, you'll be able to delete your account and associated data from within the app.</li>
+        <li>You can request deletion of any contact information you&apos;ve shared with us.</li>
+        <li>If account features are added in the future, you&apos;ll be able to delete your account and associated data from within the app.</li>
       </ul>
 
       <h2>Children</h2>

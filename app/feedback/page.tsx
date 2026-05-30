@@ -13,7 +13,7 @@ export default function FeedbackPage() {
       <h1 id="fb-h" className="font-display text-5xl">Feedback</h1>
       <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">
         Found a bug, hit a wall, or have an idea? Tell me. Reports from people who actually use the app shape what
-        gets built next. Leave your email if you'd like a reply.
+        gets built next. Leave your email if you&apos;d like a reply.
       </p>
       <div className="mt-10 max-w-xl">
         <ContactForm formType="feedback" />

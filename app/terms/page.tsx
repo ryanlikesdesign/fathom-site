@@ -13,7 +13,7 @@ export default function TermsPage() {
       <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: March 2026</p>
 
       <h2>Acceptance</h2>
-      <p>By downloading or using Fathom, you agree to these terms. If you don't agree, don't use the app.</p>
+      <p>By downloading or using Fathom, you agree to these terms. If you don&apos;t agree, don&apos;t use the app.</p>
 
       <h2>Fathom is an aid, not a replacement for your own judgment</h2>
       <p>Fathom assists with awareness and navigation. It does not replace a white cane, guide dog, orientation and mobility training, or your own senses and judgment. Technology can be wrong, delayed, or unavailable. Always use your established mobility tools and stay alert to your surroundings. You are responsible for your own safety.</p>
@@ -26,12 +26,12 @@ export default function TermsPage() {
 
       <h2>Acceptable use</h2>
       <ul>
-        <li>Don't misuse, reverse-engineer, or attempt to disrupt the app or its services.</li>
-        <li>Don't use Fathom for unlawful purposes or in ways that infringe others' rights.</li>
+        <li>Don&apos;t misuse, reverse-engineer, or attempt to disrupt the app or its services.</li>
+        <li>Don&apos;t use Fathom for unlawful purposes or in ways that infringe others&apos; rights.</li>
       </ul>
 
       <h2>Disclaimers and limitation of liability</h2>
-      <p>Fathom is provided "as is" without warranties of any kind. To the fullest extent permitted by law, we are not liable for any indirect, incidental, or consequential damages arising from your use of the app. Nothing in these terms limits liability that cannot be limited under applicable law.</p>
+      <p>Fathom is provided &quot;as is&quot; without warranties of any kind. To the fullest extent permitted by law, we are not liable for any indirect, incidental, or consequential damages arising from your use of the app. Nothing in these terms limits liability that cannot be limited under applicable law.</p>
 
       <h2>Changes</h2>
       <p>We may update these terms. Continued use after an update means you accept the revised terms.</p>
