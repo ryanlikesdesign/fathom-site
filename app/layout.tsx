@@ -19,9 +19,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Fathom — Navigate any building. Your first time in.",
+  metadataBase: new URL("https://fathomvision.app"),
+  title: {
+    default: "Fathom — Navigate any building. Your first time in.",
+    template: "%s",
+  },
   description:
     "Fathom is an AI companion for blind and low-vision people. It sees what's ahead and guides you where you're going, from your iPhone — no maps, beacons, or setup.",
+  openGraph: {
+    title: "Fathom — Navigate any building. Your first time in.",
+    description: "An AI navigation companion for blind and low-vision people.",
+    url: "https://fathomvision.app",
+    siteName: "Fathom",
+    type: "website",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

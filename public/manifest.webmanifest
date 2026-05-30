@@ -1,0 +1,9 @@
+{
+  "name": "Fathom",
+  "short_name": "Fathom",
+  "description": "AI navigation companion for blind and low-vision people.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f7f4ee",
+  "theme_color": "#16130f"
+}
