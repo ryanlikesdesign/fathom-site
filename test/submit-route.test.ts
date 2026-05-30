@@ -58,4 +58,16 @@ describe("POST /api/submit", () => {
     const res = await POST(req({ formType: "early-access", email: "u@x.co" }));
     expect(res.status).toBe(502);
   });
+
+  it("rejects an unknown formType with 400 and does not email", async () => {
+    const res = await POST(req({ formType: "nope", email: "a@b.co", message: "spam" }));
+    expect(res.status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("drops a honeypot hit even when the body is otherwise invalid", async () => {
+    const res = await POST(req({ formType: "feedback", message: "", company: "spam" }));
+    expect(res.status).toBe(200);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
 });

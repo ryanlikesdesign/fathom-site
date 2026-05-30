@@ -20,6 +20,11 @@ export function isValidEmail(value: string): boolean {
 
 export function validateSubmission(input: SubmissionInput): ValidationResult {
   const errors: Record<string, string> = {};
+
+  if (input.formType !== "feedback" && input.formType !== "early-access") {
+    return { ok: false, errors: { formType: "Unknown form." } };
+  }
+
   const email = (input.email ?? "").trim();
 
   if (input.formType === "feedback") {
@@ -31,6 +36,12 @@ export function validateSubmission(input: SubmissionInput): ValidationResult {
     if (!email) errors.email = "Enter your email to request access.";
     else if (!isValidEmail(email)) errors.email = "That email doesn't look right.";
   }
+
+  const cap = (v: string | undefined) => (v ?? "");
+  if (cap(input.message).length > 5000) errors.message = "Message is too long (5000 characters max).";
+  if (cap(input.name).length > 200) errors.name = "Name is too long.";
+  if (cap(input.email).length > 200) errors.email = "Email is too long.";
+  if (cap(input.category).length > 200) errors.category = "Category is too long.";
 
   return { ok: Object.keys(errors).length === 0, errors };
 }

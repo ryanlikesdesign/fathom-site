@@ -27,3 +27,17 @@ describe("validateSubmission", () => {
     expect(validateSubmission({ formType: "early-access", email: "a@b.co" }).ok).toBe(true);
   });
 });
+
+describe("validateSubmission hardening", () => {
+  it("rejects an unknown formType", () => {
+    // @ts-expect-error testing a bogus runtime value
+    const r = validateSubmission({ formType: "nope", email: "a@b.co" });
+    expect(r.ok).toBe(false);
+    expect(r.errors.formType).toBeTruthy();
+  });
+  it("rejects an over-long message", () => {
+    const r = validateSubmission({ formType: "feedback", message: "x".repeat(5001) });
+    expect(r.ok).toBe(false);
+    expect(r.errors.message).toBeTruthy();
+  });
+});

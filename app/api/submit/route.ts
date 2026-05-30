@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   const { error } = await resend.emails.send({
     from,
     to,
-    replyTo: body.email || undefined,
+    replyTo: body.email?.replace(/[\r\n]/g, "").trim() || undefined,
     subject,
     text,
   });

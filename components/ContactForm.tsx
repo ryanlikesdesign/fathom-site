@@ -77,7 +77,7 @@ export function ContactForm({ formType }: { formType: FormType }) {
 
       <div>
         <label htmlFor="field-name" className="block text-sm font-medium">Name <span className="text-[var(--text-muted)]">(optional)</span></label>
-        <input id="field-name" name="name" type="text" autoComplete="name"
+        <input id="field-name" name="name" type="text" autoComplete="name" maxLength={200}
           className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-3 py-2" />
       </div>
 
@@ -88,7 +88,7 @@ export function ContactForm({ formType }: { formType: FormType }) {
             <span className="text-[var(--text-muted)]">(optional)</span>
           )}
         </label>
-        <input id="field-email" name="email" type="email" autoComplete="email"
+        <input id="field-email" name="email" type="email" autoComplete="email" maxLength={200}
           aria-invalid={!!errors.email || undefined}
           aria-describedby={errors.email ? "err-email" : undefined}
           className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-3 py-2" />
@@ -106,7 +106,7 @@ export function ContactForm({ formType }: { formType: FormType }) {
           </div>
           <div>
             <label htmlFor="field-message" className="block text-sm font-medium">Message</label>
-            <textarea id="field-message" name="message" rows={6}
+            <textarea id="field-message" name="message" rows={6} maxLength={5000}
               aria-invalid={!!errors.message || undefined}
               aria-describedby={errors.message ? "err-message" : undefined}
               className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-3 py-2" />
