@@ -11,6 +11,8 @@ interface Payload {
   category?: string;
   message?: string;
   company?: string; // honeypot — real users never fill this
+  role?: string;
+  story?: string;
 }
 
 export async function POST(request: Request) {
@@ -50,7 +52,13 @@ export async function POST(request: Request) {
         "",
         body.message ?? "",
       ].join("\n")
-    : [`New early access request`, `Name: ${body.name ?? "(none)"}`, `Email: ${body.email}`].join("\n");
+    : [
+        `New early access request`,
+        `Name: ${body.name ?? "(none)"}`,
+        `Email: ${body.email}`,
+        `Role: ${body.role ?? "(none)"}`,
+        `Notes: ${body.story ?? "(none)"}`,
+      ].join("\n");
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({

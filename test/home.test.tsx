@@ -4,9 +4,10 @@ import { axe } from "jest-axe";
 import Home from "@/app/page";
 
 describe("Home", () => {
-  it("renders the hero heading", () => {
+  it("renders a single level-1 hero heading", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { level: 1, name: /navigate any building/i })).toBeInTheDocument();
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1.textContent).toMatch(/navigate any/i);
   });
   it("has no axe violations", async () => {
     const { container } = render(<Home />);

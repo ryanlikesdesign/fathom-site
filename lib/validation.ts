@@ -6,6 +6,8 @@ export interface SubmissionInput {
   email?: string;
   category?: string;
   message?: string;
+  role?: string;
+  story?: string;
 }
 
 export interface ValidationResult {
@@ -42,6 +44,8 @@ export function validateSubmission(input: SubmissionInput): ValidationResult {
   if (cap(input.name).length > 200) errors.name = "Name is too long.";
   if (cap(input.email).length > 200) errors.email = "Email is too long.";
   if (cap(input.category).length > 200) errors.category = "Category is too long.";
+  if ((input.story ?? "").length > 5000) errors.story = "Too long.";
+  if ((input.role ?? "").length > 200) errors.role = "Too long.";
 
   return { ok: Object.keys(errors).length === 0, errors };
 }
