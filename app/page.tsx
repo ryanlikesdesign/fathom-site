@@ -30,7 +30,7 @@ export default function Home() {
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Button href="#early-access" variant="primary" size="xl">Request early access</Button>
-          <Button href="#modes" variant="secondary" size="xl">See how it works</Button>
+          <Button href="#modes-h" variant="secondary" size="xl">See how it works</Button>
         </div>
       </Section>
 

@@ -78,7 +78,10 @@ export function ContactForm({ formType }: { formType: FormType }) {
       <div>
         <label htmlFor="field-name" className="block text-sm font-medium">Name <span className="text-[var(--text-muted)]">(optional)</span></label>
         <input id="field-name" name="name" type="text" autoComplete="name" maxLength={200}
+          aria-invalid={!!errors.name || undefined}
+          aria-describedby={errors.name ? "err-name" : undefined}
           className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-3 py-2" />
+        {errors.name && <p id="err-name" className="mt-1 text-sm">{errors.name}</p>}
       </div>
 
       <div>
@@ -100,9 +103,12 @@ export function ContactForm({ formType }: { formType: FormType }) {
           <div>
             <label htmlFor="field-category" className="block text-sm font-medium">Category</label>
             <select id="field-category" name="category" defaultValue="General"
+              aria-invalid={!!errors.category || undefined}
+              aria-describedby={errors.category ? "err-category" : undefined}
               className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-3 py-2">
               {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
+            {errors.category && <p id="err-category" className="mt-1 text-sm">{errors.category}</p>}
           </div>
           <div>
             <label htmlFor="field-message" className="block text-sm font-medium">Message</label>

@@ -12,7 +12,7 @@ function Group({ label, items }: { label: string; items?: string[] }) {
   if (!items?.length) return null;
   return (
     <div className="mt-4">
-      <h3 className="text-label uppercase tracking-[0.08em] text-[var(--text-muted)]" style={{ fontSize: "12px" }}>{label}</h3>
+      <h3 className="uppercase tracking-[0.08em] text-[var(--text-secondary)]" style={{ fontSize: "12px" }}>{label}</h3>
       <ul className="mt-2 space-y-1">
         {items.map((i) => (
           <li key={i} className="flex gap-3 text-[var(--text-secondary)]"><span aria-hidden="true">—</span><span>{i}</span></li>

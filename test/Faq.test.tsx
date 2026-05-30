@@ -13,7 +13,9 @@ describe("Faq", () => {
   });
   it("reveals the answer when the question is activated", async () => {
     render(<Faq items={items} />);
-    await userEvent.click(screen.getByRole("button", { name: "Question one?" }));
+    // Native <summary> exposes its own disclosure semantics (and announces
+    // expanded/collapsed state to screen readers) — query it by its text.
+    await userEvent.click(screen.getByText("Question one?"));
     expect(screen.getByText("Answer one.")).toBeVisible();
   });
 });

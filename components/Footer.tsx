@@ -12,7 +12,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3">
         {groups.map((g) => (
           <nav key={g.heading} aria-label={g.heading}>
-            <h2 className="text-label uppercase tracking-[0.08em] text-[var(--text-muted)]" style={{ fontSize: "12px" }}>{g.heading}</h2>
+            <h2 className="uppercase tracking-[0.08em] text-[var(--text-secondary)]" style={{ fontSize: "12px" }}>{g.heading}</h2>
             <ul className="mt-3 space-y-2">
               {g.links.map(([href, label]) => (
                 <li key={href}>
