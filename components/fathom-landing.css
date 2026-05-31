@@ -683,16 +683,16 @@ a{color:inherit;text-decoration:none}
   border:2px solid var(--fog-400);
   flex:none;margin:2px 0 0;
   background:transparent;
-  transition:border-color 160ms,box-shadow 160ms;
+  transition:border-color 160ms,background 160ms;
   cursor:pointer;
 }
 .choice input:checked{
   border-color:var(--accent-signal);
-  box-shadow:inset 0 0 0 4px var(--accent-signal);
+  background:radial-gradient(circle,var(--accent-signal) 38%,transparent 40%);
 }
 .choice:has(input:checked){border-color:var(--accent-signal);background:color-mix(in oklab,var(--fathom-700) 14%,var(--bg-raised))}
 [data-theme='light'] .choice:has(input:checked){background:color-mix(in oklab,var(--fathom-300) 14%,var(--bg-raised));border-color:var(--fathom-500)}
-[data-theme='light'] .choice input:checked{border-color:var(--fathom-500);box-shadow:inset 0 0 0 4px var(--fathom-500)}
+[data-theme='light'] .choice input:checked{border-color:var(--fathom-500);background:radial-gradient(circle,var(--fathom-500) 38%,transparent 40%)}
 
 .btn-submit{width:100%;margin-top:8px;background:var(--accent);color:var(--bone-100);padding:16px;font-size:16px;border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background 180ms,gap 200ms}
 .btn-submit:hover{background:var(--fathom-500);gap:14px}
