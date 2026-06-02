@@ -670,40 +670,97 @@ a{color:inherit;text-decoration:none}
 .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent-signal)}
 .field textarea{resize:vertical;min-height:80px;font-family:var(--font-sans)}
 
-.field-choice{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
-.choices{display:flex;flex-direction:column;gap:8px}
-/* Choice card: center-align items vertically so single-line labels sit
-   in the middle of the radio, multi-line labels read top-to-bottom naturally */
-.choice{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--bg-raised);border:1px solid var(--divider);border-radius:var(--radius-sm);cursor:pointer;transition:border-color 160ms,background 160ms;font-size:15px}
-.choice span{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
-.choice strong{font-weight:600;line-height:1.3}
-.choice small{font-size:12px;color:var(--fg-tertiary);font-weight:400;line-height:1.4}
-.choice:hover{border-color:var(--fog-400)}
+.field-choice{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.choices{display:flex;flex-direction:column;gap:6px}
 
-/* Custom radio — the key is to fight browser flex/grid squishing with a
-   triple lock: explicit width+height, aspect-ratio 1/1, and box-sizing
-   content-box so the 2px border adds to the outside, not inward.
-   flex-shrink:0 prevents the container from collapsing the dimension. */
-.choice input{
-  appearance:none;-webkit-appearance:none;
+/* ── Custom radio cards ──────────────────────────────────────────────────────
+   Approach: visually hide the native <input type="radio"> (it's a replaced
+   element — appearance:none is unreliable cross-browser) and drive the
+   custom indicator via ::before on the <label>. The label still wraps the
+   input so clicks, keyboard, and screen-readers all work correctly.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* The card */
+.choice{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:13px 16px;
+  background:var(--bg-raised);
+  border:1.5px solid var(--divider);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:border-color 160ms ease, background 160ms ease;
+  font-size:15px;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+/* Visually hidden — WCAG sr-only pattern keeps input in tab order
+   and accessible to assistive tech without taking up layout space */
+.choice input[type="radio"]{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border-width:0;
+}
+
+/* Custom radio circle drawn as a ::before pseudo-element.
+   Because this is a true DOM element (not a replaced input),
+   it renders as a perfect circle in every browser, every time. */
+.choice::before{
+  content:'';
+  display:block;
   width:20px;height:20px;
-  min-width:20px;min-height:20px;
-  aspect-ratio:1/1;
-  box-sizing:content-box;
+  min-width:20px;
   border-radius:50%;
   border:2px solid var(--fog-400);
-  flex:none;flex-shrink:0;
   background:transparent;
-  transition:border-color 160ms,background 160ms;
-  cursor:pointer;
+  flex:none;
+  transition:border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
 }
-.choice input:checked{
+
+/* Hover */
+.choice:hover{ border-color:rgba(138,149,162,.55); }
+.choice:hover::before{ border-color:var(--fg-secondary); }
+
+/* Keyboard focus — surface the focus ring on the card, not the hidden input */
+.choice:has(input:focus-visible){
+  outline:2px solid var(--focus-ring);
+  outline-offset:2px;
+}
+
+/* Checked — card */
+.choice:has(input:checked){
   border-color:var(--accent-signal);
-  background:radial-gradient(circle at center,var(--accent-signal) 36%,transparent 38%);
+  background:color-mix(in oklab,var(--accent-signal) 10%,var(--bg-raised));
 }
-.choice:has(input:checked){border-color:var(--accent-signal);background:color-mix(in oklab,var(--fathom-700) 14%,var(--bg-raised))}
-[data-theme='light'] .choice:has(input:checked){background:color-mix(in oklab,var(--fathom-300) 14%,var(--bg-raised));border-color:var(--fathom-500)}
-[data-theme='light'] .choice input:checked{border-color:var(--fathom-500);background:radial-gradient(circle at center,var(--fathom-500) 36%,transparent 38%)}
+
+/* Checked — circle: outer ring stays as border, inner dot via radial-gradient.
+   Using a pseudo-element means radial-gradient is rendered as a proper circle. */
+.choice:has(input:checked)::before{
+  border-color:var(--accent-signal);
+  background:radial-gradient(circle at center, var(--accent-signal) 44%, transparent 46%);
+}
+
+/* Light mode overrides */
+[data-theme='light'] .choice:has(input:checked){
+  border-color:var(--fathom-500);
+  background:color-mix(in oklab,var(--fathom-500) 8%,var(--bg-raised));
+}
+[data-theme='light'] .choice:has(input:checked)::before{
+  border-color:var(--fathom-500);
+  background:radial-gradient(circle at center, var(--fathom-500) 44%, transparent 46%);
+}
+
+/* Text */
+.choice span{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.choice strong{font-weight:600;font-size:15px;color:var(--fg);line-height:1.3}
+.choice small{font-size:12px;color:var(--fg-tertiary);font-weight:400;line-height:1.4}
 
 .btn-submit{width:100%;margin-top:8px;background:var(--accent);color:var(--bone-100);padding:16px;font-size:16px;border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background 180ms,gap 200ms}
 .btn-submit:hover{background:var(--fathom-500);gap:14px}
@@ -833,8 +890,8 @@ a{color:inherit;text-decoration:none}
   .signup-points li{font-size:15px;gap:10px}
   .signup-form{padding:20px;gap:16px}
   .field input,.field textarea{padding:12px 14px;font-size:16px;min-height:48px}
-  .choice{padding:12px;font-size:14px}
-  .choice input{width:20px;height:20px;min-width:20px;min-height:20px;aspect-ratio:1/1}
+  .choice{padding:12px 14px;font-size:14px}
+  .choice::before{width:20px;height:20px;min-width:20px}
   .btn-submit{padding:14px;font-size:16px;min-height:52px}
   .press-line{padding:14px 16px}
   .press-line p{font-size:13px}
