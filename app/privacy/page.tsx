@@ -109,7 +109,7 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         Questions about privacy:{" "}
-        <a className="underline" href="mailto:support@fathomvision.app">support@fathomvision.app</a>
+        <a className="underline" href="mailto:privacy@fathomvision.app">privacy@fathomvision.app</a>
       </p>
     </Section>
   );
