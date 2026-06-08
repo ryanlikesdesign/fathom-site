@@ -30,7 +30,7 @@ export function Footer() {
         </nav>
       </div>
       <div className="footer-base">
-        <span className="footnote">© 2026 Fathom</span>
+        <span className="footnote">© 2026 Unruly Vision, LLC</span>
         <span className="footnote">Built with lived experience.</span>
       </div>
     </footer>

@@ -18,8 +18,9 @@ export default function PrivacyPage() {
 
       <p>
         Fathom helps blind and low-vision people understand their surroundings using the camera,
-        on-device sensors, and AI. We designed it to collect as little as possible and to keep
-        sensitive things on your device. <strong>You do not create an account to use Fathom.</strong>
+        on-device sensors, and AI. Fathom is operated by Unruly Vision, LLC (&quot;we&quot;). We designed
+        it to collect as little as possible and to keep sensitive things on your device.{" "}
+        <strong>You do not create an account to use Fathom.</strong>
       </p>
 
       <h2>What Fathom processes, and why</h2>

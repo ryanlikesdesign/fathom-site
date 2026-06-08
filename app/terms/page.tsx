@@ -13,7 +13,7 @@ export default function TermsPage() {
       <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: March 2026</p>
 
       <h2>Acceptance</h2>
-      <p>Using Fathom means you agree to these terms. If you don&apos;t, don&apos;t use the app.</p>
+      <p>Fathom is operated by Unruly Vision, LLC (&quot;we&quot;). Using Fathom means you agree to these terms. If you don&apos;t, don&apos;t use the app.</p>
 
       <h2>Fathom is an aid, not a replacement for your own judgment</h2>
       <p>Fathom helps with awareness and navigation. It does not replace a white cane, guide dog, orientation and mobility training, or your own judgment. Technology can be wrong, slow, or unavailable. Use your established mobility tools. Stay alert. You are responsible for your safety.</p>
