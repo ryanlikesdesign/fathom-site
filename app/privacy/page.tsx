@@ -4,7 +4,7 @@ import { Section } from "@/components/Section";
 export const metadata: Metadata = {
   title: "Privacy — Fathom",
   description:
-    "How Fathom handles camera, microphone, account, and anonymous usage data. Fathom works on your device as much as possible and never sells your data.",
+    "How Fathom handles camera, microphone, and anonymous usage data. Fathom works on your device as much as possible, needs no account, and never sells your data.",
 };
 
 export default function PrivacyPage() {
@@ -22,29 +22,27 @@ export default function PrivacyPage() {
       </p>
       <p>
         The short version: Fathom works on your device as much as possible. When it uses the cloud,
-        it sends only what&apos;s needed to answer your request. We never sell your data or use it for
-        advertising.
+        it sends only what&apos;s needed to answer your request. You don&apos;t create an account, and
+        we never sell your data or use it for advertising.
       </p>
 
       <h2>What Fathom collects</h2>
       <p>
-        <strong>Camera and microphone.</strong>{" "}To describe your surroundings and help with tasks,
-        Fathom sends camera images and, during voice features, your audio to Google&apos;s Gemini AI
-        for processing. This happens in real time to answer your request, and Fathom does not store
-        these images or recordings. You can also use Fathom in an on-device mode that sends nothing
-        to the cloud.
+        <strong>No account.</strong>{" "}You don&apos;t sign up, sign in, or give us your name or email
+        to use Fathom.
       </p>
       <p>
-        <strong>Your account.</strong>{" "}If you subscribe to Fathom Plus, you sign in with Apple. We
-        receive and store your email address and an account identifier through our authentication
-        provider, Supabase, so we can manage your subscription. You do not need an account to use
-        Fathom&apos;s free features.
+        <strong>Camera and microphone.</strong>{" "}To describe your surroundings and help with tasks,
+        Fathom sends camera images and, during voice features, your audio — through Fathom&apos;s own
+        secure backend — to Google&apos;s Gemini AI for processing. This happens in real time to answer
+        your request, and the images and recordings are not stored by Fathom or its backend. You can
+        also use Fathom in an on-device mode that sends nothing to the cloud.
       </p>
       <p>
         <strong>Anonymous usage data.</strong>{" "}To understand how Fathom is used and to fix problems,
         we collect anonymous analytics through PostHog: which features are used, app performance, and
-        crash reports. This is tied to a random identifier created on your device, not to your name,
-        email, or account. Any screen recordings have all text and images masked.
+        crash reports. This is tied to a random identifier created on your device, not to you
+        personally. Any screen recordings have all text and images masked.
       </p>
       <p>
         <strong>Purchases.</strong>{" "}Subscriptions are handled by Apple through the App Store. We do
@@ -54,9 +52,9 @@ export default function PrivacyPage() {
       <h2>Who we share data with</h2>
       <ul>
         <li><strong>Google (Gemini AI)</strong> processes camera and audio in real time to generate descriptions and guidance.</li>
-        <li><strong>Supabase</strong> stores your account (email and account ID) for sign-in and subscription management.</li>
+        <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and audio pass through it in real time and are not stored.</li>
         <li><strong>PostHog</strong> receives anonymous usage and diagnostic data.</li>
-        <li><strong>Apple</strong> handles App Store purchases and Sign in with Apple.</li>
+        <li><strong>Apple</strong> handles App Store purchases.</li>
       </ul>
       <p>
         We do not sell your data. We do not use it for advertising or share it with data brokers.
@@ -64,16 +62,16 @@ export default function PrivacyPage() {
 
       <h2>How long we keep it</h2>
       <p>
-        Camera images and audio sent for processing are not stored by Fathom. Your account
-        information is kept while your account exists. Anonymous analytics are kept only as long as
-        needed to improve the app.
+        Camera images and audio sent for processing are not stored by Fathom or its backend.
+        Anonymous analytics are kept only as long as needed to improve the app. Anything you save in
+        the app stays on your device until you delete it or remove the app.
       </p>
 
       <h2>Your choices</h2>
       <ul>
         <li>You can turn off analytics any time in Settings.</li>
         <li>You can use Fathom&apos;s on-device mode to keep camera and audio off the cloud.</li>
-        <li>You can request access to or deletion of your account data by contacting us.</li>
+        <li>You can clear anything you&apos;ve saved in the app, or contact us with any privacy question or request.</li>
       </ul>
 
       <h2>Children</h2>
