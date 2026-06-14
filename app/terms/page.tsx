@@ -10,7 +10,7 @@ export default function TermsPage() {
   return (
     <Section labelledBy="tos-h" className="[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_p]:mt-3 [&_p]:text-[var(--text-secondary)] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-[var(--text-secondary)]">
       <h1 id="tos-h" className="font-display text-5xl">Terms</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: June 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: June 13, 2026</p>
 
       <h2>Acceptance</h2>
       <p>Fathom is operated by Unruly Vision, LLC (&quot;we&quot;). Using Fathom means you agree to these terms. If you don&apos;t, don&apos;t use the app.</p>

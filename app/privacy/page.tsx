@@ -4,7 +4,7 @@ import { Section } from "@/components/Section";
 export const metadata: Metadata = {
   title: "Privacy — Fathom",
   description:
-    "How Fathom handles camera, microphone, and anonymous usage data. Fathom works on your device as much as possible, needs no account, and never sells your data.",
+    "How Fathom handles camera, microphone, and anonymous usage data. Fathom works on your device, needs no account, doesn't track you, and never sells your data.",
 };
 
 export default function PrivacyPage() {
@@ -28,21 +28,24 @@ export default function PrivacyPage() {
 
       <h2>What Fathom collects</h2>
       <p>
-        <strong>No account.</strong>{" "}You don&apos;t sign up, sign in, or give us your name or email
-        to use Fathom.
+        <strong>No account.</strong>{" "}There is no sign-up, no sign-in, and no login of any kind. You
+        never give us your name, email, or any personal identity to use Fathom, so nothing you do in
+        the app is tied to a personal profile.
       </p>
       <p>
         <strong>Camera and microphone.</strong>{" "}To describe your surroundings and help with tasks,
-        Fathom sends camera images and, during voice features, your audio — through Fathom&apos;s own
-        secure backend — to Google&apos;s Gemini AI for processing. This happens in real time to answer
-        your request, and the images and recordings are not stored by Fathom or its backend. You can
-        also use Fathom in an on-device mode that sends nothing to the cloud.
+        Fathom sends camera images, and during voice features your audio, through Fathom&apos;s own
+        secure backend to Google&apos;s Gemini AI for processing. This happens in real time to answer
+        your request. The images and recordings are processed and then discarded; they are not stored
+        by Fathom or its backend. The connection is encrypted over HTTPS. You can also use Fathom in
+        an on-device mode that sends nothing to the cloud.
       </p>
       <p>
         <strong>Anonymous usage data.</strong>{" "}To understand how Fathom is used and to fix problems,
         we collect anonymous analytics through PostHog: which features are used, app performance, and
         crash reports. This is tied to a random identifier created on your device, not to you
-        personally. Any screen recordings have all text and images masked.
+        personally. Any session recordings have all text and images masked. We do not use an
+        advertising identifier, and we do not track you across other apps or websites.
       </p>
       <p>
         <strong>Purchases.</strong>{" "}Subscriptions are handled by Apple through the App Store. We do
@@ -56,9 +59,7 @@ export default function PrivacyPage() {
         <li><strong>PostHog</strong> receives anonymous usage and diagnostic data.</li>
         <li><strong>Apple</strong> handles App Store purchases.</li>
       </ul>
-      <p>
-        We do not sell your data. We do not use it for advertising or share it with data brokers.
-      </p>
+      <p>We do not sell your data. We do not use it for advertising or share it with data brokers.</p>
 
       <h2>How long we keep it</h2>
       <p>
@@ -71,13 +72,17 @@ export default function PrivacyPage() {
       <ul>
         <li>You can turn off analytics any time in Settings.</li>
         <li>You can use Fathom&apos;s on-device mode to keep camera and audio off the cloud.</li>
-        <li>You can clear anything you&apos;ve saved in the app, or contact us with any privacy question or request.</li>
+        <li>You can clear anything you&apos;ve saved in the app by deleting it or removing the app.</li>
       </ul>
+      <p>
+        Because Fathom has no account, there is no personal profile for us to look up, correct, or
+        delete. Analytics is anonymous and not tied to your name, email, or Apple ID, so we cannot
+        connect it back to you. If you want analytics to stop, turn it off in Settings or remove the
+        app. You are always welcome to email us with a privacy question.
+      </p>
 
       <h2>Children</h2>
-      <p>
-        Fathom is not directed at children under 13, and we do not knowingly collect their data.
-      </p>
+      <p>Fathom is not directed at children under 13, and we do not knowingly collect their data.</p>
 
       <h2>Changes</h2>
       <p>
