@@ -37,10 +37,10 @@ function VoiceOrbIdle({ className = '' }: { className?: string }) {
   return (
     <div className={`vo vo-idle ${className}`} role="img" aria-label="Fathom, ready">
       <svg className="vo-svg" viewBox="0 0 82 82" aria-hidden="true">
-        <circle className="ring-outer" cx="41" cy="41" r="30" stroke="#1A3B52" strokeWidth="1.4" fill="none" opacity="0.3"/>
-        <circle cx="41" cy="41" r="21" stroke="#1A3B52" strokeWidth="1.8" fill="none" opacity="0.55"/>
-        <circle cx="41" cy="41" r="12" stroke="#1A3B52" strokeWidth="2.2" fill="none" opacity="0.85"/>
-        <circle cx="41" cy="41" r="4" fill="#1A3B52"/>
+        <circle className="ring-outer" cx="41" cy="41" r="30" stroke="currentColor" strokeWidth="1.4" fill="none" opacity="0.3"/>
+        <circle cx="41" cy="41" r="21" stroke="currentColor" strokeWidth="1.8" fill="none" opacity="0.55"/>
+        <circle cx="41" cy="41" r="12" stroke="currentColor" strokeWidth="2.2" fill="none" opacity="0.85"/>
+        <circle cx="41" cy="41" r="4" fill="currentColor"/>
       </svg>
     </div>
   );
@@ -50,11 +50,11 @@ function VoiceOrbListen({ className = '' }: { className?: string }) {
   return (
     <div className={`vo vo-listen ${className}`} role="img" aria-label="Fathom, listening">
       <svg className="vo-svg" viewBox="0 0 82 82" aria-hidden="true">
-        <circle className="ring-a" cx="41" cy="41" r="12" stroke="#1A3B52" strokeWidth="2.6" fill="none"/>
-        <circle className="ring-b" cx="41" cy="41" r="12" stroke="#1A3B52" strokeWidth="2.6" fill="none"/>
-        <circle className="ring-c" cx="41" cy="41" r="12" stroke="#1A3B52" strokeWidth="2.6" fill="none"/>
-        <circle cx="41" cy="41" r="10" stroke="#1A3B52" strokeWidth="2.2" fill="none"/>
-        <circle cx="41" cy="41" r="5" fill="#1A3B52"/>
+        <circle className="ring-a" cx="41" cy="41" r="12" stroke="currentColor" strokeWidth="2.6" fill="none"/>
+        <circle className="ring-b" cx="41" cy="41" r="12" stroke="currentColor" strokeWidth="2.6" fill="none"/>
+        <circle className="ring-c" cx="41" cy="41" r="12" stroke="currentColor" strokeWidth="2.6" fill="none"/>
+        <circle cx="41" cy="41" r="10" stroke="currentColor" strokeWidth="2.2" fill="none"/>
+        <circle cx="41" cy="41" r="5" fill="currentColor"/>
       </svg>
     </div>
   );
@@ -319,10 +319,10 @@ export function FathomLanding() {
                   </div>
                   <div className="home-brand">
                     <svg className="home-mark" viewBox="0 0 40 40" aria-hidden="true">
-                      <circle cx="20" cy="20" r="2.6" fill="#0E1013"/>
-                      <circle cx="20" cy="20" r="6" fill="none" stroke="#0E1013" strokeWidth="1.2"/>
-                      <circle cx="20" cy="20" r="10" fill="none" stroke="#0E1013" strokeWidth="1.2" opacity=".65"/>
-                      <circle cx="20" cy="20" r="14" fill="none" stroke="#0E1013" strokeWidth="1.1" opacity=".35"/>
+                      <circle cx="20" cy="20" r="2.6" fill="currentColor"/>
+                      <circle cx="20" cy="20" r="6" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+                      <circle cx="20" cy="20" r="10" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".65"/>
+                      <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="1.1" opacity=".35"/>
                     </svg>
                     <span className="home-word">fathom</span>
                   </div>
@@ -600,7 +600,7 @@ export function FathomLanding() {
                 </div>
                 <div className="live-actions">
                   <button className="live-complete">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#1A3B52" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
                     <span>Mark Complete</span>
                   </button>
                   <button className="live-end">End Session</button>
@@ -616,7 +616,7 @@ export function FathomLanding() {
         {/* Scrolly Steps */}
         <div className="scrolly-steps">
           <div className="step is-visible" data-step="home">
-            <MobilePhone><div className="screen screen-home" style={{opacity:1,transform:'none'}}><IosStatus time="7:03"/><div className="screen-pad"><div className="home-topbar"><span className="pill-ai"><span className="pill-ai-dot"/>AI Enabled</span><span className="link-navy">Lookout</span></div><div className="home-brand"><svg className="home-mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="2.6" fill="#0E1013"/><circle cx="20" cy="20" r="6" fill="none" stroke="#0E1013" strokeWidth="1.2"/><circle cx="20" cy="20" r="10" fill="none" stroke="#0E1013" strokeWidth="1.2" opacity=".65"/><circle cx="20" cy="20" r="14" fill="none" stroke="#0E1013" strokeWidth="1.1" opacity=".35"/></svg><span className="home-word">fathom</span></div><p className="home-tag">Your AI-powered guide to the world around you</p><button className="home-snapshot"><span className="snap-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h3l2-2h6l2 2h3v12H4z"/><circle cx="12" cy="13" r="3.2"/></svg></span><span className="snap-text"><span className="snap-title">Snapshot</span><span className="snap-sub">Quick scan of your surroundings</span></span></button><div className="home-list"><div className="home-row"><span className="row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg></span><span className="row-text"><span className="row-title">Lookout</span><span className="row-sub">Continuous awareness</span></span><span className="row-chev">&rsaquo;</span></div><div className="home-row"><span className="row-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4 4 11l7 2 2 7z" opacity=".95"/></svg></span><span className="row-text"><span className="row-title">Go</span><span className="row-sub">Navigate to a destination</span></span><span className="row-chev">&rsaquo;</span></div><div className="home-row"><span className="row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="6" cy="7" r="2.4"/><path d="M5 13h2"/><circle cx="6" cy="17" r="2.4"/><path d="M11 7h10M11 17h10"/></svg></span><span className="row-text"><span className="row-title">Task</span><span className="row-sub">Step-by-step guidance</span></span><span className="row-chev">&rsaquo;</span></div></div></div><TabBar active="home"/></div></MobilePhone>
+            <MobilePhone><div className="screen screen-home" style={{opacity:1,transform:'none'}}><IosStatus time="7:03"/><div className="screen-pad"><div className="home-topbar"><span className="pill-ai"><span className="pill-ai-dot"/>AI Enabled</span><span className="link-navy">Lookout</span></div><div className="home-brand"><svg className="home-mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="2.6" fill="currentColor"/><circle cx="20" cy="20" r="6" fill="none" stroke="currentColor" strokeWidth="1.2"/><circle cx="20" cy="20" r="10" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".65"/><circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="1.1" opacity=".35"/></svg><span className="home-word">fathom</span></div><p className="home-tag">Your AI-powered guide to the world around you</p><button className="home-snapshot"><span className="snap-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h3l2-2h6l2 2h3v12H4z"/><circle cx="12" cy="13" r="3.2"/></svg></span><span className="snap-text"><span className="snap-title">Snapshot</span><span className="snap-sub">Quick scan of your surroundings</span></span></button><div className="home-list"><div className="home-row"><span className="row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg></span><span className="row-text"><span className="row-title">Lookout</span><span className="row-sub">Continuous awareness</span></span><span className="row-chev">&rsaquo;</span></div><div className="home-row"><span className="row-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4 4 11l7 2 2 7z" opacity=".95"/></svg></span><span className="row-text"><span className="row-title">Go</span><span className="row-sub">Navigate to a destination</span></span><span className="row-chev">&rsaquo;</span></div><div className="home-row"><span className="row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="6" cy="7" r="2.4"/><path d="M5 13h2"/><circle cx="6" cy="17" r="2.4"/><path d="M11 7h10M11 17h10"/></svg></span><span className="row-text"><span className="row-title">Task</span><span className="row-sub">Step-by-step guidance</span></span><span className="row-chev">&rsaquo;</span></div></div></div><TabBar active="home"/></div></MobilePhone>
             <p className="eyebrow">Home</p>
             <h2>Four modes.<br/><span className="muted">One calm surface.</span></h2>
             <p className="step-body">Fathom opens on a single screen with everything a step away. Snapshot for a quick look. Lookout for ongoing awareness. Go for navigating to a place. Task for step-by-step help with what you&apos;re doing.</p>
@@ -671,7 +671,7 @@ export function FathomLanding() {
             <p className="step-whisper">On-device depth sensing and AI vision, together.</p>
           </div>
           <div className="step" data-step="live">
-            <MobilePhone><div className="screen screen-live" style={{opacity:1,transform:'none'}}><IosStatus/><div className="screen-pad live-pad"><div className="live-topbar"><span className="pill-dot"><span className="pill-dot-dot"/>Connected</span><span className="pill-task">TASK</span></div><div className="live-stage"><h3 className="live-title">Folding my laundry</h3><div className="live-mic"><VoiceOrbListen className="live-voice-orb"/></div><p className="live-listen">Listening...</p></div></div><div className="live-actions"><button className="live-complete"><svg viewBox="0 0 24 24" fill="none" stroke="#1A3B52" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span>Mark Complete</span></button><button className="live-end">End Session</button></div></div></MobilePhone>
+            <MobilePhone><div className="screen screen-live" style={{opacity:1,transform:'none'}}><IosStatus/><div className="screen-pad live-pad"><div className="live-topbar"><span className="pill-dot"><span className="pill-dot-dot"/>Connected</span><span className="pill-task">TASK</span></div><div className="live-stage"><h3 className="live-title">Folding my laundry</h3><div className="live-mic"><VoiceOrbListen className="live-voice-orb"/></div><p className="live-listen">Listening...</p></div></div><div className="live-actions"><button className="live-complete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span>Mark Complete</span></button><button className="live-end">End Session</button></div></div></MobilePhone>
             <p className="eyebrow">Task</p>
             <h2>A real-time companion<br/><span className="muted">for the task at hand.</span></h2>
             <p className="step-body">Folding laundry. Finding the milk. Sorting paperwork. Walking through a kiosk. Tell Fathom what you&apos;re doing and it becomes a two-way conversation: you speak, Fathom answers based on what&apos;s actually in front of you. Not canned instructions. It sees what you see and responds at the speed of your hands.</p>
