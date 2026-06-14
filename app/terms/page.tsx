@@ -10,7 +10,7 @@ export default function TermsPage() {
   return (
     <Section labelledBy="tos-h" className="[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_p]:mt-3 [&_p]:text-[var(--text-secondary)] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-[var(--text-secondary)]">
       <h1 id="tos-h" className="font-display text-5xl">Terms</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: March 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: June 2026</p>
 
       <h2>Acceptance</h2>
       <p>Fathom is operated by Unruly Vision, LLC (&quot;we&quot;). Using Fathom means you agree to these terms. If you don&apos;t, don&apos;t use the app.</p>
@@ -22,7 +22,7 @@ export default function TermsPage() {
       <p>We give you a personal, non-transferable license to use Fathom on devices you own or control, for your own use, subject to these terms and the App Store terms.</p>
 
       <h2>Subscriptions and billing</h2>
-      <p>Some features require a subscription. If you signed up during early access, your founding-member pricing carries forward. Subscriptions bill through your Apple account, renew automatically unless you cancel, and you can manage them in your Apple account settings. Prices are shown before you purchase.</p>
+      <p>Some features require Fathom Plus, an auto-renewing monthly subscription. New subscribers get a free trial; after the trial it renews at the price shown before you purchase, until you cancel. The on-device safety net, Lookout, and Snapshot don&apos;t require a subscription. Subscriptions bill through your Apple account, and you can manage or cancel them in your Apple account settings.</p>
 
       <h2>Acceptable use</h2>
       <ul>

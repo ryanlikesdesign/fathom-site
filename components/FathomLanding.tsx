@@ -733,7 +733,7 @@ export function FathomLanding() {
             <ul className="signup-points" role="list">
               <li><span className="tick" aria-hidden="true" />TestFlight invite in the next wave</li>
               <li><span className="tick" aria-hidden="true" />Direct line to the team</li>
-              <li><span className="tick" aria-hidden="true" />Founding-member pricing, for life</li>
+              <li><span className="tick" aria-hidden="true" />First to try new features</li>
             </ul>
             <div className="press-line">
               <p><strong>Press or media?</strong> Drop us a line at <a href="mailto:support@fathomvision.app">support@fathomvision.app</a> &mdash; press kit on request.</p>
