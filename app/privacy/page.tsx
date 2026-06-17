@@ -34,11 +34,12 @@ export default function PrivacyPage() {
       </p>
       <p>
         <strong>Camera and microphone.</strong>{" "}To describe your surroundings and help with tasks,
-        Fathom sends camera images, and during voice features your audio, through Fathom&apos;s own
-        secure backend to Google&apos;s Gemini AI for processing. This happens in real time to answer
-        your request. The images and recordings are processed and then discarded; they are not stored
-        by Fathom or its backend. The connection is encrypted over HTTPS. You can also use Fathom in
-        an on-device mode that sends nothing to the cloud.
+        Fathom sends images from your camera through Fathom&apos;s own secure backend to Google&apos;s
+        Gemini AI for processing. When you use voice features, your speech is turned into text on your
+        device, and only that text is sent — your microphone audio never leaves your phone. This
+        happens in real time to answer your request. The images and text are processed and then
+        discarded; they are not stored by Fathom or its backend. The connection is encrypted over
+        HTTPS. You can also use Fathom in an on-device mode that sends nothing to the cloud.
       </p>
       <p>
         <strong>Anonymous usage data.</strong>{" "}To understand how Fathom is used and to fix problems,
@@ -54,8 +55,8 @@ export default function PrivacyPage() {
 
       <h2>Who we share data with</h2>
       <ul>
-        <li><strong>Google (Gemini AI)</strong> processes camera and audio in real time to generate descriptions and guidance.</li>
-        <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and audio pass through it in real time and are not stored.</li>
+        <li><strong>Google (Gemini AI)</strong> processes camera images and text in real time to generate descriptions and guidance.</li>
+        <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and text pass through it in real time and are not stored.</li>
         <li><strong>PostHog</strong> receives anonymous usage and diagnostic data.</li>
         <li><strong>Apple</strong> handles App Store purchases.</li>
       </ul>
@@ -63,7 +64,7 @@ export default function PrivacyPage() {
 
       <h2>How long we keep it</h2>
       <p>
-        Camera images and audio sent for processing are not stored by Fathom or its backend.
+        Camera images and text sent for processing are not stored by Fathom or its backend.
         Anonymous analytics are kept only as long as needed to improve the app. Anything you save in
         the app stays on your device until you delete it or remove the app.
       </p>
@@ -71,7 +72,7 @@ export default function PrivacyPage() {
       <h2>Your choices</h2>
       <ul>
         <li>You can turn off analytics any time in Settings.</li>
-        <li>You can use Fathom&apos;s on-device mode to keep camera and audio off the cloud.</li>
+        <li>You can use Fathom&apos;s on-device mode, which sends nothing to the cloud.</li>
         <li>You can clear anything you&apos;ve saved in the app by deleting it or removing the app.</li>
       </ul>
       <p>
