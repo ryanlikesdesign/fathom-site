@@ -3,6 +3,23 @@
 import { useEffect, useRef } from 'react';
 import './fathom-landing.css';
 
+const APP_STORE_URL = 'https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183';
+
+function AppStoreBadge() {
+  return (
+    <svg viewBox="0 0 156 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="appstore-badge-svg">
+      <rect width="156" height="52" rx="8" fill="black"/>
+      <rect x="0.5" y="0.5" width="155" height="51" rx="7.5" stroke="white" strokeOpacity="0.2"/>
+      {/* Apple logo */}
+      <path d="M27.5 26.5c-.03-3.3 2.7-4.9 2.82-4.97-1.54-2.25-3.93-2.56-4.78-2.6-2.03-.21-3.97 1.2-5 1.2-1.03 0-2.61-1.17-4.3-1.14-2.2.03-4.23 1.29-5.36 3.26-2.3 3.98-.59 9.87 1.64 13.1 1.1 1.58 2.4 3.35 4.1 3.28 1.65-.06 2.27-1.06 4.27-1.06 2 0 2.56 1.06 4.32 1.02 1.78-.03 2.9-1.61 3.98-3.2 1.25-1.83 1.77-3.6 1.8-3.69-.04-.02-3.47-1.33-3.5-5.28z" fill="white"/>
+      <path d="M24.24 16.95c.91-1.1 1.52-2.64 1.35-4.17-1.3.05-2.88.87-3.82 1.96-.84.97-1.57 2.53-1.38 4.02 1.45.11 2.93-.74 3.85-1.81z" fill="white"/>
+      {/* Text lines */}
+      <text x="39" y="23" fill="white" style={{fontSize:'11px',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",Helvetica,Arial,sans-serif',fontWeight:400,letterSpacing:'0.4px'}}>Download on the</text>
+      <text x="38" y="39" fill="white" style={{fontSize:'20px',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Display",Helvetica,Arial,sans-serif',fontWeight:500,letterSpacing:'-0.3px'}}>App Store</text>
+    </svg>
+  );
+}
+
 // ── iOS Status Bar SVG (shared across all screens) ───────────────
 function IosStatus({ time = '9:41' }: { time?: string }) {
   return (
@@ -101,9 +118,6 @@ function MobilePhone({ children }: { children: React.ReactNode }) {
 // ── Main Component ───────────────────────────────────────────────
 export function FathomLanding() {
   const progressRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const successRef = useRef<HTMLDivElement>(null);
-  const errorRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     // Scroll progress
@@ -187,62 +201,6 @@ export function FathomLanding() {
     };
   }, []);
 
-  // Form submission
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const form = formRef.current;
-    const success = successRef.current;
-    const errorEl = errorRef.current;
-    if (!form || !success) return;
-
-    // Hide any previous error
-    if (errorEl) errorEl.hidden = true;
-
-    const data = new FormData(form);
-    const email = String(data.get('email') || '').trim();
-    const name = String(data.get('name') || '').trim();
-
-    if (!name) { form.querySelector<HTMLInputElement>('#fname')?.focus(); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { form.querySelector<HTMLInputElement>('#femail')?.focus(); return; }
-
-    const payload = {
-      formType: 'early-access' as const,
-      name,
-      email,
-      role: String(data.get('role') || ''),
-      story: String(data.get('story') || ''),
-      company: String(data.get('company') || ''),
-    };
-
-    let res: Response;
-    try {
-      res = await fetch('/api/submit', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } catch {
-      if (errorEl) errorEl.hidden = false;
-      return;
-    }
-
-    if (res.ok) {
-      const nameEl = success.querySelector('#successName');
-      const emailEl = success.querySelector('#successEmail');
-      if (nameEl) nameEl.textContent = name.split(' ')[0] || 'friend';
-      if (emailEl) emailEl.textContent = email;
-      success.hidden = false;
-
-      form.querySelectorAll('.field, .btn-submit, .form-privacy').forEach((el) => {
-        (el as HTMLElement).style.display = 'none';
-      });
-      success.setAttribute('tabindex', '-1');
-      success.focus();
-    } else {
-      if (errorEl) errorEl.hidden = false;
-    }
-  }
-
   return (
     <div className="fathom-root">
       <div className="progress-rail" aria-hidden="true">
@@ -256,7 +214,7 @@ export function FathomLanding() {
           <span className="ripple r1" /><span className="ripple r2" /><span className="ripple r3" /><span className="ripple r4" />
         </div>
         <div className="hero-inner">
-          <p className="eyebrow hero-eyebrow">Coming summer 2026</p>
+          <p className="eyebrow hero-eyebrow">Now on the App Store</p>
           <h1 className="hero-title">
             <span className="line-a">Navigate any</span>
             <span className="line-b">building.</span>
@@ -269,7 +227,9 @@ export function FathomLanding() {
             no setup.
           </p>
           <div className="hero-actions">
-            <a href="#signup" className="btn btn-primary">Request early access</a>
+            <a href={APP_STORE_URL} className="appstore-badge-link" target="_blank" rel="noopener noreferrer" aria-label="Download Fathom on the App Store">
+              <AppStoreBadge />
+            </a>
             <a href="#problem" className="btn btn-ghost">
               <span>See what it does</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
@@ -723,67 +683,35 @@ export function FathomLanding() {
         </div>
       </section>
 
-      {/* ── Signup ────────────────────────────────────────── */}
-      <section className="signup" id="signup" aria-labelledby="signup-title">
+      {/* ── Download ──────────────────────────────────────── */}
+      <section className="signup" id="download" aria-labelledby="download-title">
         <div className="signup-inner">
           <div className="signup-left">
-            <p className="eyebrow">Early access</p>
-            <h2 id="signup-title" className="h-display">Get Fathom early.</h2>
-            <p className="signup-lede">Fathom hits the App Store in summer 2026. We&apos;re onboarding in small waves so we can answer every message personally. Tell us who you are &mdash; a person will write back.</p>
+            <p className="eyebrow">Available now</p>
+            <h2 id="download-title" className="h-display">Download Fathom free.</h2>
+            <p className="signup-lede">Fathom is on the App Store. Free to download, no account needed &mdash; just install and go.</p>
             <ul className="signup-points" role="list">
-              <li><span className="tick" aria-hidden="true" />TestFlight invite in the next wave</li>
-              <li><span className="tick" aria-hidden="true" />Direct line to the team</li>
-              <li><span className="tick" aria-hidden="true" />First to try new features</li>
+              <li><span className="tick" aria-hidden="true" />Free download</li>
+              <li><span className="tick" aria-hidden="true" />Works with VoiceOver</li>
+              <li><span className="tick" aria-hidden="true" />iPhone, iOS 17 or later</li>
             </ul>
             <div className="press-line">
               <p><strong>Press or media?</strong> Drop us a line at <a href="mailto:support@fathomvision.app">support@fathomvision.app</a> &mdash; press kit on request.</p>
             </div>
           </div>
 
-          <form className="signup-form" ref={formRef} noValidate onSubmit={handleSubmit}>
-            {/* Honeypot — off-screen, never filled by real users */}
-            <div aria-hidden="true" style={{position:'absolute',left:'-9999px',width:'1px',height:'1px',overflow:'hidden'}}>
-              <input type="text" name="company" tabIndex={-1} autoComplete="off" />
-            </div>
-            <div className="field">
-              <label htmlFor="fname">Your name</label>
-              <input id="fname" name="name" type="text" autoComplete="name" required />
-            </div>
-            <div className="field">
-              <label htmlFor="femail">Email</label>
-              <input id="femail" name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
-              <p className="field-help">We only use this to get you into the beta.</p>
-            </div>
-            <fieldset className="field field-choice">
-              <legend>Who are you?</legend>
-              <div className="choices">
-                <label className="choice"><input type="radio" name="role" value="user" defaultChecked /><span><strong>User</strong><small>I&apos;m blind or low-vision and want to try Fathom.</small></span></label>
-                <label className="choice"><input type="radio" name="role" value="helper" /><span><strong>Family or helper</strong><small>I&apos;m requesting on behalf of someone.</small></span></label>
-                <label className="choice"><input type="radio" name="role" value="clinician" /><span><strong>Clinician or OT</strong><small>I work with patients or clients who&apos;d benefit.</small></span></label>
-                <label className="choice"><input type="radio" name="role" value="agency" /><span><strong>Agency</strong><small>Accessibility org, advocacy group, or government service.</small></span></label>
-                <label className="choice"><input type="radio" name="role" value="press" /><span><strong>Press</strong><small>I&apos;m a journalist or media contact.</small></span></label>
-              </div>
-            </fieldset>
-            <div className="field">
-              <label htmlFor="fstory">What are you hoping Fathom can help with? <span className="optional">(optional)</span></label>
-              <textarea id="fstory" name="story" rows={3} placeholder="A new building, a routine task, a partnership&hellip;" />
-            </div>
-            <button type="submit" className="btn btn-primary btn-submit">
-              <span className="btn-label">Request early access</span>
-              <span className="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-            </button>
-            <p className="form-privacy">We read every request. We never share your email.</p>
-            <p className="form-error" role="alert" ref={errorRef} hidden style={{color:'var(--fg)',fontSize:'14px',margin:'0',padding:'12px 16px',background:'color-mix(in oklab,#B24840 16%,var(--bg-raised))',borderRadius:'var(--radius-sm)',border:'1px solid color-mix(in oklab,#B24840 40%,transparent)'}}>
-              Something went wrong. Please try again or email us at <a href="mailto:support@fathomvision.app">support@fathomvision.app</a>.
-            </p>
-            <div className="form-success" ref={successRef} role="status" aria-live="polite" hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
-              <div>
-                <p className="success-title">Got it, <span id="successName">friend</span>.</p>
-                <p className="success-body">A note is on its way to <span id="successEmail">your inbox</span>. Look for a reply from a person.</p>
-              </div>
-            </div>
-          </form>
+          <div className="download-card">
+            <a
+              href={APP_STORE_URL}
+              className="appstore-badge-link appstore-badge-lg"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Download Fathom on the App Store"
+            >
+              <AppStoreBadge />
+            </a>
+            <p className="download-note">Free &middot; iPhone &middot; iOS&nbsp;17+</p>
+          </div>
         </div>
       </section>
     </div>

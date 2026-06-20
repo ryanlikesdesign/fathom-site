@@ -48,8 +48,8 @@ export function Header() {
               {n.label}
             </Link>
           ))}
-          <Link href="/#signup" className="nav-cta">
-            Request early access
+          <Link href="https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183" className="nav-cta" target="_blank" rel="noopener noreferrer">
+            Download free
           </Link>
         </nav>
         <ThemeToggle />
@@ -82,8 +82,8 @@ export function Header() {
             {n.label}
           </Link>
         ))}
-        <Link href="/#signup" className="nav-cta" onClick={() => setOpen(false)}>
-          Request early access
+        <Link href="https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183" className="nav-cta" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
+          Download free
         </Link>
       </div>
     </>
