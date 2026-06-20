@@ -104,7 +104,7 @@ a{color:inherit;text-decoration:none}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
 .hero-lede{max-width:640px;font-size:clamp(18px,1.6vw,22px);color:var(--fg-secondary);line-height:1.5;margin:0 0 40px;text-wrap:pretty}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 .hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--fg-muted);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--fg-muted),transparent);animation:scrollPulse 2.4s ease-in-out infinite}
@@ -681,7 +681,7 @@ a{color:inherit;text-decoration:none}
 .press-line a{color:var(--accent-signal);border-bottom:1px solid currentColor}
 
 /* ── App Store badge ─────────────────────────────────────────── */
-.appstore-badge-link{display:inline-block;text-decoration:none;line-height:0;border-radius:9px;transition:opacity 160ms,transform 160ms}
+.appstore-badge-link{display:inline-flex;align-items:center;text-decoration:none;line-height:0;border-radius:9px;height:52px;transition:opacity 160ms,transform 160ms}
 .appstore-badge-link:hover{opacity:.82;transform:translateY(-1px)}
 .appstore-badge-link:focus-visible{outline:2px solid var(--accent-signal);outline-offset:3px}
 .appstore-badge-svg{width:156px;height:52px;display:block}
