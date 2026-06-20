@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Section } from "@/components/Section";
 
 export const metadata: Metadata = {
-  title: "Terms — Fathom",
+  title: "Terms",
   description: "The terms for using the Fathom app.",
 };
 

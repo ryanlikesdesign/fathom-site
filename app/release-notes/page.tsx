@@ -4,8 +4,8 @@ import { Surface } from "@/components/Surface";
 import { RELEASES } from "@/lib/releases";
 
 export const metadata: Metadata = {
-  title: "Release notes — Fathom",
-  description: "What's new, improved, and fixed in each version of Fathom.",
+  title: "Release notes",
+  description: "What's new, improved, and fixed in each version of Fathom — the AI navigation app for blind and low-vision iPhone users.",
 };
 
 function Group({ label, items }: { label: string; items?: string[] }) {

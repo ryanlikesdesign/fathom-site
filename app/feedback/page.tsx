@@ -3,7 +3,7 @@ import { Section } from "@/components/Section";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Feedback — Fathom",
+  title: "Feedback",
   description: "Found a bug or have an idea? Tell us. Every message is read.",
 };
 

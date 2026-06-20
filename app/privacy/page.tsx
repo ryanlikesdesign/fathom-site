@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Section } from "@/components/Section";
 
 export const metadata: Metadata = {
-  title: "Privacy — Fathom",
+  title: "Privacy",
   description:
     "How Fathom handles camera, microphone, and anonymous usage data. Fathom works on your device, needs no account, doesn't track you, and never sells your data.",
 };

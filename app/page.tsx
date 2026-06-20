@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FathomLanding } from "@/components/FathomLanding";
 
 export const metadata: Metadata = {
-  title: "Fathom — Navigate any building. Your first time in.",
+  title: "Fathom — AI Navigation for Blind & Low-Vision iPhone Users",
   description:
-    "Fathom is an AI companion for blind and low-vision people. It sees what's ahead, guides you where you're going, and helps you do what you came for — using just your iPhone. No maps, no beacons, no setup.",
+    "Free iPhone app for blind and low-vision users. AI describes what's ahead, guides you through indoor spaces, and helps with tasks. No maps, beacons, or setup.",
 };
 
 export default function Home() {
