@@ -11,8 +11,6 @@ interface Payload {
   category?: string;
   message?: string;
   company?: string; // honeypot — real users never fill this
-  role?: string;
-  story?: string;
 }
 
 export async function POST(request: Request) {
@@ -40,25 +38,14 @@ export async function POST(request: Request) {
   }
 
   const from = process.env.FROM_EMAIL ?? "Fathom <support@fathomvision.app>";
-  const isFeedback = body.formType === "feedback";
-  const subject = isFeedback
-    ? `Fathom feedback${body.category ? ` — ${body.category}` : ""}`
-    : "Fathom early access request";
-  const text = isFeedback
-    ? [
-        `Category: ${body.category ?? "General"}`,
-        `Name: ${body.name ?? "(none)"}`,
-        `Email: ${body.email ?? "(none)"}`,
-        "",
-        body.message ?? "",
-      ].join("\n")
-    : [
-        `New early access request`,
-        `Name: ${body.name ?? "(none)"}`,
-        `Email: ${body.email}`,
-        `Role: ${body.role ?? "(none)"}`,
-        `Notes: ${body.story ?? "(none)"}`,
-      ].join("\n");
+  const subject = `Fathom feedback${body.category ? ` — ${body.category}` : ""}`;
+  const text = [
+    `Category: ${body.category ?? "General"}`,
+    `Name: ${body.name ?? "(none)"}`,
+    `Email: ${body.email ?? "(none)"}`,
+    "",
+    body.message ?? "",
+  ].join("\n");
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({

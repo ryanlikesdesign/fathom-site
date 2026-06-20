@@ -14,7 +14,7 @@ export function Footer() {
             <h4>Product</h4>
             <Link href="/">Home</Link>
             <Link href="/release-notes">Release notes</Link>
-            <Link href="/#signup">Early access</Link>
+            <a href="https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183" target="_blank" rel="noopener noreferrer">Download free</a>
           </div>
           <div>
             <h4>Help</h4>

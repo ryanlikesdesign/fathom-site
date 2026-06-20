@@ -48,9 +48,7 @@ export function ContactForm({ formType }: { formType: FormType }) {
   if (status === "done") {
     return (
       <p role="status" className="text-lg">
-        {formType === "feedback"
-          ? "Got it — thank you. I read every message."
-          : "You're on the list. I'll be in touch before launch."}
+        Got it — thank you. I read every message.
       </p>
     );
   }
@@ -86,10 +84,7 @@ export function ContactForm({ formType }: { formType: FormType }) {
 
       <div>
         <label htmlFor="field-email" className="block text-sm font-medium">
-          Email{" "}
-          {formType !== "early-access" && (
-            <span className="text-[var(--text-muted)]">(optional)</span>
-          )}
+          Email <span className="text-[var(--text-muted)]">(optional)</span>
         </label>
         <input id="field-email" name="email" type="email" autoComplete="email" maxLength={200}
           aria-invalid={!!errors.email || undefined}
@@ -124,7 +119,7 @@ export function ContactForm({ formType }: { formType: FormType }) {
       {status === "error" && <p role="alert" className="text-sm">Something went wrong. Please try again.</p>}
 
       <Button type="submit" variant="primary" size="xl">
-        {status === "sending" ? "Sending…" : formType === "feedback" ? "Send feedback" : "Request early access"}
+        {status === "sending" ? "Sending…" : "Send feedback"}
       </Button>
     </form>
   );
