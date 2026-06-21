@@ -711,6 +711,7 @@ export function FathomLanding() {
               <AppStoreBadge />
             </a>
             <p className="download-note">Free &middot; iPhone &middot; iOS&nbsp;17+</p>
+            <p className="download-sub">The safety features are free forever &mdash; no subscription, no account.</p>
           </div>
         </div>
       </section>
