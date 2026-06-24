@@ -96,7 +96,7 @@ a{color:inherit;text-decoration:none}
 
 .hero-inner{position:relative;max-width:960px;z-index:2}
 .hero-eyebrow{margin:0 0 28px}
-.hero-title{font-family:var(--font-display);font-size:clamp(44px,7.2vw,108px);font-weight:500;line-height:1.02;letter-spacing:-0.035em;margin:0 0 36px;display:grid}
+.hero-title{font-family:var(--font-display);font-size:clamp(46px,5.6vw,84px);font-weight:500;line-height:1.02;letter-spacing:-0.035em;margin:0 0 36px;display:grid}
 .hero-title .line-c{color:var(--accent-signal)}
 [data-theme='light'] .hero-title .line-c{color:var(--fathom-700)}
 .hero-title span{display:block}
@@ -105,6 +105,19 @@ a{color:inherit;text-decoration:none}
 
 .hero-lede{max-width:640px;font-size:clamp(18px,1.6vw,22px);color:var(--fg-secondary);line-height:1.5;margin:0 0 40px;text-wrap:pretty}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+/* Hero phone — desktop only; peeks in over the sonar animation so the app is visible immediately */
+.hero-phone{display:none}
+@media (min-width:1024px){
+  .hero-phone{
+    display:block;position:absolute;z-index:1;pointer-events:none;
+    top:clamp(92px,14vh,150px);
+    right:clamp(8px,3vw,72px);
+  }
+  .hero-phone .phone{width:clamp(248px,21vw,300px)}
+  /* keep the headline + lede clear of the phone */
+  .hero-inner{max-width:calc(100% - 360px)}
+}
 
 .hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--fg-muted);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--fg-muted),transparent);animation:scrollPulse 2.4s ease-in-out infinite}
@@ -889,7 +902,7 @@ a{color:inherit;text-decoration:none}
 
   /* Hero */
   .hero{padding:100px 20px 60px;min-height:90vh}
-  .hero-title{font-size:clamp(32px,9vw,56px);margin-bottom:24px}
+  .hero-title{font-size:clamp(40px,11vw,60px);margin-bottom:24px}
   .hero-lede{font-size:17px;margin-bottom:32px}
   /* Stack the App Store badge + "See what it does" at even (full) widths */
   .hero-actions{flex-direction:column;gap:10px;width:100%;align-items:stretch}
@@ -951,7 +964,7 @@ a{color:inherit;text-decoration:none}
    MOBILE RESPONSIVE — 375px and below (small phones)
 ================================================================ */
 @media (max-width:375px){
-  .hero-title{font-size:28px}
+  .hero-title{font-size:36px}
   .hero-lede{font-size:16px}
   .problem-inner h2{font-size:26px}
   .step h2{font-size:24px}
@@ -969,7 +982,7 @@ a{color:inherit;text-decoration:none}
 ================================================================ */
 @media (min-width:481px) and (max-width:860px){
   .hero{padding:120px 32px 80px}
-  .hero-title{font-size:clamp(40px,7vw,72px)}
+  .hero-title{font-size:clamp(46px,6.8vw,76px)}
   .scrolly{padding:48px 32px}
   .signup{padding:80px 32px}
   .spectrum-grid{grid-template-columns:repeat(2,1fr)}

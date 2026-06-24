@@ -115,6 +115,58 @@ function MobilePhone({ children }: { children: React.ReactNode }) {
   );
 }
 
+// ── Home screen content (reused: scrolly sticky phone + hero phone) ────────
+function HomeScreen({ active = false }: { active?: boolean }) {
+  return (
+    <div className={`screen screen-home${active ? ' is-active' : ''}`} data-screen="home">
+      <IosStatus time="7:03" />
+      <div className="screen-pad">
+        <div className="home-topbar">
+          <span className="pill-ai"><span className="pill-ai-dot" />AI Enabled</span>
+          <span className="link-navy">Lookout</span>
+        </div>
+        <div className="home-brand">
+          <svg className="home-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="20" r="2.6" fill="currentColor"/>
+            <circle cx="20" cy="20" r="6" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+            <circle cx="20" cy="20" r="10" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".65"/>
+            <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="1.1" opacity=".35"/>
+          </svg>
+          <span className="home-word">fathom</span>
+        </div>
+        <p className="home-tag">Your AI-powered guide to the world around you</p>
+        <button className="home-snapshot">
+          <span className="snap-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h3l2-2h6l2 2h3v12H4z"/><circle cx="12" cy="13" r="3.2"/></svg>
+          </span>
+          <span className="snap-text">
+            <span className="snap-title">Snapshot</span>
+            <span className="snap-sub">Quick scan of your surroundings</span>
+          </span>
+        </button>
+        <div className="home-list">
+          <div className="home-row">
+            <span className="row-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg></span>
+            <span className="row-text"><span className="row-title">Lookout</span><span className="row-sub">Continuous awareness</span></span>
+            <span className="row-chev" aria-hidden="true">&rsaquo;</span>
+          </div>
+          <div className="home-row">
+            <span className="row-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4 4 11l7 2 2 7z" opacity=".95"/></svg></span>
+            <span className="row-text"><span className="row-title">Go</span><span className="row-sub">Navigate to a destination</span></span>
+            <span className="row-chev" aria-hidden="true">&rsaquo;</span>
+          </div>
+          <div className="home-row">
+            <span className="row-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="7" r="2.4"/><path d="M5 13h2"/><circle cx="6" cy="17" r="2.4"/><path d="M5.1 7.4 5.9 8.2 7.3 6.4"/><path d="M11 7h10"/><path d="M11 17h10"/></svg></span>
+            <span className="row-text"><span className="row-title">Task</span><span className="row-sub">Step-by-step guidance</span></span>
+            <span className="row-chev" aria-hidden="true">&rsaquo;</span>
+          </div>
+        </div>
+      </div>
+      <TabBar active="home" />
+    </div>
+  );
+}
+
 // ── Main Component ───────────────────────────────────────────────
 export function FathomLanding() {
   const progressRef = useRef<HTMLDivElement>(null);
@@ -134,7 +186,7 @@ export function FathomLanding() {
     // Scrolly: step activation + screen switching
     const steps = Array.from(document.querySelectorAll('.scrolly .step'));
     const screens: Record<string, HTMLElement> = {};
-    document.querySelectorAll('.phone-screen .screen').forEach((el) => {
+    document.querySelectorAll('.scrolly-sticky .phone-screen .screen').forEach((el) => {
       const key = el.getAttribute('data-screen');
       if (key) screens[key] = el as HTMLElement;
     });
@@ -236,6 +288,14 @@ export function FathomLanding() {
             </a>
           </div>
         </div>
+        <div className="hero-phone" aria-hidden="true">
+          <div className="phone">
+            <div className="phone-screen">
+              <HomeScreen active />
+              <div className="phone-reflect" />
+            </div>
+          </div>
+        </div>
         <div className="hero-scroll-cue" aria-hidden="true">
           <span className="scroll-word">Scroll to explore</span>
           <span className="scroll-line" />
@@ -270,52 +330,7 @@ export function FathomLanding() {
             <div className="phone-screen">
 
               {/* Screen: Home */}
-              <div className="screen screen-home is-active" data-screen="home">
-                <IosStatus time="7:03" />
-                <div className="screen-pad">
-                  <div className="home-topbar">
-                    <span className="pill-ai"><span className="pill-ai-dot" />AI Enabled</span>
-                    <span className="link-navy">Lookout</span>
-                  </div>
-                  <div className="home-brand">
-                    <svg className="home-mark" viewBox="0 0 40 40" aria-hidden="true">
-                      <circle cx="20" cy="20" r="2.6" fill="currentColor"/>
-                      <circle cx="20" cy="20" r="6" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-                      <circle cx="20" cy="20" r="10" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".65"/>
-                      <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="1.1" opacity=".35"/>
-                    </svg>
-                    <span className="home-word">fathom</span>
-                  </div>
-                  <p className="home-tag">Your AI-powered guide to the world around you</p>
-                  <button className="home-snapshot">
-                    <span className="snap-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h3l2-2h6l2 2h3v12H4z"/><circle cx="12" cy="13" r="3.2"/></svg>
-                    </span>
-                    <span className="snap-text">
-                      <span className="snap-title">Snapshot</span>
-                      <span className="snap-sub">Quick scan of your surroundings</span>
-                    </span>
-                  </button>
-                  <div className="home-list">
-                    <div className="home-row">
-                      <span className="row-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg></span>
-                      <span className="row-text"><span className="row-title">Lookout</span><span className="row-sub">Continuous awareness</span></span>
-                      <span className="row-chev" aria-hidden="true">&rsaquo;</span>
-                    </div>
-                    <div className="home-row">
-                      <span className="row-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4 4 11l7 2 2 7z" opacity=".95"/></svg></span>
-                      <span className="row-text"><span className="row-title">Go</span><span className="row-sub">Navigate to a destination</span></span>
-                      <span className="row-chev" aria-hidden="true">&rsaquo;</span>
-                    </div>
-                    <div className="home-row">
-                      <span className="row-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="7" r="2.4"/><path d="M5 13h2"/><circle cx="6" cy="17" r="2.4"/><path d="M5.1 7.4 5.9 8.2 7.3 6.4"/><path d="M11 7h10"/><path d="M11 17h10"/></svg></span>
-                      <span className="row-text"><span className="row-title">Task</span><span className="row-sub">Step-by-step guidance</span></span>
-                      <span className="row-chev" aria-hidden="true">&rsaquo;</span>
-                    </div>
-                  </div>
-                </div>
-                <TabBar active="home" />
-              </div>
+              <HomeScreen active />
 
               {/* Screen: Assistant */}
               <div className="screen screen-assistant" data-screen="assistant">
