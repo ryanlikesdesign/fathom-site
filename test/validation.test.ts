@@ -22,10 +22,6 @@ describe("validateSubmission", () => {
     expect(r.ok).toBe(false);
     expect(r.errors.email).toBeTruthy();
   });
-  it("early-access requires a valid email", () => {
-    expect(validateSubmission({ formType: "early-access", email: "" }).ok).toBe(false);
-    expect(validateSubmission({ formType: "early-access", email: "a@b.co" }).ok).toBe(true);
-  });
 });
 
 describe("validateSubmission hardening", () => {

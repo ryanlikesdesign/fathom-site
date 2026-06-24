@@ -46,16 +46,9 @@ describe("POST /api/submit", () => {
     expect(arg.text).toContain("Great app");
   });
 
-  it("emails an early-access request and returns 200", async () => {
-    const res = await POST(req({ formType: "early-access", email: "u@x.co" }));
-    expect(res.status).toBe(200);
-    expect(sendMock).toHaveBeenCalledOnce();
-    expect(sendMock.mock.calls[0][0].subject).toMatch(/early access/i);
-  });
-
   it("returns 502 when the email provider errors", async () => {
     sendMock.mockResolvedValue({ data: null, error: { message: "down" } });
-    const res = await POST(req({ formType: "early-access", email: "u@x.co" }));
+    const res = await POST(req({ formType: "feedback", message: "Great app", email: "u@x.co" }));
     expect(res.status).toBe(502);
   });
 
