@@ -36,10 +36,13 @@ export default function PrivacyPage() {
         <strong>Camera and microphone.</strong>{" "}To describe your surroundings and help with tasks,
         Fathom sends images from your camera through Fathom&apos;s own secure backend to Google&apos;s
         Gemini AI for processing. When you use voice features, your speech is turned into text on your
-        device, and only that text is sent — your microphone audio never leaves your phone. This
-        happens in real time to answer your request. The images and text are processed and then
-        discarded; they are not stored by Fathom or its backend. The connection is encrypted over
-        HTTPS. You can also use Fathom in an on-device mode that sends nothing to the cloud.
+        device, and only that text is sent. The one exception is a Live Task conversation: while the
+        microphone button is on, your voice is streamed over an encrypted connection to Gemini so the
+        AI can hear your question directly — the microphone stops streaming the moment the button is
+        off, and no voice is ever sent outside of that. This happens in real time to answer your
+        request. The images, text, and audio are processed and then discarded; they are not stored by
+        Fathom or its backend. All connections are encrypted. You can also use Fathom in an on-device
+        mode that sends nothing to the cloud.
       </p>
       <p>
         <strong>Anonymous usage data.</strong>{" "}To understand how Fathom is used and to fix problems,
@@ -56,7 +59,7 @@ export default function PrivacyPage() {
 
       <h2>Who we share data with</h2>
       <ul>
-        <li><strong>Google (Gemini AI)</strong> processes camera images and text in real time to generate descriptions and guidance.</li>
+        <li><strong>Google (Gemini AI)</strong> processes camera images, text, and — in Live Task, while the microphone button is on — voice audio in real time to generate descriptions and guidance.</li>
         <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and text pass through it in real time and are not stored.</li>
         <li><strong>PostHog</strong> receives anonymous usage and diagnostic data.</li>
         <li><strong>Apple</strong> handles App Store purchases.</li>
