@@ -14,7 +14,7 @@ export default function PrivacyPage() {
       className="[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_p]:mt-3 [&_p]:text-[var(--text-secondary)] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-[var(--text-secondary)] [&_li]:mt-1"
     >
       <h1 id="pp-h" className="font-display text-5xl">Privacy Policy</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: June 13, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: July 1, 2026</p>
 
       <p>
         Fathom is made by Unruly Vision, LLC. This policy explains what Fathom collects, why, and
@@ -43,10 +43,11 @@ export default function PrivacyPage() {
       </p>
       <p>
         <strong>Anonymous usage data.</strong>{" "}To understand how Fathom is used and to fix problems,
-        we collect anonymous analytics through PostHog: which features are used, app performance, and
-        crash reports. This is tied to a random identifier created on your device, not to you
-        personally. Any session recordings have all text and images masked. We do not use an
-        advertising identifier, and we do not track you across other apps or websites.
+        we collect anonymous analytics through PostHog: which features are used, app performance,
+        crash reports, and screen recordings of how the app is used, which can include text and other
+        content shown on screen. This is tied to a random identifier created on your device, not to
+        you personally. We do not use an advertising identifier, and we do not track you across other
+        apps or websites.
       </p>
       <p>
         <strong>Purchases.</strong>{" "}Subscriptions are handled by Apple through the App Store. We do
