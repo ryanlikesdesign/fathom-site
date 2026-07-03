@@ -53,15 +53,26 @@ describe("PromoGate", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(/isn't right/i);
   });
 
-  it("unlocks with the correct password and shows both offers", async () => {
-    render(<PromoGate />);
+  it("unlocks and shows both offers as tabs, switching panels on click", async () => {
+    const { container } = render(<PromoGate />);
     await userEvent.type(screen.getByLabelText(/your name/i), "Ada");
     await userEvent.type(await screen.findByLabelText(/access password/i), "fathom-crew");
     await userEvent.click(screen.getByRole("button", { name: /open the codes/i }));
 
-    expect(await screen.findByRole("heading", { name: /3 months free/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /1 year free/i })).toBeInTheDocument();
+    // Both offers are tabs; the first is selected and its panel heading shows.
+    const yearTab = await screen.findByRole("tab", { name: /1 year free/i });
+    expect(screen.getByRole("tab", { name: /3 months free/i })).toHaveAttribute("aria-selected", "true");
+    expect(yearTab).toHaveAttribute("aria-selected", "false");
+    expect(screen.getByRole("heading", { name: /3 months free/i })).toBeInTheDocument();
+    // The hidden panel's heading is out of the a11y tree until its tab is chosen.
+    expect(screen.queryByRole("heading", { name: /1 year free/i })).not.toBeInTheDocument();
+
+    await userEvent.click(yearTab);
+    expect(yearTab).toHaveAttribute("aria-selected", "true");
+    expect(await screen.findByRole("heading", { name: /1 year free/i })).toBeInTheDocument();
+
     expect(screen.getByText(/sharing as/i)).toHaveTextContent("Ada");
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
 

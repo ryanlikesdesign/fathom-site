@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import posthog from "posthog-js";
 import { PROMO_TIERS, type PromoTier } from "@/lib/promo";
 import { qrShape } from "@/lib/qr";
@@ -27,6 +27,23 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
     },
     [shared, setSharedRaw],
   );
+
+  // Tabs — one offer visible at a time so there's nothing to scroll past.
+  const [active, setActive] = useState(0);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  function onTabKeyDown(e: React.KeyboardEvent) {
+    const last = PROMO_TIERS.length - 1;
+    let next = active;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = active === last ? 0 : active + 1;
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = active === 0 ? last : active - 1;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = last;
+    else return;
+    e.preventDefault();
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  }
 
   return (
     <div className="mt-8">
@@ -69,18 +86,54 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
         </div>
       </details>
 
-      <div className="mt-8 space-y-10">
-        {PROMO_TIERS.map((tier) => (
-          <TierSpotlight
+      <div
+        role="tablist"
+        aria-label="Choose an offer to share"
+        className="mt-8 flex w-full gap-1 rounded-[var(--radius-full)] border bg-[var(--bg-raised)] p-1"
+      >
+        {PROMO_TIERS.map((tier, i) => (
+          <button
             key={tier.id}
+            ref={(el) => {
+              tabRefs.current[i] = el;
+            }}
+            role="tab"
+            id={`tab-${tier.id}`}
+            aria-selected={active === i}
+            aria-controls={`panel-${tier.id}`}
+            tabIndex={active === i ? 0 : -1}
+            onClick={() => setActive(i)}
+            onKeyDown={onTabKeyDown}
+            className={`flex-1 whitespace-nowrap rounded-[var(--radius-full)] px-4 py-2.5 text-sm font-medium transition-colors sm:text-base ${
+              active === i
+                ? "bg-[var(--text-primary)] text-[var(--bg)]"
+                : "text-[var(--text-secondary)]"
+            }`}
+            style={{ transitionDuration: "var(--dur)" }}
+          >
+            {tier.name}
+          </button>
+        ))}
+      </div>
+
+      {PROMO_TIERS.map((tier, i) => (
+        <div
+          key={tier.id}
+          role="tabpanel"
+          id={`panel-${tier.id}`}
+          aria-labelledby={`tab-${tier.id}`}
+          hidden={active !== i}
+          className="mt-6"
+        >
+          <TierSpotlight
             tier={tier}
             rep={rep}
             origin={origin}
             shared={shared}
             onShared={markShared}
           />
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
