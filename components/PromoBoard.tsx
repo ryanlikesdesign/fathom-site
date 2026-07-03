@@ -32,6 +32,21 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
   const [active, setActive] = useState(0);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
+  // Bumping this remounts the spotlights so a reset also returns each offer
+  // to its first code.
+  const [resetKey, setResetKey] = useState(0);
+  const sharedCount = shared.size;
+
+  function resetShared() {
+    if (sharedCount === 0) return;
+    const ok = window.confirm(
+      "Clear the shared markings for every code? This only affects what you see here — it doesn't un-send anything.",
+    );
+    if (!ok) return;
+    setSharedRaw(null);
+    setResetKey((k) => k + 1);
+  }
+
   function onTabKeyDown(e: React.KeyboardEvent) {
     const last = PROMO_TIERS.length - 1;
     let next = active;
@@ -56,14 +71,31 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
           ) : (
             "Sharing without a name"
           )}
+          {sharedCount > 0 && (
+            <>
+              {" · "}
+              <span className="text-[var(--text-primary)]">{sharedCount} marked shared</span>
+            </>
+          )}
         </p>
-        <button
-          type="button"
-          onClick={onSignOut}
-          className="text-sm underline underline-offset-4"
-        >
-          {rep ? "Not you? Switch" : "Add your name"}
-        </button>
+        <div className="flex items-center gap-4">
+          {sharedCount > 0 && (
+            <button
+              type="button"
+              onClick={resetShared}
+              className="text-sm underline underline-offset-4"
+            >
+              Reset shared
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="text-sm underline underline-offset-4"
+          >
+            {rep ? "Not you? Switch" : "Add your name"}
+          </button>
+        </div>
       </div>
 
       <details className="mt-6 rounded-[var(--radius-card)] border px-4 py-2">
@@ -76,12 +108,23 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
             <strong>link</strong> to send, and the <strong>raw code</strong> to type. Pick whatever
             suits the person in front of you.
           </p>
-          <p className="mt-2">
-            <strong>Share</strong> opens your phone&apos;s share sheet with a friendly message and
-            the code ready to send. <strong>Copy</strong> puts that same message on your clipboard to
-            paste into a text or email. When the person opens the QR or link, they land on a branded
-            page — which shows a nice preview in Messages and email — with the code and a big Redeem
-            button. We record both the share and the open, so the team can see which codes get used.
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Share</strong> — opens your phone&apos;s share sheet with a friendly message
+              and the code ready to send.
+            </li>
+            <li>
+              <strong>Copy</strong> — puts that same message on your clipboard to paste into a text
+              or email.
+            </li>
+            <li>
+              When the person opens the QR or link, they land on a branded page — with a nice
+              preview in Messages and email — showing the code and a big Redeem button.
+            </li>
+          </ul>
+          <p className="mt-3">
+            After you share a code, we move you to the next one automatically. We record both the
+            share and the open, so the team can see which codes get used.
           </p>
         </div>
       </details>
@@ -126,6 +169,7 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
           className="mt-6"
         >
           <TierSpotlight
+            key={resetKey}
             tier={tier}
             rep={rep}
             origin={origin}
@@ -171,8 +215,8 @@ function TierSpotlight({
 
   const announce = useCallback((msg: string) => setMessage(msg), []);
 
-  const fireShared = useCallback(
-    (method: string) => {
+  const recordShare = useCallback(
+    (method: string, okMsg: string) => {
       if (!current) return;
       posthog.capture("promo_shared", {
         code_id: current.id,
@@ -183,8 +227,15 @@ function TierSpotlight({
         method,
       });
       onShared(current.id);
+      // Advance to the next code so the rep is ready for the next person.
+      if (index < total - 1) {
+        setIndex(index + 1);
+        announce(`${okMsg} Now showing code ${index + 2} of ${total}.`);
+      } else {
+        announce(`${okMsg} That was the last ${tier.name} code.`);
+      }
     },
-    [current, tier, rep, onShared],
+    [current, tier, rep, onShared, index, total, announce],
   );
 
   const goTo = useCallback(
@@ -204,8 +255,7 @@ function TierSpotlight({
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: `Fathom — ${tier.name}`, text: shareText, url: trackingUrl });
-        fireShared("web_share");
-        announce("Shared.");
+        recordShare("web_share", "Shared.");
       } catch (err) {
         // User cancelled the share sheet — not an error worth reporting.
         if ((err as Error)?.name !== "AbortError") announce("Sharing was cancelled.");
@@ -223,8 +273,7 @@ function TierSpotlight({
   async function copy(text: string, okMsg: string, method: string) {
     try {
       await navigator.clipboard.writeText(text);
-      fireShared(method);
-      announce(okMsg);
+      recordShare(method, okMsg);
     } catch {
       announce("Couldn't copy automatically — select the text to copy it.");
     }
@@ -248,15 +297,26 @@ function TierSpotlight({
       aria-labelledby={`tier-${tier.id}`}
       className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id={`tier-${tier.id}`} className="font-display text-3xl">
-          {tier.name}
-        </h2>
-        <p className="text-sm text-[var(--text-muted)]">
-          {sharedInTier} of {total} shared
-        </p>
-      </div>
+      <h2 id={`tier-${tier.id}`} className="font-display text-3xl">
+        {tier.name}
+      </h2>
       <p className="mt-1 text-[var(--text-secondary)]">{tier.blurb}</p>
+
+      {/* Progress across this offer's codes. */}
+      <div className="mt-4">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-medium text-[var(--text-primary)]">
+            {sharedInTier} of {total} shared
+          </span>
+          <span className="text-[var(--text-muted)]">{total - sharedInTier} left</span>
+        </div>
+        <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--bg-hover)]" aria-hidden="true">
+          <div
+            className="h-full rounded-full bg-[var(--accent-signal)] transition-[width]"
+            style={{ width: `${total ? (sharedInTier / total) * 100 : 0}%`, transitionDuration: "var(--dur)" }}
+          />
+        </div>
+      </div>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-[auto_1fr] sm:items-start">
         {/* QR — a visual aid for sighted recipients. The link + code below
@@ -281,10 +341,27 @@ function TierSpotlight({
         </div>
 
         <div>
-          <p className="text-sm font-medium text-[var(--text-muted)]">
-            Code {index + 1} of {total}
-            {isShared && <span className="ml-2 text-[var(--accent-signal)]">· Shared ✓</span>}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm font-medium text-[var(--text-muted)]">
+              Code {index + 1} of {total}
+            </p>
+            {isShared ? (
+              <span
+                className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold"
+                style={{
+                  color: "var(--reed-300)",
+                  borderColor: "color-mix(in oklab, var(--reed-500) 55%, transparent)",
+                  background: "color-mix(in oklab, var(--reed-500) 16%, transparent)",
+                }}
+              >
+                ✓ Shared
+              </span>
+            ) : (
+              <span className="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium text-[var(--text-muted)]">
+                Not shared yet
+              </span>
+            )}
+          </div>
 
           <p className="mt-1 text-sm text-[var(--text-secondary)]">The code</p>
           <p
@@ -324,6 +401,11 @@ function TierSpotlight({
               Copy code
             </button>
           </div>
+
+          <p className="mt-3 text-sm text-[var(--text-muted)]">
+            Sharing or copying marks this code <strong className="font-medium">Shared</strong> and
+            moves to the next one. Use Previous / Next to move by hand.
+          </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-3">
             <button

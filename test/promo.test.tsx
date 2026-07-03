@@ -85,11 +85,13 @@ describe("PromoBoard sharing", () => {
     await screen.findByRole("heading", { name: /3 months free/i });
   }
 
-  it("copying a code records a promo_shared event and marks it shared", async () => {
+  it("copying a code records a promo_shared event and advances to the next code", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.assign(navigator, { clipboard: { writeText } });
 
     await unlock();
+    expect(screen.getByText(/code 1 of 26/i)).toBeInTheDocument();
+
     const [copyCode] = screen.getAllByRole("button", { name: /copy code/i });
     await userEvent.click(copyCode);
 
@@ -98,6 +100,22 @@ describe("PromoBoard sharing", () => {
       "promo_shared",
       expect.objectContaining({ method: "copy_code", rep_name: "Ada" }),
     );
-    expect(screen.getAllByText(/shared ✓/i).length).toBeGreaterThan(0);
+    // Auto-advanced to the next code, and the tier's shared tally went up.
+    expect(await screen.findByText(/^Code 2 of 26$/)).toBeInTheDocument();
+    expect(screen.getByText(/1 of 26 shared/i)).toBeInTheDocument();
+  });
+
+  it("resets shared markings and returns to the first code", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+
+    await unlock();
+    await userEvent.click(screen.getAllByRole("button", { name: /copy code/i })[0]);
+    expect(screen.getByText(/1 of 26 shared/i)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: /reset shared/i }));
+    expect(await screen.findByText(/0 of 26 shared/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Code 1 of 26$/)).toBeInTheDocument();
   });
 });
