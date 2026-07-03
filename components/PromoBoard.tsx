@@ -60,11 +60,11 @@ export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => v
             suits the person in front of you.
           </p>
           <p className="mt-2">
-            When you tap <strong>Share</strong> or copy a link, we record that the code was shared.
-            When the person opens the QR or link, it takes them straight to the App Store to redeem
-            — and that open is recorded too, so the team can see which codes are getting used. The
-            raw code and link are read aloud by screen readers, so codes are easy to share by voice
-            or message.
+            <strong>Share</strong> opens your phone&apos;s share sheet with a friendly message and
+            the code ready to send. <strong>Copy</strong> puts that same message on your clipboard to
+            paste into a text or email. When the person opens the QR or link, they land on a branded
+            page — which shows a nice preview in Messages and email — with the code and a big Redeem
+            button. We record both the share and the open, so the team can see which codes get used.
           </p>
         </div>
       </details>
@@ -145,7 +145,9 @@ function TierSpotlight({
 
   async function onShare() {
     if (!current) return;
-    const shareText = `Here's ${tier.name} of Fathom — the AI navigation app for blind and low-vision iPhone users. Open this to redeem it:`;
+    // Native share: the message carries the code; the URL is passed
+    // separately so Messages/Mail can unfurl it into a rich preview card.
+    const shareText = `Here's your ${tier.name} of Fathom — the AI navigation app for blind and low-vision iPhone users. Your code: ${current.code}.`;
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: `Fathom — ${tier.name}`, text: shareText, url: trackingUrl });
@@ -156,8 +158,13 @@ function TierSpotlight({
         if ((err as Error)?.name !== "AbortError") announce("Sharing was cancelled.");
       }
     } else {
-      await copy(trackingUrl, "Link copied to your clipboard.", "copy_link");
+      await copy(shareMessage(), "Message copied — paste it into a text or email.", "copy_message");
     }
+  }
+
+  // A ready-to-paste message with the code and link inline, for email/SMS.
+  function shareMessage() {
+    return `Here's your ${tier.name} of Fathom — the AI navigation app for blind and low-vision iPhone users.\n\nYour code: ${current!.code}\nRedeem it here: ${trackingUrl}`;
   }
 
   async function copy(text: string, okMsg: string, method: string) {
@@ -239,26 +246,27 @@ function TierSpotlight({
             {trackingUrl || "…"}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-5 flex items-stretch gap-2 sm:gap-3">
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex items-center justify-center rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-5 py-3 font-medium text-[var(--bg)]"
+              className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-3 py-3 text-sm font-medium text-[var(--bg)] sm:text-base"
               style={{ transitionDuration: "var(--dur)" }}
             >
               Share
             </button>
             <button
               type="button"
-              onClick={() => copy(trackingUrl, "Link copied to your clipboard.", "copy_link")}
-              className="inline-flex items-center justify-center rounded-[var(--radius-btn)] border bg-[rgba(var(--glass)/0.5)] px-5 py-3 font-medium backdrop-blur"
+              aria-label="Copy a ready-to-send message with the code and link"
+              onClick={() => copy(shareMessage(), "Message copied — paste it into a text or email.", "copy_message")}
+              className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-[var(--radius-btn)] border bg-[rgba(var(--glass)/0.5)] px-3 py-3 text-sm font-medium backdrop-blur sm:text-base"
             >
-              Copy link
+              Copy
             </button>
             <button
               type="button"
               onClick={() => copy(current.code, "Code copied to your clipboard.", "copy_code")}
-              className="inline-flex items-center justify-center rounded-[var(--radius-btn)] border bg-[rgba(var(--glass)/0.5)] px-5 py-3 font-medium backdrop-blur"
+              className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-[var(--radius-btn)] border bg-[rgba(var(--glass)/0.5)] px-3 py-3 text-sm font-medium backdrop-blur sm:text-base"
             >
               Copy code
             </button>
