@@ -1,0 +1,92 @@
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { axe } from "jest-axe";
+
+// posthog-js touches browser globals on import/use — stub it.
+// vi.hoisted so the stub exists before the hoisted vi.mock factory runs.
+const ph = vi.hoisted(() => ({ capture: vi.fn(), identify: vi.fn(), reset: vi.fn() }));
+vi.mock("posthog-js", () => ({ default: ph }));
+
+import { qrShape } from "@/lib/qr";
+import { findCodeById, PROMO_TIERS } from "@/lib/promo";
+import { PromoGate } from "@/components/PromoGate";
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  sessionStorage.clear();
+});
+
+describe("qrShape (vendored encoder)", () => {
+  it("encodes text into a positive, odd-sized module grid with a path", () => {
+    const { size, path } = qrShape("https://fathomvision.app/promo/r/m3-001?rep=Ada");
+    expect(size).toBeGreaterThan(0);
+    expect(size % 2).toBe(1); // every QR version has an odd module count
+    expect(path.length).toBeGreaterThan(0);
+  });
+});
+
+describe("findCodeById", () => {
+  it("finds a code and its tier across tiers", () => {
+    const first = PROMO_TIERS[0].codes[0];
+    const found = findCodeById(first.id);
+    expect(found?.code.code).toBe(first.code);
+    expect(found?.tier.id).toBe(PROMO_TIERS[0].id);
+  });
+  it("returns null for unknown ids", () => {
+    expect(findCodeById("does-not-exist")).toBeNull();
+  });
+});
+
+describe("PromoGate", () => {
+  it("locked view has no axe violations", async () => {
+    const { container } = render(<PromoGate />);
+    // wait for mount effect to swap out the "Loading…" placeholder
+    await screen.findByLabelText(/access password/i);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("rejects the wrong password with an alert", async () => {
+    render(<PromoGate />);
+    await userEvent.type(await screen.findByLabelText(/access password/i), "nope");
+    await userEvent.click(screen.getByRole("button", { name: /open the codes/i }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/isn't right/i);
+  });
+
+  it("unlocks with the correct password and shows both offers", async () => {
+    render(<PromoGate />);
+    await userEvent.type(screen.getByLabelText(/your name/i), "Ada");
+    await userEvent.type(await screen.findByLabelText(/access password/i), "fathom-crew");
+    await userEvent.click(screen.getByRole("button", { name: /open the codes/i }));
+
+    expect(await screen.findByRole("heading", { name: /3 months free/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /1 year free/i })).toBeInTheDocument();
+    expect(screen.getByText(/sharing as/i)).toHaveTextContent("Ada");
+  });
+});
+
+describe("PromoBoard sharing", () => {
+  async function unlock() {
+    render(<PromoGate />);
+    await userEvent.type(screen.getByLabelText(/your name/i), "Ada");
+    await userEvent.type(await screen.findByLabelText(/access password/i), "fathom-crew");
+    await userEvent.click(screen.getByRole("button", { name: /open the codes/i }));
+    await screen.findByRole("heading", { name: /3 months free/i });
+  }
+
+  it("copying a code records a promo_shared event and marks it shared", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+
+    await unlock();
+    const [copyCode] = screen.getAllByRole("button", { name: /copy code/i });
+    await userEvent.click(copyCode);
+
+    expect(writeText).toHaveBeenCalled();
+    expect(ph.capture).toHaveBeenCalledWith(
+      "promo_shared",
+      expect.objectContaining({ method: "copy_code", rep_name: "Ada" }),
+    );
+    expect(screen.getAllByText(/shared ✓/i).length).toBeGreaterThan(0);
+  });
+});
