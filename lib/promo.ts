@@ -109,9 +109,14 @@ export const PROMO_TIERS: PromoTier[] = [
     name: "1 year free",
     short: "1-year",
     blurb: "A full year of Fathom, free. Our most generous offer.",
-    // Paste the 1-year codes here, same shape as above (ids y1-001, y1-002, …).
-    // Until then this offer shows a "no codes loaded yet" message.
-    codes: [],
+    // NFB Conference batch.
+    codes: [
+      { id: "y1-001", code: "LJYFXTJMN7J74WN8NN" },
+      { id: "y1-002", code: "TJJFLRKKHYAFNM6EAP" },
+      { id: "y1-003", code: "6XJNXFWW4NFRP43R3J" },
+      { id: "y1-004", code: "3XLYTRYXK4WENF6JY7" },
+      { id: "y1-005", code: "EYEFWXY38WR4X8J473" },
+    ],
   },
 ];
 
