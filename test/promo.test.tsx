@@ -15,6 +15,7 @@ import { PromoGate } from "@/components/PromoGate";
 beforeEach(() => {
   vi.clearAllMocks();
   sessionStorage.clear();
+  localStorage.clear();
 });
 
 describe("qrShape (vendored encoder)", () => {

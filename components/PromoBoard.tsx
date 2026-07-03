@@ -4,13 +4,14 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import posthog from "posthog-js";
 import { PROMO_TIERS, type PromoTier } from "@/lib/promo";
 import { qrShape } from "@/lib/qr";
-import { useOrigin, useSessionValue } from "@/lib/useSession";
+import { useLocalValue, useOrigin } from "@/lib/useSession";
 
 const SHARED_KEY = "fathom-promo-shared";
 
 export function PromoBoard({ rep, onSignOut }: { rep: string; onSignOut: () => void }) {
   const origin = useOrigin();
-  const [sharedRaw, setSharedRaw] = useSessionValue(SHARED_KEY);
+  // localStorage so a rep's progress survives closing the tab during an event.
+  const [sharedRaw, setSharedRaw] = useLocalValue(SHARED_KEY);
 
   const shared = useMemo<Set<string>>(() => {
     try {
