@@ -14,7 +14,7 @@ export default function PrivacyPage() {
       className="[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_p]:mt-3 [&_p]:text-[var(--text-secondary)] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-[var(--text-secondary)] [&_li]:mt-1"
     >
       <h1 id="pp-h" className="font-display text-5xl">Privacy Policy</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: July 1, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: August 21, 2026</p>
 
       <p>
         Fathom is made by Unruly Vision, LLC. This policy explains what Fathom collects, why, and
