@@ -17,6 +17,18 @@ export interface Release {
 // Newest first. To add a release, prepend a new object.
 export const RELEASES: Release[] = [
   {
+    version: '1.1.1',
+    date: '2026-08-21',
+    fixed: [
+      'Fathom runs cooler and lasts longer on your battery during longer Lookout and Live Task sessions.',
+      "Fixed VoiceOver sometimes talking over Lookout's narration.",
+      'Live Task reconnects more smoothly, with fewer drops mid-conversation.',
+    ],
+    improved: [
+      'Auto-start on the Home screen is now one clear setting, so what you turn on is what actually happens.',
+    ],
+  },
+  {
     version: '1.1',
     date: '2026-06-15',
     added: [
