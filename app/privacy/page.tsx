@@ -14,7 +14,7 @@ export default function PrivacyPage() {
       className="[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_p]:mt-3 [&_p]:text-[var(--text-secondary)] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-[var(--text-secondary)] [&_li]:mt-1"
     >
       <h1 id="pp-h" className="font-display text-5xl">Privacy Policy</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: August 21, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: August 28, 2026</p>
 
       <p>
         Fathom is made by Unruly Vision, LLC. This policy explains what Fathom collects, why, and
@@ -56,11 +56,21 @@ export default function PrivacyPage() {
         <strong>Purchases.</strong>{" "}Subscriptions are handled by Apple through the App Store. We do
         not receive or store your payment details.
       </p>
+      <p>
+        <strong>Notifications.</strong>{" "}Notifications are optional, and there are three kinds you
+        can switch on or off separately in Settings. Tips and AI usage updates are scheduled entirely
+        on your phone and involve no server. The third, News from Fathom, uses Apple&apos;s push
+        service: while it is on, your device&apos;s notification token is stored on Fathom&apos;s
+        backend next to the same random identifier described above, so an announcement can reach your
+        device. It is not linked to your name or any personal identity, and turning the setting off
+        deletes it. Notifications never carry safety information — obstacles and hazards always reach
+        you inside the app, out loud and through touch, as they happen.
+      </p>
 
       <h2>Who we share data with</h2>
       <ul>
         <li><strong>Google (Gemini AI)</strong> processes camera images, text, and — in Live Task, while the microphone button is on — voice audio in real time to generate descriptions and guidance.</li>
-        <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and text pass through it in real time and are not stored.</li>
+        <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and text pass through it in real time and are not stored. If you turn on News from Fathom, it also stores your notification token so announcements can be delivered.</li>
         <li><strong>PostHog</strong> receives anonymous usage and diagnostic data.</li>
         <li><strong>Apple</strong> handles App Store purchases.</li>
       </ul>
@@ -69,13 +79,16 @@ export default function PrivacyPage() {
       <h2>How long we keep it</h2>
       <p>
         Camera images and text sent for processing are not stored by Fathom or its backend.
-        Anonymous analytics are kept only as long as needed to improve the app. Anything you save in
-        the app stays on your device until you delete it or remove the app.
+        Anonymous analytics are kept only as long as needed to improve the app. A notification token
+        is kept only while News from Fathom is switched on, and is deleted when you switch it off or
+        remove the app. Anything you save in the app stays on your device until you delete it or
+        remove the app.
       </p>
 
       <h2>Your choices</h2>
       <ul>
         <li>You can turn off analytics any time in Settings.</li>
+        <li>You can turn off any or all notifications in Settings, which also deletes your notification token.</li>
         <li>You can use Fathom&apos;s on-device mode, which sends nothing to the cloud.</li>
         <li>You can clear anything you&apos;ve saved in the app by deleting it or removing the app.</li>
       </ul>
