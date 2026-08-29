@@ -17,6 +17,20 @@ export interface Release {
 // Newest first. To add a release, prepend a new object.
 export const RELEASES: Release[] = [
   {
+    version: '1.2.0',
+    date: '2026-08-29',
+    added: [
+      'Point at something — a label, a sign, a dial, a door, a screen, handwriting — and Fathom names it, then reads what\'s written on it.',
+      'Setup is now tap-to-answer. A few quick questions about your sight and how you get around, every one skippable, no microphone required.',
+      'Notifications, if you want them — a few tips, a monthly usage note, occasional news from the developer. Never anything safety-related; hazards always stay in the app, spoken and by touch.',
+    ],
+    improved: [
+      'Fathom now runs the camera and depth sensors at their optimal rate during Lookout and Go instead of full speed, for less heat and better battery life on longer walks.',
+      'Pointing is harder to trigger by accident — a relaxed hand resting near the camera no longer starts a scan.',
+      'Refined contrast and visual polish throughout, including better support for larger text sizes.',
+    ],
+  },
+  {
     version: '1.1.1',
     date: '2026-08-21',
     fixed: [
