@@ -57,7 +57,7 @@ describe("landing content matches the app", () => {
   });
   it("uses the app's active-mode controls", () => {
     // ActiveModeShell.swift:13-19, 412
-    expect(ACTIVE_MODE_CONTROLS).toEqual({ primary: "Ask Fathom", end: "End", menu: "More" });
+    expect(ACTIVE_MODE_CONTROLS).toEqual({ primary: "Ask Fathom", end: "End", menu: "More actions" });
   });
   it("gates exactly the four Plus modes", () => {
     // SubscriptionStatus.swift:21-27
@@ -104,7 +104,7 @@ export const SNAPSHOT_OPTIONS = [
 export const TAB_BAR = ["Home", "Assistant", "History", "Settings"] as const;
 
 /** ActiveModeShell.swift:13-19, 412. Every active mode uses exactly these. */
-export const ACTIVE_MODE_CONTROLS = { primary: "Ask Fathom", end: "End", menu: "More" } as const;
+export const ACTIVE_MODE_CONTROLS = { primary: "Ask Fathom", end: "End", menu: "More actions" } as const;
 
 /** PaywallView.swift:135; StoreKit P1W */
 export const PLUS = { price: "$12.99", period: "month", trialDays: 7 } as const;
