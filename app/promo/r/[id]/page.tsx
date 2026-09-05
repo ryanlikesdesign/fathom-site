@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { APP_STORE_URL, findCodeById, redeemUrl } from "@/lib/promo";
+import { headers } from "next/headers";
+import { APP_STORE_URL, trackedRedeemUrl } from "@/lib/promo";
+import { findBySlug, markOpened, trackQuietly } from "@/lib/promoDb";
 import { BrandMark } from "@/components/BrandMark";
 import { RedeemActions } from "@/components/RedeemActions";
 
@@ -8,9 +10,19 @@ export const dynamic = "force-dynamic";
 type Params = Promise<{ id: string }>;
 type Search = Promise<{ rep?: string }>;
 
+/** Never let a database hiccup turn into a 500 for someone holding a code. */
+async function lookup(slug: string) {
+  try {
+    return await findBySlug(slug);
+  } catch (err) {
+    console.error("[promo] redeem page lookup failed:", err);
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = await params;
-  const found = findCodeById(id);
+  const found = await lookup(id);
 
   if (!found) {
     return {
@@ -20,10 +32,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     };
   }
 
-  const title = `You've got ${found.tier.name} of Fathom`;
+  const title = `You've got ${found.durationLabel} of Fathom`;
   // The code rides in the description so it shows up right inside the
   // iMessage / Mail link-preview card.
-  const description = `Your code: ${found.code.code} — tap to redeem ${found.tier.name} of Fathom, the AI navigation app for blind and low-vision iPhone users.`;
+  const description = `Your code: ${found.code} — tap to redeem ${found.durationLabel} of Fathom, the AI navigation app for blind and low-vision iPhone users.`;
 
   return {
     title,
@@ -43,7 +55,12 @@ export default async function RedeemPage({
 }) {
   const { id } = await params;
   const { rep } = await searchParams;
-  const found = findCodeById(id);
+  const found = await lookup(id);
+
+  if (found) {
+    const userAgent = (await headers()).get("user-agent");
+    await trackQuietly(markOpened(id, userAgent), "opened");
+  }
 
   return (
     <section
@@ -58,9 +75,9 @@ export default async function RedeemPage({
 
       {found ? (
         <div className="mt-10 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
-          <p className="eyebrow">{found.tier.name} · Free trial</p>
+          <p className="eyebrow">{found.durationLabel} · Free trial</p>
           <h1 id="redeem-h" className="mt-3 font-display text-4xl">
-            You&apos;ve got {found.tier.name} of Fathom
+            You&apos;ve got {found.durationLabel} of Fathom
           </h1>
           <p className="mt-3 text-[var(--text-secondary)]">
             Fathom is the AI navigation app for blind and low-vision iPhone users — it describes
@@ -69,12 +86,12 @@ export default async function RedeemPage({
 
           <div className="mt-8">
             <RedeemActions
-              codeId={found.code.id}
-              code={found.code.code}
-              tierId={found.tier.id}
-              tierName={found.tier.name}
+              slug={found.slug}
+              code={found.code}
+              offerName={found.offerName}
+              durationLabel={found.durationLabel}
               rep={rep ?? null}
-              href={redeemUrl(found.code.code)}
+              href={trackedRedeemUrl(found.slug)}
             />
           </div>
 

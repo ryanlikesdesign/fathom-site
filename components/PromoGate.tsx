@@ -1,60 +1,127 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import posthog from "posthog-js";
-import { SHARE_PASSWORD } from "@/lib/promo";
-import { useMounted, useSessionValue } from "@/lib/useSession";
 import { PromoBoard } from "@/components/PromoBoard";
+import type { CustomCodeView, PromoBatchView } from "@/components/PromoBoard";
 
-const UNLOCK_KEY = "fathom-promo-unlocked";
-const REP_KEY = "fathom-promo-rep";
-
-export function PromoGate() {
-  const mounted = useMounted();
-  const [unlock, setUnlock] = useSessionValue(UNLOCK_KEY);
-  const [rep, setRep] = useSessionValue(REP_KEY);
-  const [error, setError] = useState<string | null>(null);
+/**
+ * Password gate for the rep tools.
+ *
+ * The session lives in a signed httpOnly cookie the server sets, so whether
+ * we're unlocked is decided on the server and arrives as `initialRep` (null
+ * when locked). The password is never compared in the browser, and a locked
+ * visitor is never sent any codes.
+ */
+export function PromoGate({
+  initialRep,
+  initialBatches,
+  initialCustom,
+  initialError,
+}: {
+  initialRep: string | null;
+  initialBatches: PromoBatchView[];
+  initialCustom: CustomCodeView[];
+  initialError: string | null;
+}) {
+  const [rep, setRep] = useState(initialRep);
+  const [batches, setBatches] = useState(initialBatches);
+  const [custom, setCustom] = useState(initialCustom);
+  const [error, setError] = useState<string | null>(initialError);
+  // A failed password and an unreachable database are different problems:
+  // only the first should mark the password field invalid.
+  const [badPassword, setBadPassword] = useState(false);
+  const [busy, setBusy] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/promo/codes", { cache: "no-store" });
+      if (res.status === 401) {
+        setRep(null);
+        return;
+      }
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Couldn't load the codes.");
+        return;
+      }
+      setRep(data.rep ?? "");
+      setBatches(data.batches ?? []);
+      setCustom(data.custom ?? []);
+      setError(null);
+    } catch {
+      setError("Couldn't reach the server. Check your connection and try again.");
+    }
+  }, []);
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (busy) return;
+    setBusy(true);
+
     const fd = new FormData(e.currentTarget);
     const name = String(fd.get("rep") ?? "").trim();
     const password = String(fd.get("password") ?? "");
 
-    if (password.trim() !== SHARE_PASSWORD) {
-      setError("That password isn't right. Please check with the Fathom team and try again.");
+    try {
+      const res = await fetch("/api/promo/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, rep: name }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setBadPassword(res.status === 401);
+        setError(data.error ?? "That password isn't right.");
+        requestAnimationFrame(() => errorRef.current?.focus());
+        return;
+      }
+
+      setError(null);
+      setBadPassword(false);
+      if (name) posthog.identify(`rep:${name.toLowerCase()}`, { rep_name: name });
+      posthog.capture("promo_page_unlocked", { rep_name: name || null });
+      // The password was right, so open the board even if the code database is
+      // briefly unreachable — refresh() surfaces that as a banner instead of
+      // bouncing them back to a password form they already passed.
+      setRep(data.rep ?? name);
+      await refresh();
+    } catch {
+      setBadPassword(false);
+      setError("Couldn't reach the server. Check your connection and try again.");
       requestAnimationFrame(() => errorRef.current?.focus());
-      return;
+    } finally {
+      setBusy(false);
     }
-
-    setError(null);
-    setRep(name);
-    setUnlock("1");
-    if (name) {
-      posthog.identify(`rep:${name.toLowerCase()}`, { rep_name: name });
-    }
-    posthog.capture("promo_page_unlocked", { rep_name: name || null });
   }
 
-  function signOut() {
-    setUnlock(null);
-    setRep(null);
+  async function signOut() {
+    await fetch("/api/promo/session", { method: "DELETE" });
     posthog.reset();
+    setRep(null);
+    setBatches([]);
+    setCustom([]);
   }
 
-  // Until mounted we can't read sessionStorage, so show a stable placeholder
-  // that matches the server render (no hydration flash).
-  if (!mounted) {
+  if (rep !== null) {
     return (
-      <p className="mt-10 text-[var(--text-secondary)]" role="status">
-        Loading…
-      </p>
+      <>
+        {error && (
+          <p role="alert" className="mt-8 rounded-[var(--radius-card)] border p-4">
+            {error}
+          </p>
+        )}
+        <PromoBoard
+          rep={rep}
+          batches={batches}
+          custom={custom}
+          onRefresh={refresh}
+          onSignOut={signOut}
+        />
+      </>
     );
-  }
-
-  if (unlock === "1") {
-    return <PromoBoard rep={rep ?? ""} onSignOut={signOut} />;
   }
 
   return (
@@ -79,7 +146,7 @@ export function PromoGate() {
           Your name
         </label>
         <p id="rep-hint" className="mt-1 text-sm text-[var(--text-muted)]">
-          So shares get credited to you. You can leave this blank.
+          So codes you hand out get credited to you. You can leave this blank.
         </p>
         <input
           id="rep"
@@ -102,11 +169,11 @@ export function PromoGate() {
           type="password"
           required
           autoComplete="current-password"
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? "password-err" : undefined}
+          aria-invalid={badPassword ? true : undefined}
+          aria-describedby={badPassword ? "password-err" : undefined}
           className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-raised)] px-4 py-3 text-[var(--text-primary)]"
         />
-        {error && (
+        {badPassword && (
           <span id="password-err" className="sr-only">
             Password incorrect.
           </span>
@@ -115,10 +182,11 @@ export function PromoGate() {
 
       <button
         type="submit"
-        className="inline-flex items-center justify-center rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-6 py-3 font-medium text-[var(--bg)]"
+        disabled={busy}
+        className="inline-flex items-center justify-center rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-6 py-3 font-medium text-[var(--bg)] disabled:opacity-60"
         style={{ transitionDuration: "var(--dur)" }}
       >
-        Open the codes
+        {busy ? "Opening…" : "Open the codes"}
       </button>
     </form>
   );

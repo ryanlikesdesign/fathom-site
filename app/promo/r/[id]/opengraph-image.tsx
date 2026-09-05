@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { findCodeById } from "@/lib/promo";
+import { findBySlug } from "@/lib/promoDb";
 
 export const alt = "A free trial of Fathom";
 export const size = { width: 1200, height: 630 };
@@ -7,8 +7,14 @@ export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const found = findCodeById(id);
-  const offer = found ? found.tier.name : "Free trial";
+  // A preview card is never worth failing over — fall back to generic wording.
+  let offer = "a free trial";
+  try {
+    const found = await findBySlug(id);
+    if (found) offer = found.durationLabel;
+  } catch (err) {
+    console.error("[promo] og image lookup failed:", err);
+  }
 
   return new ImageResponse(
     (

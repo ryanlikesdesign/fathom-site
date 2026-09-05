@@ -5,23 +5,25 @@ import posthog from "posthog-js";
 
 /**
  * Recipient-facing redeem panel. Shows the code, a copy button, and the big
- * "Redeem" call-to-action. Fires `promo_link_opened` once when the page loads
- * (our proxy for "the code was used") and `promo_redeem_clicked` when they tap
- * through to the App Store. The redeem link is a real <a href>, so it works
- * with JavaScript disabled — the tracking is purely additive.
+ * "Redeem" call-to-action.
+ *
+ * The authoritative open/redeem tracking happens server-side (the page render
+ * and the /redeem route). These PostHog events are the analytics view of the
+ * same thing. The redeem link is a real <a href> to a server route, so it works
+ * with JavaScript disabled and still records the tap.
  */
 export function RedeemActions({
-  codeId,
+  slug,
   code,
-  tierId,
-  tierName,
+  offerName,
+  durationLabel,
   rep,
   href,
 }: {
-  codeId: string;
+  slug: string;
   code: string;
-  tierId: string;
-  tierName: string;
+  offerName: string;
+  durationLabel: string;
   rep: string | null;
   href: string;
 }) {
@@ -32,13 +34,13 @@ export function RedeemActions({
     if (fired.current) return;
     fired.current = true;
     posthog.capture("promo_link_opened", {
-      code_id: codeId,
+      code_slug: slug,
       code,
-      tier_id: tierId,
-      tier_name: tierName,
+      offer_name: offerName,
+      duration_label: durationLabel,
       rep_name: rep,
     });
-  }, [codeId, code, tierId, tierName, rep]);
+  }, [slug, code, offerName, durationLabel, rep]);
 
   async function copyCode() {
     try {
@@ -51,10 +53,10 @@ export function RedeemActions({
 
   function onRedeem() {
     posthog.capture("promo_redeem_clicked", {
-      code_id: codeId,
+      code_slug: slug,
       code,
-      tier_id: tierId,
-      tier_name: tierName,
+      offer_name: offerName,
+      duration_label: durationLabel,
       rep_name: rep,
     });
   }
@@ -66,7 +68,7 @@ export function RedeemActions({
         <p
           className="select-all font-display text-2xl tracking-wide text-[var(--text-primary)]"
           style={{ wordBreak: "break-all" }}
-          aria-label={`Your ${tierName} code is ${code.split("").join(" ")}`}
+          aria-label={`Your ${durationLabel} code is ${code.split("").join(" ")}`}
         >
           {code}
         </p>
