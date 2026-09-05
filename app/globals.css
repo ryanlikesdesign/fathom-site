@@ -22,6 +22,18 @@
   /* Display font alias → Inter/Source Serif 4 loaded via next/font.
      (Body --font-sans is provided by next/font on <html>.) */
   --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
+  /* Offer codes are read aloud, dictated and typed. The display serif
+     collides 0/O and 1/l/I, so codes get a face with disambiguated
+     glyphs — legibility beats voice for machine-readable strings. */
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* QR colours are functional, not thematic — they must stay dark-on-light in
+     BOTH themes or the code stops scanning. Deliberately outside the
+     [data-theme] blocks for that reason. Warm ink, never pure #000/#FFF;
+     14.71:1, far past any scanner's requirement. */
+  --qr-field: var(--bone-100);
+  --qr-module: #14171c;
 
   --ease-standard: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
@@ -54,6 +66,21 @@
   --focus-ring: var(--fathom-300);
   --shadow-floating: 0 20px 60px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
 
+  /* Status (offer still live / switched off). The brand ramp lives in
+     :root only, so using --reed-300 as a foreground was theme-blind and
+     failed contrast in both themes. These are per-theme and measured:
+     7.44:1 on --bg-raised here. */
+  --status-live-fg: #9fb88a;
+  --status-live-bg: rgba(159, 184, 138, 0.14);
+  --status-live-border: rgba(159, 184, 138, 0.45);
+  --status-off-fg: var(--fg);
+  --status-off-bg: rgba(255, 255, 255, 0.06);
+  --status-off-border: rgba(255, 255, 255, 0.28);
+
+  /* Progress track. Must differ from --bg-raised, which --bg-hover does
+     not in this theme — both are #1e2128, so the bar had no visible scale. */
+  --track: #31363f;
+
   /* glass channels (RGB triples for rgba(var(--glass) / a)) */
   --glass: 24 27 31;
   --hi: 40 44 50;
@@ -82,6 +109,16 @@
   --divider: rgba(14, 16, 19, 0.1);
   --focus-ring: var(--fathom-700);
   --shadow-floating: 0 20px 60px rgba(14, 16, 19, 0.12), 0 4px 16px rgba(14, 16, 19, 0.08);
+
+  /* Same roles, re-derived for this theme: 6.04:1 on --bg-raised. */
+  --status-live-fg: #53632f;
+  --status-live-bg: rgba(83, 99, 47, 0.12);
+  --status-live-border: rgba(83, 99, 47, 0.42);
+  --status-off-fg: var(--fg);
+  --status-off-bg: rgba(14, 16, 19, 0.06);
+  --status-off-border: rgba(14, 16, 19, 0.3);
+
+  --track: #d3cdbe;
 
   --glass: 248 245 239;
   --hi: 255 255 255;

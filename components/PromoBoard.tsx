@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import posthog from "posthog-js";
+import { Button } from "@/components/Button";
+import { PromoCode, spellCode } from "@/components/PromoCode";
+import { Surface } from "@/components/Surface";
 import { expiryState } from "@/lib/promoExpiry";
 import { qrShape } from "@/lib/qr";
 import { useLocalValue, useOrigin } from "@/lib/useSession";
@@ -59,6 +62,13 @@ export function PromoBoard({
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [heldRaw, setHeldRaw] = useLocalValue(HELD_KEY);
   const [message, setMessage] = useState("");
+  // Setting the same string twice is a no-op in React, so the DOM never
+  // changes and the screen reader never fires. A rep copying ten codes in a
+  // row heard the confirmation once. Clearing first forces a real mutation.
+  const announce = useCallback((text: string) => {
+    setMessage("");
+    requestAnimationFrame(() => setMessage(text));
+  }, []);
 
   const held = useMemo<Record<string, HeldCode>>(() => {
     try {
@@ -132,25 +142,35 @@ export function PromoBoard({
 
   return (
     <div className="mt-8">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] px-4 py-3">
-        <p className="text-sm text-[var(--text-secondary)]">
+      <Surface register="lift" className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2">
+        <p className="min-w-0 text-sm text-[var(--text-secondary)]">
           {rep ? (
             <>
-              Sharing as <strong className="text-[var(--text-primary)]">{rep}</strong>
+              Sharing as{" "}
+              <strong className="break-words text-[var(--text-primary)]">{rep}</strong>
             </>
           ) : (
             "Sharing without a name"
           )}
         </p>
         <div className="flex flex-wrap items-center gap-4">
-          <a href="/promo/tracker" className="text-sm underline underline-offset-4">
+          {/* inline-flex min-h-11 keeps the visual weight of a text link while
+              giving it the 44px hit area the floor requires. */}
+          <a
+            href="/promo/tracker"
+            className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+          >
             Code tracker
           </a>
-          <button type="button" onClick={onSignOut} className="text-sm underline underline-offset-4">
-            {rep ? "Not you? Switch" : "Add your name"}
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+          >
+            {rep ? "Sign out and switch rep" : "Add your name"}
           </button>
         </div>
-      </div>
+      </Surface>
 
       <details className="mt-6 rounded-[var(--radius-card)] border px-4 py-2">
         <summary className="cursor-pointer py-2 font-medium [&::-webkit-details-marker]:hidden">
@@ -186,7 +206,7 @@ export function PromoBoard({
       <div
         role="tablist"
         aria-label="Choose an offer to share"
-        className="mt-8 flex w-full gap-1 rounded-[var(--radius-full)] border bg-[var(--bg-raised)] p-1"
+        className="mt-8 flex w-full flex-wrap gap-1 rounded-[var(--radius-full)] border bg-[var(--bg-raised)] p-1"
       >
         {batches.map((batch, i) => (
           <button
@@ -201,9 +221,12 @@ export function PromoBoard({
             tabIndex={active === i ? 0 : -1}
             onClick={() => setActive(i)}
             onKeyDown={onTabKeyDown}
-            className={`flex-1 whitespace-nowrap rounded-[var(--radius-full)] px-4 py-2.5 text-sm font-medium transition-colors sm:text-base ${
+            // A selected tab is a state, not the page's main action, so it
+            // reads as a filled chip rather than borrowing the primary CTA's
+            // treatment — otherwise three max-emphasis elements stack up.
+            className={`min-h-11 flex-1 basis-32 rounded-[var(--radius-full)] px-4 py-2.5 text-sm font-medium transition-colors sm:text-base ${
               active === i
-                ? "bg-[var(--text-primary)] text-[var(--bg)]"
+                ? "bg-[var(--bg-hover)] text-[var(--text-primary)] shadow-[inset_0_0_0_1px_var(--border)]"
                 : "text-[var(--text-secondary)]"
             }`}
             style={{ transitionDuration: "var(--dur)" }}
@@ -228,7 +251,7 @@ export function PromoBoard({
             held={held[batch.batch_id] ?? null}
             setHeld={(c) => setHeld(batch.batch_id, c)}
             onRefresh={onRefresh}
-            announce={setMessage}
+            announce={announce}
           />
         </div>
       ))}
@@ -241,7 +264,7 @@ export function PromoBoard({
         </a>
       </p>
 
-      <p aria-live="polite" className="sr-only">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {message}
       </p>
     </div>
@@ -269,6 +292,26 @@ function BatchPanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Every transition here unmounts the control the rep just activated, which
+  // drops VoiceOver focus to <body> — on iOS that resets the cursor to the top
+  // of the page, mid-conversation with the person they're helping. So focus
+  // moves deliberately: into the panel when a code is claimed, back to the
+  // claim button when it's handed over or returned.
+  const panelHeadingRef = useRef<HTMLHeadingElement>(null);
+  const getCodeRef = useRef<HTMLButtonElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  const prevHeld = useRef<HeldCode | null>(held);
+
+  useEffect(() => {
+    if (held && !prevHeld.current) panelHeadingRef.current?.focus();
+    else if (!held && prevHeld.current) getCodeRef.current?.focus();
+    prevHeld.current = held;
+  }, [held]);
+
+  useEffect(() => {
+    if (error) errorRef.current?.focus();
+  }, [error]);
+
   const trackingUrl = held
     ? `${origin}/promo/r/${held.slug}${rep ? `?rep=${encodeURIComponent(rep)}` : ""}`
     : "";
@@ -289,7 +332,9 @@ function BatchPanel({
         return;
       }
       setHeld({ code: data.code, slug: data.slug });
-      announce(`You have a ${batch.duration_label} code: ${data.code}.`);
+      // Spelled out: an 18-character run read as a word is useless to the
+      // person whose job is to say it aloud.
+      announce(`${batch.duration_label} code reserved: ${spellCode(data.code)}.`);
       await onRefresh();
     } catch {
       setError("Couldn't reach the server. Try again.");
@@ -298,8 +343,13 @@ function BatchPanel({
     }
   }
 
-  async function patch(action: string, method?: string) {
-    if (!held) return;
+  /**
+   * `okMsg` is announced only after the write succeeds. Announcing first —
+   * which this used to do — could tell a rep a code went out and then render a
+   * contradicting error, in a tool whose entire job is an accurate ledger.
+   */
+  async function patch(action: string, method?: string, okMsg?: string) {
+    if (!held) return false;
     setBusy(true);
     setError(null);
     try {
@@ -311,12 +361,15 @@ function BatchPanel({
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.error ?? "Couldn't update that code.");
-        return;
+        return false;
       }
       setHeld(null);
+      if (okMsg) announce(okMsg);
       await onRefresh();
+      return true;
     } catch {
       setError("Couldn't reach the server. Try again.");
+      return false;
     } finally {
       setBusy(false);
     }
@@ -334,8 +387,7 @@ function BatchPanel({
       rep_name: rep || null,
       method,
     });
-    announce(okMsg);
-    await patch("sent", method);
+    await patch("sent", method, okMsg);
   }
 
   async function onShare() {
@@ -350,7 +402,14 @@ function BatchPanel({
         });
         await recordShare("web_share", "Shared, and marked as handed out.");
       } catch (err) {
-        if ((err as Error)?.name !== "AbortError") announce("Sharing was cancelled.");
+        // AbortError IS the cancellation. This was inverted, so cancelling was
+        // silent and a genuine failure was reported as "cancelled" — either way
+        // leaving the rep unsure whether they still held the code.
+        if ((err as Error)?.name === "AbortError") {
+          announce("Sharing cancelled. You still have this code.");
+        } else {
+          announce("Sharing didn't work. You still have this code — try Copy instead.");
+        }
       }
     } else {
       await copy(shareMessage(), "Message copied, and marked as handed out.", "copy_message");
@@ -371,10 +430,8 @@ function BatchPanel({
   const expiry = expiryState(batch.expires_on);
 
   return (
-    <section
-      aria-labelledby={`batch-${batch.batch_id}`}
-      className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6"
-    >
+    <section aria-labelledby={`batch-${batch.batch_id}`}>
+      <Surface register="lift" className="p-6">
       <div className="flex flex-wrap items-center gap-3">
         <h2 id={`batch-${batch.batch_id}`} className="font-display text-3xl">
           {batch.duration_label}
@@ -390,10 +447,10 @@ function BatchPanel({
           <span className="font-medium text-[var(--text-primary)]">
             {batch.sent + batch.confirmed_redeemed} handed out
           </span>
-          <span className="text-[var(--text-muted)]">{batch.available} left</span>
+          <span className="text-[var(--text-secondary)]">{batch.available} left</span>
         </div>
         <div
-          className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--bg-hover)]"
+          className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--track)]"
           aria-hidden="true"
         >
           <div
@@ -407,129 +464,160 @@ function BatchPanel({
       </div>
 
       {error && (
-        <p role="alert" className="mt-5 rounded-[var(--radius-card)] border p-4">
+        <p
+          ref={errorRef}
+          tabIndex={-1}
+          role="alert"
+          className="mt-5 rounded-[var(--radius-card)] border p-4"
+        >
           {error}
         </p>
       )}
 
       {!held ? (
         <div className="mt-6">
-          <p className="text-[var(--text-secondary)]">
+          <p id={`why-${batch.batch_id}`} className="text-[var(--text-secondary)]">
             {expiry.expired
               ? `These codes stopped working on ${expiry.label.replace("Expired ", "")}. Generate a new batch in App Store Connect.`
               : batch.available > 0
                 ? "Take the next unused code when you're ready to hand one out."
                 : "There are no codes left in this offer."}
           </p>
-          <button
-            type="button"
+          <Button
+            ref={getCodeRef}
+            size="xl"
+            className="mt-4"
             onClick={getCode}
             disabled={busy || batch.available === 0 || expiry.expired}
-            className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-6 py-3 font-medium text-[var(--bg)] disabled:opacity-50"
-            style={{ transitionDuration: "var(--dur)" }}
+            aria-describedby={`why-${batch.batch_id}`}
           >
             {busy ? "Getting a code…" : "Get a code"}
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="mt-6 grid gap-6 sm:grid-cols-[auto_1fr] sm:items-start">
           {/* QR for sighted recipients; the link and code below are the
               accessible equivalents. */}
           <div className="justify-self-center">
-            <div className="rounded-[var(--radius-card)] bg-white p-3 shadow-[var(--shadow-floating)]">
+            {/* Warm bone rather than pure #FFF: a 176px white block on a dark
+                page is a halation source for exactly this audience. Still
+                15.6:1 against the module colour — far past what scanners need. */}
+            <div className="rounded-[var(--radius-card)] bg-[var(--qr-field)] p-3 shadow-[var(--shadow-floating)]">
               {qr && (
                 <svg
                   viewBox={`-4 -4 ${qr.size + 8} ${qr.size + 8}`}
                   width="176"
                   height="176"
                   role="img"
-                  aria-label={`QR code linking to the redeem page for code ${held.code}. The same link is written below.`}
+                  aria-label="QR code for this offer. The code and link below are the same thing in text."
                   shapeRendering="crispEdges"
                 >
-                  <rect x={-4} y={-4} width={qr.size + 8} height={qr.size + 8} fill="#ffffff" />
-                  <path d={qr.path} fill="#0e1013" />
+                  <rect
+                    x={-4}
+                    y={-4}
+                    width={qr.size + 8}
+                    height={qr.size + 8}
+                    fill="var(--qr-field)"
+                  />
+                  <path d={qr.path} fill="var(--qr-module)" />
                 </svg>
               )}
             </div>
-            <p className="mt-2 text-center text-sm text-[var(--text-muted)]">Scan to redeem</p>
+            <p className="mt-2 text-center text-sm text-[var(--text-secondary)]">Scan to redeem</p>
           </div>
 
           <div>
-            <p className="text-sm font-medium text-[var(--text-muted)]">
-              Reserved for you — nobody else can hand this one out
-            </p>
-
-            <p className="mt-3 text-sm text-[var(--text-secondary)]">The code</p>
-            <p
-              className="mt-1 select-all font-display text-2xl tracking-wide text-[var(--text-primary)]"
-              style={{ wordBreak: "break-all" }}
+            {/* Focus lands here when a code is claimed, so the rep arrives at
+                the thing they asked for instead of the top of the document. */}
+            <h3
+              ref={panelHeadingRef}
+              tabIndex={-1}
+              className="text-sm font-medium text-[var(--text-secondary)]"
             >
-              {held.code}
-            </p>
+              Reserved for you — nobody else can hand this one out
+            </h3>
 
-            <p className="mt-4 text-sm text-[var(--text-secondary)]">The link</p>
-            <p className="mt-1 break-all text-sm text-[var(--text-muted)]" title={trackingUrl}>
-              {trackingUrl || "…"}
-            </p>
+            <div role="group" aria-label="The code to give out" className="mt-3">
+              <p className="text-sm text-[var(--text-secondary)]">The code</p>
+              <PromoCode code={held.code} label="Code" className="mt-1" />
+            </div>
 
-            <div className="mt-5 flex items-stretch gap-2 sm:gap-3">
-              <button
-                type="button"
+            <div role="group" aria-label="The link to send" className="mt-4">
+              <p className="text-sm text-[var(--text-secondary)]">The link</p>
+              <a
+                href={trackingUrl || "#"}
+                aria-label="Open the redeem link for this code"
+                className="mt-1 inline-flex min-h-11 items-center break-all text-sm text-[var(--text-secondary)] underline underline-offset-4"
+              >
+                {trackingUrl || "…"}
+              </a>
+            </div>
+
+            {/* Stacks below sm: three nowrap buttons could not fit 320px, and
+                200% zoom is how a low-vision rep runs this. */}
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-3">
+              <Button
+                className="flex-1"
                 onClick={onShare}
                 disabled={busy}
-                className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-3 py-3 text-sm font-medium text-[var(--bg)] disabled:opacity-50 sm:text-base"
-                style={{ transitionDuration: "var(--dur)" }}
+                aria-label={`Share — code ${spellCode(held.code)}`}
               >
                 Share
-              </button>
-              <button
-                type="button"
-                aria-label="Copy a ready-to-send message with the code and link"
+              </Button>
+              <Button
+                variant="secondary"
+                className="flex-1"
+                aria-label="Copy the ready-to-send message with the code and link"
                 disabled={busy}
                 onClick={() =>
                   copy(shareMessage(), "Message copied, and marked as handed out.", "copy_message")
                 }
-                className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-[var(--radius-btn)] border bg-[rgba(var(--glass)/0.5)] px-3 py-3 text-sm font-medium backdrop-blur disabled:opacity-50 sm:text-base"
               >
                 Copy
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="secondary"
+                className="flex-1"
+                aria-label={`Copy code — ${spellCode(held.code)}`}
                 disabled={busy}
                 onClick={() =>
                   copy(held.code, "Code copied, and marked as handed out.", "copy_code")
                 }
-                className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-[var(--radius-btn)] border bg-[rgba(var(--glass)/0.5)] px-3 py-3 text-sm font-medium backdrop-blur disabled:opacity-50 sm:text-base"
               >
                 Copy code
-              </button>
+              </Button>
             </div>
 
-            <p className="mt-3 text-sm text-[var(--text-muted)]">
+            <p className="mt-3 text-sm text-[var(--text-secondary)]">
               Sharing or copying marks this code handed out and frees you to take the next one.
             </p>
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => patch("sent", "manual")}
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  patch("sent", "manual", `Code ${spellCode(held.code)} marked as handed out.`)
+                }
                 disabled={busy}
-                className="inline-flex items-center justify-center rounded-[var(--radius-btn)] border px-4 py-2.5 text-sm disabled:opacity-50"
+                aria-label={`I handed it over — code ${spellCode(held.code)}`}
               >
                 I handed it over
-              </button>
-              <button
-                type="button"
-                onClick={() => patch("released")}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  patch("released", undefined, "Code returned to the pool. You no longer have it.")
+                }
                 disabled={busy}
-                className="inline-flex items-center justify-center rounded-[var(--radius-btn)] border px-4 py-2.5 text-sm disabled:opacity-50"
+                aria-label={`Put it back — code ${spellCode(held.code)}`}
               >
                 Put it back
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       )}
+      </Surface>
     </section>
   );
 }
@@ -541,21 +629,25 @@ function ExpiryBadge({ expired, label }: { expired: boolean; label: string }) {
   return (
     <span
       className="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold"
+      // Per-theme status tokens. The old --reed-300 lives in :root only, so one
+      // value served both themes and failed contrast in each (3.83:1 / 2.69:1).
       style={
         expired
           ? {
-              color: "var(--text-primary)",
-              borderColor: "var(--text-muted)",
-              background: "var(--bg-hover)",
+              color: "var(--status-off-fg)",
+              borderColor: "var(--status-off-border)",
+              background: "var(--status-off-bg)",
             }
           : {
-              color: "var(--reed-300)",
-              borderColor: "color-mix(in oklab, var(--reed-500) 55%, transparent)",
-              background: "color-mix(in oklab, var(--reed-500) 16%, transparent)",
+              color: "var(--status-live-fg)",
+              borderColor: "var(--status-live-border)",
+              background: "var(--status-live-bg)",
             }
       }
     >
-      {label}
+      <span aria-hidden="true">{label}</span>
+      {/* The visible text lacks a subject; spoken, it needs one. */}
+      <span className="sr-only">Offer {label}</span>
     </span>
   );
 }
@@ -571,7 +663,7 @@ function CustomCodeList({ custom }: { custom: CustomCodeView[] }) {
   return (
     <section aria-labelledby="custom-h" className="mt-10">
       <h2 id="custom-h" className="font-display text-2xl">
-        Shared codes
+        Group codes
       </h2>
       <p className="mt-2 text-[var(--text-secondary)]">
         One code that many people can redeem, up to a limit — separate from the one-per-person
@@ -583,34 +675,29 @@ function CustomCodeList({ custom }: { custom: CustomCodeView[] }) {
           const expiry = expiryState(item.expires_on);
           const dead = expiry.expired || !item.active;
           return (
-            <li
-              key={item.code}
-              className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-4"
-            >
+            <Surface key={item.code} register="lift" as="li" className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <p className="font-display text-xl tracking-wide text-[var(--text-primary)]">
-                      {item.code}
-                    </p>
+                    <PromoCode code={item.code} label="Group code" className="text-xl" />
                     {dead ? (
                       <ExpiryBadge expired label={expiry.expired ? "Expired" : "Switched off"} />
                     ) : (
                       expiry.badge && <ExpiryBadge expired={false} label={expiry.badge} />
                     )}
                   </div>
-                  <p className="mt-1 text-sm text-[var(--text-muted)]">
+                  <p className="mt-1 text-sm text-[var(--text-secondary)]">
                     {item.duration_label} · {item.offer_name} ·{" "}
                     {item.redemption_cap ? `up to ${item.redemption_cap} redemptions` : "no cap set"}
                   </p>
                   <p className="mt-1 text-sm text-[var(--text-secondary)]">{expiry.label}</p>
                 </div>
               </div>
-              <p className="mt-3 border-t pt-3 text-sm text-[var(--text-muted)]">
+              <p className="mt-3 border-t pt-3 text-sm text-[var(--text-secondary)]">
                 Apple doesn&apos;t report how many of these have been redeemed, so the remaining
                 count is unknown.
               </p>
-            </li>
+            </Surface>
           );
         })}
       </ul>

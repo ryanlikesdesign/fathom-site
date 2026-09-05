@@ -54,9 +54,10 @@ describe("PromoTracker", () => {
   it("reveals individual codes only when a group is expanded", async () => {
     render(<PromoTracker used={[live]} batches={BATCHES} />);
 
-    expect(screen.queryByText("BBB222")).not.toBeInTheDocument();
+    // Always mounted (so aria-controls resolves) but hidden until expanded.
+    expect(screen.getByText("BBB222")).not.toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: /Kat Botner/i }));
-    expect(screen.getByText("BBB222")).toBeInTheDocument();
+    expect(screen.getByText("BBB222")).toBeVisible();
     // The row's own detail line, not the summary tile of the same name.
     expect(screen.getByText(/3 months free · Tapped redeem .* by Ada/)).toBeInTheDocument();
   });
@@ -71,7 +72,29 @@ describe("PromoTracker", () => {
 
     expect(screen.getByText(/1 of these predate tracking/i)).toBeInTheDocument();
     expect(screen.queryByText(/2 of these predate tracking/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/reserved, not handed out yet/i)).toBeInTheDocument();
+    // Group summary line (the row's own label is a hidden duplicate).
+    expect(screen.getAllByText(/reserved, not handed out yet/i).length).toBeGreaterThan(0);
+  });
+
+  it("names every Mark redeemed button by its code", async () => {
+    render(<PromoTracker used={[live]} batches={BATCHES} />);
+    await userEvent.click(screen.getByRole("button", { name: /Kat Botner/i }));
+    // Visible label first (Label in Name), then the spelled code.
+    expect(
+      screen.getByRole("button", { name: /^Mark redeemed — code Bravo, Bravo, Bravo/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("expanded state has no axe violations", async () => {
+    const { container } = render(<PromoTracker used={[imported, live]} batches={BATCHES} />);
+    await userEvent.click(screen.getByRole("button", { name: /Kat Botner/i }));
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("is navigable by heading", () => {
+    render(<PromoTracker used={[imported, live]} batches={BATCHES} />);
+    expect(screen.getByRole("heading", { level: 2, name: /who has them/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 3 }).length).toBe(2);
   });
 
   it("has no axe violations", async () => {

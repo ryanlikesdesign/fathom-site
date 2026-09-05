@@ -1,7 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/Button";
+import { PromoCode, spellCode } from "@/components/PromoCode";
+import { Surface } from "@/components/Surface";
 import type { PromoBatchView } from "@/components/PromoBoard";
 
 export interface UsedCodeView {
@@ -70,8 +73,18 @@ export function PromoTracker({
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
+  // Marking redeemed removes the button the user just activated. Without
+  // somewhere to send focus it falls to <body>, losing their place in a list
+  // that can be a hundred rows long.
+  const [justRedeemed, setJustRedeemed] = useState<string | null>(null);
+  const redeemedRef = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [message, setMessage] = useState("");
+  // See PromoBoard: identical consecutive announcements are silent otherwise.
+  const announce = (text: string) => {
+    setMessage("");
+    requestAnimationFrame(() => setMessage(text));
+  };
 
   const labels = useMemo(
     () => Object.fromEntries(batches.map((b) => [b.batch_id, b.duration_label])),
@@ -111,7 +124,7 @@ export function PromoTracker({
     [used],
   );
 
-  async function confirmRedeemed(slug: string) {
+  async function confirmRedeemed(slug: string, code: string) {
     setBusy(slug);
     try {
       const res = await fetch(`/api/promo/codes/${encodeURIComponent(slug)}`, {
@@ -120,17 +133,22 @@ export function PromoTracker({
         body: JSON.stringify({ action: "redeemed" }),
       });
       if (res.ok) {
-        setMessage("Marked as redeemed.");
+        setJustRedeemed(slug);
+        announce(`Code ${spellCode(code)} confirmed as redeemed.`);
         router.refresh();
       } else {
-        setMessage("Couldn't save that. Try again.");
+        announce("Couldn't save that. Try again.");
       }
     } catch {
-      setMessage("Couldn't reach the server.");
+      announce("Couldn't reach the server.");
     } finally {
       setBusy(null);
     }
   }
+
+  useEffect(() => {
+    if (justRedeemed) redeemedRef.current?.focus();
+  }, [justRedeemed, used]);
 
   if (!used.length) {
     return (
@@ -146,12 +164,18 @@ export function PromoTracker({
 
   return (
     <div className="mt-8">
-      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Handed out" value={totals.out - totals.reserved} />
-        <Stat label="Opened the link" value={totals.opened} />
-        <Stat label="Tapped redeem" value={totals.tapped} />
-        <Stat label="Confirmed redeemed" value={totals.redeemed} />
-      </dl>
+      <h2 className="sr-only">Summary</h2>
+      {/* One panel rather than four: <dl> may only contain <div> wrappers, and
+          Surface renders div > span, which breaks the dt/dd relationship. It
+          reads better as a single summary card anyway. */}
+      <Surface register="lift" className="p-5">
+        <dl className="grid grid-cols-2 gap-5 sm:grid-cols-4">
+          <Stat label="Handed out" value={totals.out - totals.reserved} />
+          <Stat label="Opened the link" value={totals.opened} />
+          <Stat label="Tapped redeem" value={totals.tapped} />
+          <Stat label="Confirmed redeemed" value={totals.redeemed} />
+        </dl>
+      </Surface>
 
       {totals.untracked > 0 && (
         <p className="mt-6 rounded-[var(--radius-card)] border p-4 text-[var(--text-secondary)]">
@@ -169,84 +193,97 @@ export function PromoTracker({
         &ldquo;confirmed redeemed&rdquo; only ever comes from a person confirming it.
       </p>
 
-      <ul className="mt-6 space-y-3">
-        {groups.map((g) => {
+      <h2 className="mt-10 font-display text-2xl">Who has them</h2>
+      <ul className="mt-4 space-y-3">
+        {groups.map((g, gi) => {
           const isOpen = open[g.recipient] ?? false;
-          const panelId = `group-${g.recipient.replace(/\W+/g, "-")}`;
+          // Index-based: slugifying the name collapsed "Ann Lee" and "Ann-Lee"
+          // onto the same DOM id.
+          const panelId = `promo-group-${gi}`;
           return (
-            <li
-              key={g.recipient}
-              className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)]"
-            >
-              <button
-                type="button"
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                onClick={() => setOpen((o) => ({ ...o, [g.recipient]: !isOpen }))}
-                className="flex w-full flex-wrap items-center justify-between gap-3 p-4 text-left"
-              >
-                <span>
-                  <span className="block font-medium text-[var(--text-primary)]">
-                    {g.recipient}
+            <Surface key={g.recipient} register="lift" as="li">
+              {/* h3 so the list is navigable by heading — this page previously
+                  had a single h1 and nothing else to rotor between. */}
+              <h3>
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => setOpen((o) => ({ ...o, [g.recipient]: !isOpen }))}
+                  className="flex w-full flex-wrap items-center justify-between gap-3 p-4 text-left"
+                >
+                  <span>
+                    <span className="block font-medium text-[var(--text-primary)]">
+                      {g.recipient}
+                    </span>
+                    <span className="mt-1 block text-sm text-[var(--text-secondary)]">
+                      {g.codes.length} {g.codes.length === 1 ? "code" : "codes"} ·{" "}
+                      {g.reserved === g.codes.length
+                        ? "reserved, not handed out yet"
+                        : g.untracked === g.codes.length
+                          ? "no tracking data"
+                          : `${g.opened} opened · ${g.tapped} tapped · ${g.redeemed} redeemed`}
+                    </span>
                   </span>
-                  <span className="mt-1 block text-sm text-[var(--text-muted)]">
-                    {g.codes.length} {g.codes.length === 1 ? "code" : "codes"} ·{" "}
-                    {g.reserved === g.codes.length
-                      ? "reserved, not handed out yet"
-                      : g.untracked === g.codes.length
-                        ? "no tracking data"
-                        : `${g.opened} opened · ${g.tapped} tapped · ${g.redeemed} redeemed`}
+                  {/* Not aria-hidden: hiding it breaks Label in Name, so a
+                      voice-control user saying "tap Show codes" gets nothing. */}
+                  <span className="text-sm text-[var(--text-secondary)]">
+                    {isOpen ? "Hide" : "Show"} codes
                   </span>
-                </span>
-                <span aria-hidden="true" className="text-[var(--text-muted)]">
-                  {isOpen ? "Hide" : "Show"} codes
-                </span>
-              </button>
+                </button>
+              </h3>
 
-              {isOpen && (
-                <ul id={panelId} className="border-t">
-                  {g.codes.map((c) => {
-                    const stage = stageOf(c);
-                    const sent = formatDate(c.sent_at);
-                    return (
-                      <li
-                        key={c.slug}
-                        className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 last:border-b-0"
-                      >
-                        <span>
-                          <span
-                            className="block font-display tracking-wide text-[var(--text-primary)]"
-                            style={{ wordBreak: "break-all" }}
-                          >
-                            {c.code}
-                          </span>
-                          <span className="mt-1 block text-sm text-[var(--text-muted)]">
-                            {labels[c.batch_id] ?? c.batch_id} · {STAGE_LABEL[stage]}
-                            {sent ? ` · ${sent}` : ""}
-                            {c.sent_by ? ` · by ${c.sent_by}` : ""}
-                          </span>
+              {/* Always mounted, toggled with `hidden`: aria-controls pointing
+                  at a node that doesn't exist is a broken reference. */}
+              <ul id={panelId} hidden={!isOpen} className="border-t">
+                {g.codes.map((c) => {
+                  const stage = stageOf(c);
+                  const sent = formatDate(c.sent_at);
+                  return (
+                    <li
+                      key={c.slug}
+                      className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 last:border-b-0"
+                    >
+                      <span className="min-w-0">
+                        <PromoCode code={c.code} label="Code" className="text-base" />
+                        <span className="mt-1 block text-sm text-[var(--text-secondary)]">
+                          {labels[c.batch_id] ?? c.batch_id} · {STAGE_LABEL[stage]}
+                          {sent ? ` · ${sent}` : ""}
+                          {c.sent_by ? ` · by ${c.sent_by}` : ""}
                         </span>
-                        {c.status !== "redeemed" && (
-                          <button
-                            type="button"
-                            onClick={() => confirmRedeemed(c.slug)}
-                            disabled={busy === c.slug}
-                            className="inline-flex shrink-0 items-center justify-center rounded-[var(--radius-btn)] border px-4 py-2.5 text-sm disabled:opacity-50"
-                          >
-                            {busy === c.slug ? "Saving…" : "Mark redeemed"}
-                          </button>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </li>
+                      </span>
+                      {c.status === "redeemed" ? (
+                        <span
+                          ref={c.slug === justRedeemed ? redeemedRef : undefined}
+                          tabIndex={c.slug === justRedeemed ? -1 : undefined}
+                          className="shrink-0 text-sm text-[var(--status-live-fg)]"
+                        >
+                          Confirmed redeemed
+                        </span>
+                      ) : (
+                        <Button
+                          variant="secondary"
+                          className="shrink-0"
+                          onClick={() => confirmRedeemed(c.slug, c.code)}
+                          disabled={busy === c.slug}
+                          // Every one of these was named just "Mark redeemed",
+                          // so the rotor showed a dozen identical entries for an
+                          // irreversible action.
+                          aria-label={`Mark redeemed — code ${spellCode(c.code)}`}
+                        >
+                          {busy === c.slug ? "Saving…" : "Mark redeemed"}
+                        </Button>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Surface>
           );
         })}
       </ul>
 
-      <p aria-live="polite" className="sr-only">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {message}
       </p>
     </div>
@@ -255,9 +292,9 @@ export function PromoTracker({
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-4">
+    <div>
       <dt className="text-sm text-[var(--text-secondary)]">{label}</dt>
-      <dd className="mt-1 font-display text-3xl text-[var(--text-primary)]">{value}</dd>
+      <dd className="mt-1 font-display text-3xl tabular-nums text-[var(--text-primary)]">{value}</dd>
     </div>
   );
 }

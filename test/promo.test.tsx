@@ -214,7 +214,7 @@ describe("PromoBoard handing out a code", () => {
 
     await userEvent.click(screen.getAllByRole("button", { name: /get a code/i })[0]);
     await screen.findByText("TESTCODE1234567890");
-    await userEvent.click(screen.getAllByRole("button", { name: /^copy code$/i })[0]);
+    await userEvent.click(screen.getAllByRole("button", { name: /^copy code/i })[0]);
 
     expect(writeText).toHaveBeenCalledWith("TESTCODE1234567890");
     expect(ph.capture).toHaveBeenCalledWith(
@@ -232,13 +232,51 @@ describe("PromoBoard handing out a code", () => {
     );
   });
 
+  it("moves focus into the panel on claim, and back to the button on release", async () => {
+    mockApi();
+    await unlock();
+
+    const get = screen.getAllByRole("button", { name: /get a code/i })[0];
+    get.focus();
+    await userEvent.click(get);
+    await screen.findByText("TESTCODE1234567890");
+    // The button just unmounted; focus must land on the panel's heading, not <body>.
+    expect(document.activeElement).toHaveTextContent(/reserved for you/i);
+
+    await userEvent.click(screen.getByRole("button", { name: /^put it back/i }));
+    await waitFor(() =>
+      expect(document.activeElement).toHaveTextContent(/get a code/i),
+    );
+  });
+
+  it("spells the code out for screen readers without labelling a paragraph", async () => {
+    mockApi();
+    await unlock();
+    await userEvent.click(screen.getAllByRole("button", { name: /get a code/i })[0]);
+    await screen.findByText("TESTCODE1234567890");
+
+    // Visible string is aria-hidden; a sibling carries the NATO reading.
+    expect(screen.getByText(/Tango, Echo, Sierra, Tango/)).toBeInTheDocument();
+    expect(document.querySelector("p[aria-label]")).toBeNull();
+  });
+
+  it("claimed-code state has no axe violations", async () => {
+    mockApi();
+    const { container } = render(<PromoGate {...locked} />);
+    await userEvent.type(screen.getByLabelText(/access password/i), "fathom-crew");
+    await userEvent.click(screen.getByRole("button", { name: /open the codes/i }));
+    await userEvent.click(await screen.findByRole("button", { name: /get a code/i }));
+    await screen.findByText("TESTCODE1234567890");
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
   it("can put an unused code back in the pool", async () => {
     const { calls } = mockApi();
     await unlock();
 
     await userEvent.click(screen.getAllByRole("button", { name: /get a code/i })[0]);
     await screen.findByText("TESTCODE1234567890");
-    await userEvent.click(screen.getByRole("button", { name: /put it back/i }));
+    await userEvent.click(screen.getByRole("button", { name: /^put it back/i }));
 
     const patch = calls.find((c) => c.method === "PATCH");
     expect(patch?.body).toMatchObject({ action: "released" });
@@ -306,7 +344,11 @@ describe("expired offers", () => {
     expect(screen.getByText("Expired")).toBeInTheDocument();
     expect(screen.getByText(/stopped working on January 1, 2020/i)).toBeInTheDocument();
     // Codes remain in stock, but handing one out would waste someone's time.
-    expect(screen.getByRole("button", { name: /get a code/i })).toBeDisabled();
+    // aria-disabled, not disabled: a removed-from-tab-order button can never be
+    // reached to find out why it's unavailable.
+    const btn = screen.getByRole("button", { name: /get a code/i });
+    expect(btn).toHaveAttribute("aria-disabled", "true");
+    expect(btn).toHaveAccessibleDescription(/stopped working/i);
   });
 
   it("shows a live shared code with its cap and expiry", async () => {

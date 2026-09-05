@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import posthog from "posthog-js";
 import { PromoBoard } from "@/components/PromoBoard";
 import type { CustomCodeView, PromoBatchView } from "@/components/PromoBoard";
@@ -33,6 +33,20 @@ export function PromoGate({
   const [badPassword, setBadPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  // Unlocking replaces the form with the board, so focus would otherwise fall
+  // to <body>. Errors already moved focus; success — the path that runs a
+  // hundred times an event — did not.
+  useEffect(() => {
+    if (rep !== null) boardRef.current?.focus();
+  }, [rep]);
+
+  // rAF isn't guaranteed to run after React has committed, so the ref could be
+  // null. An effect keyed on the error is.
+  useEffect(() => {
+    if (error && rep === null) errorRef.current?.focus();
+  }, [error, rep]);
 
   const refresh = useCallback(async () => {
     try {
@@ -75,7 +89,6 @@ export function PromoGate({
       if (!res.ok) {
         setBadPassword(res.status === 401);
         setError(data.error ?? "That password isn't right.");
-        requestAnimationFrame(() => errorRef.current?.focus());
         return;
       }
 
@@ -91,7 +104,6 @@ export function PromoGate({
     } catch {
       setBadPassword(false);
       setError("Couldn't reach the server. Check your connection and try again.");
-      requestAnimationFrame(() => errorRef.current?.focus());
     } finally {
       setBusy(false);
     }
@@ -107,7 +119,7 @@ export function PromoGate({
 
   if (rep !== null) {
     return (
-      <>
+      <div ref={boardRef} tabIndex={-1}>
         {error && (
           <p role="alert" className="mt-8 rounded-[var(--radius-card)] border p-4">
             {error}
@@ -120,7 +132,7 @@ export function PromoGate({
           onRefresh={refresh}
           onSignOut={signOut}
         />
-      </>
+      </div>
     );
   }
 
@@ -155,7 +167,7 @@ export function PromoGate({
           autoComplete="name"
           maxLength={120}
           aria-describedby="rep-hint"
-          className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-raised)] px-4 py-3 text-[var(--text-primary)]"
+          className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-4 py-3 text-[var(--text-primary)]"
         />
       </div>
 
@@ -171,7 +183,7 @@ export function PromoGate({
           autoComplete="current-password"
           aria-invalid={badPassword ? true : undefined}
           aria-describedby={badPassword ? "password-err" : undefined}
-          className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-raised)] px-4 py-3 text-[var(--text-primary)]"
+          className="mt-2 w-full rounded-[var(--radius-btn)] border bg-[var(--bg-subtle)] px-4 py-3 text-[var(--text-primary)]"
         />
         {badPassword && (
           <span id="password-err" className="sr-only">

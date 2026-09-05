@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import posthog from "posthog-js";
+import { Button } from "@/components/Button";
+import { PromoCode, spellCode } from "@/components/PromoCode";
 
 /**
  * Recipient-facing redeem panel. Shows the code, a copy button, and the big
@@ -63,22 +65,20 @@ export function RedeemActions({
 
   return (
     <div>
-      <p className="text-sm font-medium text-[var(--text-muted)]">Your code</p>
-      <div className="mt-2 flex items-center gap-3">
-        <p
-          className="select-all font-display text-2xl tracking-wide text-[var(--text-primary)]"
-          style={{ wordBreak: "break-all" }}
-          aria-label={`Your ${durationLabel} code is ${code.split("").join(" ")}`}
-        >
-          {code}
-        </p>
-        <button
-          type="button"
+      <p className="text-sm font-medium text-[var(--text-secondary)]">Your code</p>
+      <div className="mt-2 flex flex-wrap items-center gap-3">
+        {/* Was an aria-label on a <p>, which ARIA prohibits (role="paragraph"
+            takes no author name) — axe reports it only as "incomplete", so it
+            silently did nothing. A visually-hidden sibling works everywhere. */}
+        <PromoCode code={code} label={`Your ${durationLabel} code`} />
+        <Button
+          variant="secondary"
+          className="shrink-0"
           onClick={copyCode}
-          className="shrink-0 rounded-[var(--radius-btn)] border px-3 py-2 text-sm"
+          aria-label={`Copy — code ${spellCode(code)}`}
         >
           Copy
-        </button>
+        </Button>
       </div>
 
       <a
@@ -90,7 +90,7 @@ export function RedeemActions({
         Redeem in the App Store
       </a>
 
-      <p aria-live="polite" className="sr-only">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {message}
       </p>
     </div>
