@@ -9,8 +9,8 @@ export interface QrShape {
 
 /**
  * Encode `text` into a QR Code and return an SVG `<path>` shape plus the
- * grid size. Rendering (colours, quiet-zone, sizing) is left to the caller
- * so it can pick brand colours and accessible markup.
+ * grid size. Rendering (colors, quiet-zone, sizing) is left to the caller
+ * so it can pick brand colors and accessible markup.
  *
  * Medium error correction keeps codes readable even if a phone camera
  * catches them at an angle across a conference table.

@@ -14,7 +14,7 @@ type Search = Promise<{ rep?: string }>;
  * Never let a database hiccup turn into a 500 for someone holding a code —
  * but distinguish the two failures. "Not found" means the link really is
  * dead; an error on our side must not be reported to the recipient as a dead
- * code, or a misconfiguration reads to them as a cancelled trial.
+ * code, or a misconfiguration reads to them as a canceled trial.
  */
 type Lookup =
   | { state: "found"; code: Awaited<ReturnType<typeof findBySlug>> & object }

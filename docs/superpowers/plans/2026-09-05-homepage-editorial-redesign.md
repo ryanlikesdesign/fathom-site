@@ -133,14 +133,14 @@ export const COPY = {
     eyebrow: "Walk in",
     title: "You walk in. Fathom keeps talking.",
     body: "Lookout narrates what's around you as it changes: doors, signs, people, the thing in your path. Obstacle alerts come through your phone as a tap in under 100 milliseconds, and they keep working with no signal at all.",
-    captions: ["Glass doors ahead, opening.", "Reception desk at 11 o'clock, about six metres.", "Person approaching from your left."],
+    captions: ["Glass doors ahead, opening.", "Reception desk at 11 o'clock, about six meters.", "Person approaching from your left."],
     tier: "free" as Tier,
   },
   findIt: {
     eyebrow: "Find it",
     title: "Say where. Fathom walks you there.",
-    body: "Directions on a clock face, in metres, updated as you move.",
-    captions: ["The counter is at 2 o'clock, about eight metres.", "Turn slightly right.", "Two metres. It's in front of you."],
+    body: "Directions on a clock face, in meters, updated as you move.",
+    captions: ["The counter is at 2 o'clock, about eight meters.", "Turn slightly right.", "Two meters. It's in front of you."],
     tier: "plus" as Tier,
   },
   doIt: {
@@ -163,7 +163,7 @@ export const COPY = {
     title: "Point at anything. Fathom tells you what it is, then what it says.",
     body: "Hold a point for about a second. You feel a tap, hear the earcon, and get the answer in three parts: the thing in a few words, any words on it read exactly, then the rest. LiDAR measures the distance to what you're pointing at, so it describes what is there instead of guessing. Sweep to something else to hear about that too.",
     where: "Hands-free in Lookout and Go. From the Snapshot menu anywhere.",
-    beats: ["A vending machine.", "Buttons read: Water, Cola, Coffee. Coffee is sold out.", "Card reader on the right side, about a metre away."],
+    beats: ["A vending machine.", "Buttons read: Water, Cola, Coffee. Coffee is sold out.", "Card reader on the right side, about a meter away."],
     snapshotIntro: "Snapshot's other options, by name:",
     tier: "free" as Tier,
   },
@@ -245,7 +245,7 @@ export function Phone({ activeTab, label, children }: {
   children: React.ReactNode;   // the screen
 })
 ```
-The frame is `role="img"` with `aria-label={label}` **and** the caption text inside stays readable: put captions in a sibling `<ul className="sr-only">` in each beat rather than inside the `role="img"` node, so VoiceOver reads them in order after the image name. Status bar shows `9:41`. Tab bar is four `<span>`s with the active one marked `aria-current="true"`. All colours from tokens; the screen background is `--bg-elevated`.
+The frame is `role="img"` with `aria-label={label}` **and** the caption text inside stays readable: put captions in a sibling `<ul className="sr-only">` in each beat rather than inside the `role="img"` node, so VoiceOver reads them in order after the image name. Status bar shows `9:41`. Tab bar is four `<span>`s with the active one marked `aria-current="true"`. All colors from tokens; the screen background is `--bg-elevated`.
 
 - [ ] **Step 4: Run** → PASS. **Step 5: Commit.**
 
@@ -259,8 +259,8 @@ The frame is `role="img"` with `aria-label={label}` **and** the caption text ins
 
 Each screen is a pure component. Rules from the spec: fewer elements than the app, sized up, only real labels. Required elements, from the captures and `ACTIVE_MODE_CONTROLS`:
 
-- **Home:** the five mode tiles from `MODES` with subtitles; the Snapshot tile is a split control with a chevron labelled "Snapshot options".
-- **Lookout / Go / LiveTask:** a caption area (props: `captions: string[]`), a primary **Ask Fathom**, a Snapshot icon button, one **End** tile, a **More** (⋯) icon. Go also shows a clock-face dial (`props: bearing: number, metres: number`). LiveTask shows a push-to-talk ring and a **Beta** chip. No Awareness pill on screen; it's inside More in the app.
+- **Home:** the five mode tiles from `MODES` with subtitles; the Snapshot tile is a split control with a chevron labeled "Snapshot options".
+- **Lookout / Go / LiveTask:** a caption area (props: `captions: string[]`), a primary **Ask Fathom**, a Snapshot icon button, one **End** tile, a **More** (⋯) icon. Go also shows a clock-face dial (`props: bearing: number, meters: number`). LiveTask shows a push-to-talk ring and a **Beta** chip. No Awareness pill on screen; it's inside More in the app.
 - **Assistant:** the goal, the plan list, chips **Activities** and **Ask Fathom**.
 - **Point:** a hand outline and the three-beat answer (`props: beats: [string, string, string]`), each beat a `<p>` with a `data-beat` index for the animation.
 

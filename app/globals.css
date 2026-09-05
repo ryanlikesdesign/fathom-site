@@ -28,7 +28,7 @@
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
 
-  /* QR colours are functional, not thematic — they must stay dark-on-light in
+  /* QR colors are functional, not thematic — they must stay dark-on-light in
      BOTH themes or the code stops scanning. Deliberately outside the
      [data-theme] blocks for that reason. Warm ink, never pure #000/#FFF;
      14.71:1, far past any scanner's requirement. */

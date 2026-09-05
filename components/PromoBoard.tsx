@@ -89,7 +89,7 @@ export function PromoBoard({
   );
 
   // A held code may have been sent or released from another device — drop any
-  // pointer the server no longer recognises as still reserved.
+  // pointer the server no longer recognizes as still reserved.
   const verified = useRef(false);
   useEffect(() => {
     if (verified.current) return;
@@ -400,10 +400,10 @@ function BatchPanel({
         await recordShare("web_share", "Shared, and marked as handed out.");
       } catch (err) {
         // AbortError IS the cancellation. This was inverted, so cancelling was
-        // silent and a genuine failure was reported as "cancelled" — either way
+        // silent and a genuine failure was reported as "canceled" — either way
         // leaving the rep unsure whether they still held the code.
         if ((err as Error)?.name === "AbortError") {
-          announce("Sharing cancelled. You still have this code.");
+          announce("Sharing canceled. You still have this code.");
         } else {
           announce("Sharing didn't work. You still have this code — try Copy instead.");
         }
@@ -498,7 +498,7 @@ function BatchPanel({
           <div className="justify-self-center">
             {/* Warm bone rather than pure #FFF: a 176px white block on a dark
                 page is a halation source for exactly this audience. Still
-                15.6:1 against the module colour — far past what scanners need. */}
+                15.6:1 against the module color — far past what scanners need. */}
             <div className="rounded-[var(--radius-card)] bg-[var(--qr-field)] p-3 shadow-[var(--shadow-floating)]">
               {qr && (
                 <svg
@@ -621,7 +621,7 @@ function BatchPanel({
 
 /* ---------------------------------------------------------------- */
 
-/** Colour never carries the meaning alone — the badge always says the word. */
+/** Color never carries the meaning alone — the badge always says the word. */
 function ExpiryBadge({ expired, label }: { expired: boolean; label: string }) {
   return (
     <span

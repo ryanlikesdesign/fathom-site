@@ -249,7 +249,7 @@ describe("PromoBoard handing out a code", () => {
     );
   });
 
-  it("spells the code out for screen readers without labelling a paragraph", async () => {
+  it("spells the code out for screen readers without labeling a paragraph", async () => {
     mockApi();
     await unlock();
     await userEvent.click(screen.getAllByRole("button", { name: /get a code/i })[0]);

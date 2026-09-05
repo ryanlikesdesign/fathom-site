@@ -30,7 +30,7 @@ export async function GET(_request: Request, { params }: { params: Params }) {
 
 /**
  * Move a code along: handed over, put back, or confirmed redeemed.
- * "redeemed" is a human judgement — Apple never reports which code was used.
+ * "redeemed" is a human judgment — Apple never reports which code was used.
  */
 export async function PATCH(request: Request, { params }: { params: Params }) {
   const auth = await requireRep();

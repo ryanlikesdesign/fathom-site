@@ -87,7 +87,7 @@ export const COPY = {
     body: "Lookout narrates what's around you as it changes: doors, signs, people, the thing in your path. Obstacle alerts come through your phone as a tap in under 100 milliseconds, and they keep working with no signal at all.",
     captions: [
       "Glass doors ahead, opening.",
-      "Reception desk at 11 o'clock, about six metres.",
+      "Reception desk at 11 o'clock, about six meters.",
       "Person approaching from your left.",
     ],
     tier: "free" as Tier,
@@ -101,11 +101,11 @@ export const COPY = {
     slug: "find-it",
     eyebrow: "Find it",
     title: "Say where. Fathom walks you there.",
-    body: "Directions on a clock face, in metres, updated as you move.",
+    body: "Directions on a clock face, in meters, updated as you move.",
     captions: [
-      "The counter is at 2 o'clock, about eight metres.",
+      "The counter is at 2 o'clock, about eight meters.",
       "Turn slightly right.",
-      "Two metres. It's in front of you.",
+      "Two meters. It's in front of you.",
     ],
     tier: "plus" as Tier,
   },
@@ -135,7 +135,7 @@ export const COPY = {
     beats: [
       "A vending machine.",
       "Buttons read: Water, Cola, Coffee. Coffee is sold out.",
-      "Card reader on the right side, about a metre away.",
+      "Card reader on the right side, about a meter away.",
     ] as const,
     snapshotIntro: "Snapshot's other options, by name.",
     tier: "free" as Tier,

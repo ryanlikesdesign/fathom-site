@@ -430,12 +430,15 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- ASSISTANT - ACTIVE SESSION ---------- */
 .as-active-pad{padding-top:10px}
-.as-active-bar{display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:4px}
+/* Controls on one row, the session title on its own line beneath — three
+   things in one 176px row was cramped. */
+.as-active-bar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; padding-top:4px}
+.as-active-center{flex-basis:100%; order:3; text-align:left; padding-top:12px}
+.as-active-center .as-eyebrow{margin-bottom:4px}
 .as-active-end{background:transparent; border:0; color:var(--s-red); font-size:14px; font-weight:600; display:inline-flex; align-items:center; gap:2px}
 .as-active-x{font-size:18px; line-height:1}
 .as-active-done{background:transparent; border:0; color:var(--s-green-text); font-size:14px; font-weight:600}
-.as-active-center{text-align:center; flex:1}
-.as-active-title{margin:0; font-size:15px; font-weight:700; color:var(--s-ink); letter-spacing:-0.01em; line-height:1.2}
+.as-active-title{margin:0; font-size:17px; font-weight:700; color:var(--s-ink); letter-spacing:-0.01em; line-height:1.2}
 .as-active-dots{display:flex; gap:7px; justify-content:flex-start; padding:14px 0 0}
 .as-dot{width:8px; height:8px; border-radius:50%; background:var(--s-line-strong)}
 .as-dot-on{background:var(--s-accent-text)}

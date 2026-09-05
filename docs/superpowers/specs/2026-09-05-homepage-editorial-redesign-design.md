@@ -50,9 +50,9 @@ Principles: direct, concrete, second person, no em dashes in short copy, no list
 
 **1 · Walk in.** *You walk in. Fathom keeps talking.* Lookout narrates what's around you as it changes. Obstacle alerts arrive through haptics in under 100 ms and keep working with no connection. Pointing works hands-free here.
 
-**2 · Find it.** *Say where. Fathom walks you there.* Directions on a clock face: *the counter is at 2 o'clock, about eight metres.* Pointing works hands-free here too.
+**2 · Find it.** *Say where. Fathom walks you there.* Directions on a clock face: *the counter is at 2 o'clock, about eight meters.* Pointing works hands-free here too.
 
-**3 · Do it.** *The form. The kiosk. The thing you came for.* Task guides step by step. Live Task adds push-to-talk voice and is labelled beta, as it is in the app.
+**3 · Do it.** *The form. The kiosk. The thing you came for.* Task guides step by step. Live Task adds push-to-talk voice and is labeled beta, as it is in the app.
 
 **4 · Plan it.** *Tell it the goal. It makes the plan and runs it.* Assistant turns a goal into steps and hands off to the right mode.
 
@@ -149,4 +149,4 @@ Reported for the decision log: `.mode-actions` / `.mode-primary` / `.mode-icon`
 vocabulary), `.snap-anchor` / `.snap-menu`, `.pt-*` for the pointing state, and
 `.step-example` for a quoted spoken example inside a step, all in
 `components/fathom-landing.css`. One new screen token, `--s-shadow-pop`, in both
-theme blocks, for floating menus inside the phones. No new colour tokens.
+theme blocks, for floating menus inside the phones. No new color tokens.
