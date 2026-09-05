@@ -92,6 +92,11 @@ export const COPY = {
     ],
     tier: "free" as Tier,
   },
+  // Two Go claims on the landing page are pinned here by source, not by text:
+  // "down to where the door handle is" — Config/SystemPrompts.swift, Go arrival
+  // example ("Door handle is at about 3 o'clock"); "obstacle alerts pulse faster
+  // as you approach" — Features/Lookout/FathomViewModel.swift, proximity pulse
+  // interval shortens from proximityPulseIntervalFar as wall distance drops.
   findIt: {
     slug: "find-it",
     eyebrow: "Find it",

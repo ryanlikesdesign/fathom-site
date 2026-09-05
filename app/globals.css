@@ -187,25 +187,6 @@ p { hanging-punctuation: first; }
    codes or URLs, which set their own breaking. */
 p { -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 8 4 4; }
 
-/* ── Scroll-driven motion ────────────────────────────────────────────
-   A section with .beat owns a view timeline; its children pick a range
-   of it, so motion scrubs with scroll and reverses when the reader does.
-   Compositor-only properties. Inert on any page without .beat. The
-   reduced-motion block below removes every animation, so each element's
-   finished keyframe is its resting state. */
-.beat { view-timeline-name: --beat; view-timeline-axis: block; }
-.rise   { animation: rise linear both;   animation-timeline: --beat; animation-range: entry 10% entry 60%; }
-.settle { animation: settle linear both; animation-timeline: --beat; animation-range: entry 0% cover 40%; }
-.stagger > * { animation: rise linear both; animation-timeline: --beat; }
-.stagger > :nth-child(1) { animation-range: entry 15% entry 55%; }
-.stagger > :nth-child(2) { animation-range: entry 30% entry 70%; }
-.stagger > :nth-child(3) { animation-range: entry 45% entry 85%; }
-.stagger > :nth-child(n+4) { animation-range: entry 55% entry 95%; }
-@keyframes rise   { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-@keyframes settle { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
-@supports not (animation-timeline: view()) {
-  .rise, .settle, .stagger > * { animation: none; }
-}
 
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 

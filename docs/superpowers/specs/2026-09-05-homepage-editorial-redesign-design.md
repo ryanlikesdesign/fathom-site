@@ -97,6 +97,56 @@ Performance: no jank on an iPhone 12 at 60 fps; Lighthouse performance stays at 
 - jest-axe on the new landing sections; a test that every beat has an `h2`; a test that the mode labels match a fixture derived from the app.
 - Both project reviewers run on the result.
 
+## Revision, same day
+
+The nine-beat rebuild described above was implemented, reviewed by Ryan, and
+rejected: structurally right, visually far weaker than the page it replaced.
+The decision was to rebuild **inside the existing visual system** rather than
+replace it. What shipped instead:
+
+- The previous landing (hero, "The gap", the scrolly with its crafted iOS
+  screens, "Everywhere", "Spectrum", download) stays, with its CSS intact.
+- Every mockup control that the app doesn't have is replaced by the real
+  active-mode footer (Ask Fathom · Snapshot · End) with More actions as a flat
+  icon in the top bar. The Awareness pill is removed from screens; it lives
+  inside More actions in the app. Live Task's chip reads BETA.
+- Two scrolly steps are added in the same visual language: **Snapshot** (the
+  Home screen with its five-option menu open) and **Point to ask**.
+- Copy fixes: five modes including Assistant; Awareness levels named as the
+  app names them; "several times a second" instead of "10 fps"; "Directional
+  sound" instead of "Spatial audio … ahead, behind"; the Plus tier and price
+  stated on the download card; em dashes removed from short copy.
+- Mockup `<button>`s become `<span>`s: nothing focusable inside an
+  `aria-hidden` phone. The landing's own `:focus-visible` and `.skip-link`
+  overrides are removed; `globals.css` owns those.
+- `lib/landing-content.ts` and its tests remain the source of every
+  app-derived label; `test/landing.test.tsx` holds the page to it.
+- The `Phone` component, six screens, nine beat components and the
+  scroll-timeline utilities are deleted. `ModeCard.tsx` stays deleted.
+
+Both reviewers ran on the result. Applied: step headings' muted half and the
+whisper line moved from `--fg-tertiary` to `--fg-secondary` (the tertiary pair
+was 3.3:1 in dark); inactive scrolly steps stay dimmed but go to full opacity
+under `prefers-contrast: more`; the pointing example is now visible text in the
+Point step (it was only inside the hidden phones); the Snapshot chevron is an
+SVG in `--s-on-accent` (it was invisible on its own background); `title`
+attributes and dead ARIA came off the mockups; the mobile phones' footer no
+longer wraps "Ask Fathom"; the Point stage centres like Lookout's; the Home step
+reuses `HomeScreen` instead of a second copy of the markup; the dead
+`.seg-*`, `.lk-action*`, `.go-action*` and `.live-*` control rules are gone.
+Not applied: replacing the 28% dimming of inactive steps, which is part of the
+scrolly's design; recorded here as a known AAA gap for low-vision readers
+using magnification without `prefers-contrast`.
+
+Motion is the page's existing reveal-on-scroll and scrolly screen switching.
+The scroll-scrubbed choreography in the section above is not shipped; if it
+returns, it should be applied to the existing screens, not to new ones.
+
 ## Design-system additions
 
-Reported for the decision log: a `Phone` frame component; whatever scroll-timeline utilities are needed in `globals.css`. No new colour tokens are expected.
+Reported for the decision log: `.mode-actions` / `.mode-primary` / `.mode-icon`
+/ `.mode-end` / `.mode-more` (the real active-mode footer, in the screen-token
+vocabulary), `.snap-anchor` / `.snap-menu`, `.pt-*` for the pointing state, and
+`.step-example` for a quoted spoken example inside a step, all in
+`components/fathom-landing.css`. One new screen token, `--s-shadow-pop`, in both
+theme blocks, for floating menus inside the phones. No new colour tokens.
