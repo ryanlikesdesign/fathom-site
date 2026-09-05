@@ -72,3 +72,31 @@ describe("screens use only controls the app has", () => {
     expect(beats).toEqual(["A vending machine.", "Buttons read: Water.", "Card reader on the right."]);
   });
 });
+
+describe("the composed homepage", () => {
+  it("is nine sections, each with a heading, and passes axe", async () => {
+    const { FathomLanding } = await import("@/components/FathomLanding");
+    const { container } = render(<FathomLanding />);
+
+    const sections = container.querySelectorAll("section[aria-labelledby]");
+    expect(sections.length).toBe(9);
+    sections.forEach((s) => expect(s.querySelector("h1, h2")).not.toBeNull());
+
+    // The story, in order, by heading.
+    const headings = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+    expect(headings[0]).toMatch(/You walk in/);
+    expect(headings[1]).toMatch(/Say where/);
+    expect(headings[2]).toMatch(/The form/);
+    expect(headings[3]).toMatch(/Tell it the goal/);
+    expect(headings[4]).toMatch(/Point at anything/);
+
+    // The 1.2.0 features are on the page by their real names.
+    expect(screen.getByText("What am I pointing at")).toBeInTheDocument();
+    expect(screen.getByText("Read a screen")).toBeInTheDocument();
+
+    // Spoken lines exist as text, not only inside the phone pictures.
+    expect(screen.getByRole("list", { name: "The answer, in three parts" })).toBeInTheDocument();
+
+    expect(await axe(container)).toHaveNoViolations();
+  });
+});
