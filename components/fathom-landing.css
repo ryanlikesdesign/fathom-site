@@ -607,7 +607,7 @@ a{color:inherit;text-decoration:none}
 .everywhere{padding:clamp(80px,14vh,160px) clamp(20px,5vw,80px);max-width:1100px;margin:0 auto;position:relative}
 .everywhere-inner .eyebrow{margin:0 0 16px}
 .everywhere-inner h2{margin:0 0 40px;font-size:clamp(40px,6vw,80px);font-weight:500;letter-spacing:-0.03em;line-height:1.02}
-.everywhere-inner h2 .muted{color:var(--fg-tertiary);font-weight:400}
+.everywhere-inner h2 .muted{color:var(--fg-secondary);font-weight:400}
 .everywhere-body{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);max-width:960px}
 .everywhere-body p{margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.55;color:var(--fg-secondary);text-wrap:pretty}
 @media (max-width:760px){.everywhere-body{grid-template-columns:1fr}}
