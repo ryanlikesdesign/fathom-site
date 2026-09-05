@@ -10,19 +10,31 @@ export const dynamic = "force-dynamic";
 type Params = Promise<{ id: string }>;
 type Search = Promise<{ rep?: string }>;
 
-/** Never let a database hiccup turn into a 500 for someone holding a code. */
-async function lookup(slug: string) {
+/**
+ * Never let a database hiccup turn into a 500 for someone holding a code —
+ * but distinguish the two failures. "Not found" means the link really is
+ * dead; an error on our side must not be reported to the recipient as a dead
+ * code, or a misconfiguration reads to them as a cancelled trial.
+ */
+type Lookup =
+  | { state: "found"; code: Awaited<ReturnType<typeof findBySlug>> & object }
+  | { state: "missing" }
+  | { state: "unavailable" };
+
+async function lookup(slug: string): Promise<Lookup> {
   try {
-    return await findBySlug(slug);
+    const found = await findBySlug(slug);
+    return found ? { state: "found", code: found } : { state: "missing" };
   } catch (err) {
     console.error("[promo] redeem page lookup failed:", err);
-    return null;
+    return { state: "unavailable" };
   }
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = await params;
-  const found = await lookup(id);
+  const result = await lookup(id);
+  const found = result.state === "found" ? result.code : null;
 
   if (!found) {
     return {
@@ -55,7 +67,8 @@ export default async function RedeemPage({
 }) {
   const { id } = await params;
   const { rep } = await searchParams;
-  const found = await lookup(id);
+  const result = await lookup(id);
+  const found = result.state === "found" ? result.code : null;
 
   if (found) {
     const userAgent = (await headers()).get("user-agent");
@@ -108,6 +121,20 @@ export default async function RedeemPage({
               <li>Fathom installs free, and your trial starts right away.</li>
             </ol>
           </details>
+        </div>
+      ) : result.state === "unavailable" ? (
+        <div className="mt-10 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
+          <h1 id="redeem-h" className="font-display text-3xl">
+            We can&apos;t check this link right now
+          </h1>
+          <p className="mt-3 text-[var(--text-secondary)]">
+            Something on our end isn&apos;t responding — this isn&apos;t a problem with your code.
+            Please try again in a few minutes, or email{" "}
+            <a href="mailto:support@fathomvision.app" className="underline underline-offset-4">
+              support@fathomvision.app
+            </a>{" "}
+            and we&apos;ll sort it out.
+          </p>
         </div>
       ) : (
         <div className="mt-10 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">

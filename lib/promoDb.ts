@@ -10,9 +10,30 @@
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+/**
+ * Names only, never values — this text is shown in the UI. Saying which
+ * variable is missing turns "it doesn't work" into a one-line fix; the
+ * previous message named both and left you guessing which environment or
+ * spelling was wrong.
+ */
+function missingVars(): string[] {
+  const missing: string[] = [];
+  if (!SUPABASE_URL) missing.push("SUPABASE_URL");
+  if (!SERVICE_KEY) missing.push("SUPABASE_SERVICE_ROLE_KEY");
+  return missing;
+}
+
 export class PromoDbUnconfigured extends Error {
   constructor() {
-    super("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to use the promo tools.");
+    const missing = missingVars();
+    const present = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"].filter(
+      (n) => !missing.includes(n),
+    );
+    super(
+      `Missing in this environment: ${missing.join(", ")}.` +
+        (present.length ? ` (${present.join(", ")} is set.)` : "") +
+        " Check the name is exact and that it's scoped to Production.",
+    );
     this.name = "PromoDbUnconfigured";
   }
 }
