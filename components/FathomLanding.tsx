@@ -481,47 +481,27 @@ export function FathomLanding() {
                 </div>
               </div>
 
-              {/* Screen: Assistant Active */}
+              {/* Screen: Assistant Active — AssistantActiveSessionView.swift: the shared
+                  ActiveModeShell (Ask Fathom + End, ⋯ menu), step number in the shell
+                  title, 120pt orb, step text, executor status, one "Next Step" button. */}
               <div className="screen screen-assistant screen-assistant-active" data-screen="assistant-active">
                 <IosStatus time="7:03" />
                 <div className="screen-pad as-active-pad">
-                  <div className="as-active-bar">
-                    <span className="as-active-end"><span className="as-active-x">&times;</span> End</span>
-                    <div className="as-active-center">
-                      <p className="as-eyebrow as-eyebrow-blue">ACTIVE SESSION</p>
-                      <p className="as-active-title">Organize my mail</p>
-                    </div>
-                    <span className="as-active-done">&check; Done</span>
+                  <div className="lk-nav">
+                    <span className="lk-back"><span className="chev-left">&lsaquo;</span> Home</span>
+                    <span className="pill-ai"><span className="pill-ai-dot" />AI Enabled</span>
+                    <span className="mode-more"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></span>
                   </div>
-                  <div className="as-active-dots" aria-hidden="true">
-                    <span className="as-dot as-dot-on" /><span className="as-dot" /><span className="as-dot" /><span className="as-dot" />
-                  </div>
-                  <div className="as-step-card">
-                    <div className="as-step-head">
-                      <span className="as-step-eyebrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
-                        STEP 1 OF 4
-                      </span>
-                      <span className="as-step-go">Go</span>
-                    </div>
+                  <p className="as-eyebrow as-eyebrow-blue as-shell-title">STEP 1 OF 4</p>
+                  <p className="as-active-title">Organize my mail</p>
+                  <div className="as-active-stage">
+                    <VoiceOrbIdle className="as-active-orb" />
                     <p className="as-step-text">Navigate to the kitchen where the mail is located.</p>
-                    <div className="as-step-footer">
-                      <span className="as-step-analyzing"><span className="as-spin" aria-hidden="true" />Analyzing&hellip;</span>
-                      <span className="as-step-complete">Mark<br/>Complete</span>
-                    </div>
-                    <div className="as-step-arrows">
-                      <span className="as-step-arrow">&lsaquo;</span>
-                      <span className="as-step-arrow">&rsaquo;</span>
-                    </div>
+                    <span className="as-step-analyzing"><span className="as-spin" aria-hidden="true" />Analyzing&hellip;</span>
+                    <span className="as-next-step">Next Step</span>
                   </div>
                 </div>
-                <div className="as-active-footer">
-                  <span className="as-active-ask">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="10" y="3" width="4" height="11" rx="2"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v3"/></svg>
-                    Ask Fathom
-                  </span>
-                  <span className="as-active-plus">+</span>
-                </div>
+                <div className="mode-actions mode-actions-2"><span className="mode-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="10" y="3" width="4" height="11" rx="2"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v3"/></svg>Ask Fathom</span><span className="mode-end">End</span></div>
               </div>
 
               {/* Screen: Lookout */}
@@ -660,7 +640,7 @@ export function FathomLanding() {
             <p className="eyebrow">Active session</p>
             <h2>One step at a time,<br/><span className="muted">hands free.</span></h2>
             <p className="step-body">Once you accept, Fathom runs the plan step by step. Each screen is focused on one thing &mdash; walk here, look at this, do that &mdash; and Ask Fathom stays within reach if the world changes.</p>
-            <p className="step-whisper">End the session any time. Mark steps complete by voice or tap.</p>
+            <p className="step-whisper">End the session any time. Move on with a tap, or shake when a step is done.</p>
           </div>
         </div>
       </section>

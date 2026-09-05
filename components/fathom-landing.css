@@ -123,8 +123,12 @@ a{color:inherit;text-decoration:none}
 /* ================================================================
    REVEAL (scroll-triggered fade-up)
 ================================================================ */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 700ms var(--ease-standard),transform 700ms var(--ease-standard)}
+.reveal{opacity:0;transform:perspective(1000px) translate3d(0,26px,-60px) rotateX(2.2deg);transition:opacity 760ms var(--ease-standard),transform 760ms var(--ease-standard)}
 .reveal.is-in{opacity:1;transform:none}
+/* Cards arrive one after another, so the row reads as depth, not a block. */
+.spectrum-grid .reveal:nth-child(2){transition-delay:80ms}
+.spectrum-grid .reveal:nth-child(3){transition-delay:160ms}
+.spectrum-grid .reveal:nth-child(4){transition-delay:240ms}
 
 /* ================================================================
    PROBLEM
@@ -141,7 +145,7 @@ a{color:inherit;text-decoration:none}
 /* ================================================================
    SCROLLY — phone + steps
 ================================================================ */
-.scrolly{
+.scrolly{view-timeline-name:--scrolly;
   position:relative;
   display:grid;
   grid-template-columns:minmax(320px, 420px) 1fr;
@@ -151,7 +155,15 @@ a{color:inherit;text-decoration:none}
   align-items:start;
 }
 .scrolly-sticky{position:sticky;top:72px;height:calc(100vh - 72px);display:flex;align-items:center;justify-content:center;padding:24px 0}
-.scrolly-sticky .phone{width:auto;height:min(780px,calc(100vh - 140px));aspect-ratio:9/19.5;max-width:100%}
+.scrolly-sticky{perspective:1600px}
+/* The screens are drawn for a 780px phone. Short windows scale the whole
+   device down rather than squeezing its contents past the footer. */
+.scrolly-sticky .phone{--phone-scale:1;width:auto;height:780px;aspect-ratio:9/19.5;max-width:100%;transform:scale(var(--phone-scale));transform-origin:center}
+@media (max-height:940px){.scrolly-sticky .phone{--phone-scale:.92}}
+@media (max-height:880px){.scrolly-sticky .phone{--phone-scale:.85}}
+@media (max-height:800px){.scrolly-sticky .phone{--phone-scale:.77}}
+@media (max-height:720px){.scrolly-sticky .phone{--phone-scale:.69}}
+@media (max-height:640px){.scrolly-sticky .phone{--phone-scale:.61}}
 
 /* ---------- Phone chassis ---------- */
 .phone{
@@ -220,7 +232,7 @@ a{color:inherit;text-decoration:none}
 .ios-dots,.ios-bars,.ios-wifi,.ios-batt{display:none}
 
 /* ---------- Shared padding ---------- */
-.screen-pad{padding:4px 24px 0;flex:1;display:flex;flex-direction:column;min-height:0}
+.screen-pad{padding:4px 24px 0;flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 
 /* ---------- Shared pills ---------- */
 .pill-ai{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--s-ink-2);letter-spacing:-0.005em}
@@ -240,17 +252,18 @@ a{color:inherit;text-decoration:none}
 .home-tag{text-align:left;margin:8px 0 20px;font-size:13px;color:var(--s-ink-3);line-height:1.4}
 
 .home-snapshot{
-  width:100%;padding:18px 20px;
+  width:100%;padding:16px 16px 16px 18px;
   background:var(--s-accent);color:var(--s-on-accent);
   border-radius:16px;
-  display:flex;align-items:center;gap:14px;
+  display:flex;align-items:center;gap:12px;
   text-align:left;
 }
 .snap-icon{flex:none;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;color:var(--s-on-accent)}
 .snap-icon svg{width:24px;height:24px}
-.snap-text{display:flex;flex-direction:column;gap:2px}
+.snap-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .snap-title{font-size:17px;font-weight:700;letter-spacing:-0.01em}
-.snap-sub{font-size:12px;font-weight:400}
+/* Subtitle holds to two lines on the narrowest phone (280px). */
+.snap-sub{font-size:12px;font-weight:400;line-height:1.3;text-wrap:balance}
 
 .home-list{margin-top:12px;display:flex;flex-direction:column;background:var(--s-surface);border-radius:14px;overflow:hidden}
 .home-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-top:1px solid var(--s-line)}
@@ -433,64 +446,19 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- ASSISTANT - ACTIVE SESSION ---------- */
 .as-active-pad{padding-top:10px}
-/* Controls on one row, the session title on its own line beneath — three
-   things in one 176px row was cramped. */
-.as-active-bar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; padding-top:4px}
-.as-active-center{flex-basis:100%; order:3; text-align:left; padding-top:12px}
-.as-active-center .as-eyebrow{margin-bottom:4px}
-.as-active-end{background:transparent; border:0; color:var(--s-red); font-size:14px; font-weight:600; display:inline-flex; align-items:center; gap:2px}
-.as-active-x{font-size:18px; line-height:1}
-.as-active-done{background:transparent; border:0; color:var(--s-green-text); font-size:14px; font-weight:600}
+.as-shell-title{margin:14px 0 4px; text-align:left}
 .as-active-title{margin:0; font-size:17px; font-weight:700; color:var(--s-ink); letter-spacing:-0.01em; line-height:1.2}
-.as-active-dots{display:flex; gap:7px; justify-content:flex-start; padding:14px 0 0}
+.as-active-stage{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding:0 2px 10px}
+.as-active-orb{width:120px; height:120px}
+.as-active-stage .as-step-text{text-align:center}
+.as-next-step{width:100%; padding:12px; border-radius:10px; background:var(--s-green-fill); color:var(--s-on-accent); font-size:15px; font-weight:600; text-align:center}
+.mode-actions-2{grid-template-columns:1fr auto}
 .as-dot{width:8px; height:8px; border-radius:50%; background:var(--s-line-strong)}
 .as-dot-on{background:var(--s-accent-text)}
-.as-step-card{
-  margin-top:22px;
-  background:var(--s-surface);
-  border-radius:12px;
-  padding:12px 14px 12px;
-  box-shadow: 0 1px 0 rgba(14,16,19,.04);
-  position:relative;
-}
-.as-step-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px}
-.as-step-eyebrow{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--s-accent-text)}
-.as-step-eyebrow svg{width:10px; height:10px}
-.as-step-go{font-size:12px; font-weight:600; color:var(--s-accent-text)}
 .as-step-text{margin:0; font-size:15px; font-weight:700; color:var(--s-ink); letter-spacing:-0.01em; line-height:1.22}
-.as-step-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px; gap:8px}
 .as-step-analyzing{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--s-ink-4)}
 .as-spin{width:11px; height:11px; border-radius:50%; border:1.5px solid color-mix(in oklab, var(--s-accent-text) 25%, transparent); border-top-color:var(--s-accent-text); animation: spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.as-step-complete{
-  background:var(--s-green-fill); color:var(--s-on-accent);
-  border:0; border-radius:7px;
-  padding:6px 10px;
-  font-size:11px; font-weight:700;
-  letter-spacing:-0.01em;
-  line-height:1.1;
-  text-align:center;
-}
-.as-step-arrows{position:absolute; left:0; right:0; top:50%; margin-top:-2px; display:flex; justify-content:space-between; padding:0 2px; pointer-events:none}
-.as-step-arrow{font-size:22px; color:var(--s-line-strong); line-height:1; font-weight:300}
-.as-active-footer{position:absolute; left:16px; right:16px; bottom:20px; display:flex; gap:8px}
-.as-active-ask{
-  flex:1;
-  background:var(--s-accent); color:var(--s-on-accent);
-  border:0; border-radius:10px;
-  padding:11px 12px;
-  font-size:13px; font-weight:700;
-  display:inline-flex; align-items:center; justify-content:center; gap:6px;
-}
-.as-active-ask svg{width:14px; height:14px}
-.as-active-plus{
-  width:40px;
-  background:var(--s-surface);
-  border:1px solid var(--s-line);
-  border-radius:10px;
-  font-size:20px; font-weight:400; color:var(--s-ink-2);
-  line-height:1;
-}
 
 /* ---------- LOOKOUT ---------- */
 .lk-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0}
@@ -1037,3 +1005,51 @@ a{color:inherit;text-decoration:none}
 .pt-answer{display:flex;flex-direction:column;gap:6px;width:100%}
 .pt-answer p{margin:0;background:var(--s-surface);border-radius:12px;padding:9px 11px;font-size:13px;line-height:1.35;color:var(--s-ink)}
 .pt-answer p:first-child{font-weight:600}
+
+
+/* ── Scroll-driven depth (progressive enhancement) ─────────────────
+   Every resting state below is the page with no motion at all: engines
+   without scroll timelines, and readers with reduced motion, get the
+   static composition. Compositor-only properties. */
+.hero-phone .phone{
+  transform:perspective(1500px) rotateY(-13deg) rotateX(3deg) translateZ(0);
+  transition:transform 900ms var(--ease-gentle);
+}
+@supports (animation-timeline: scroll()){
+  /* Hero: the device straightens and settles as the page leaves. */
+  .hero-phone .phone{
+    animation:heroPhoneTurn linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 78vh;
+  }
+  @keyframes heroPhoneTurn{
+    from{transform:perspective(1500px) rotateY(-13deg) rotateX(3deg) translateZ(0) translateY(0)}
+    to{transform:perspective(1500px) rotateY(-2deg) rotateX(0deg) translateZ(60px) translateY(-26px)}
+  }
+  /* The sonar opens outward behind it, so the two move as one object. */
+  .hero-ripples{
+    animation:heroSonarDrift linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 78vh;
+  }
+  @keyframes heroSonarDrift{
+    from{transform:translateY(-50%) scale(1);opacity:1}
+    to{transform:translateY(-58%) scale(1.22);opacity:.35}
+  }
+  /* Scrolly: the phone turns slowly through the whole feature story. */
+  .scrolly-sticky .phone{
+    animation:stickyPhoneTurn linear both;
+    animation-timeline:--scrolly;
+    animation-range:contain 0% contain 100%;
+  }
+  @keyframes stickyPhoneTurn{
+    from{transform:perspective(1700px) rotateY(8deg) rotateX(1.4deg) scale(var(--phone-scale))}
+    50%{transform:perspective(1700px) rotateY(0deg) rotateX(0deg) scale(calc(var(--phone-scale) * 1.015))}
+    to{transform:perspective(1700px) rotateY(-8deg) rotateX(-1.4deg) scale(var(--phone-scale))}
+  }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-phone .phone,.hero-ripples,.scrolly-sticky .phone{animation:none !important;transition:none !important}
+  .hero-ripples{transform:translateY(-50%);opacity:1}
+  .scrolly-sticky .phone{transform:scale(var(--phone-scale))}
+}

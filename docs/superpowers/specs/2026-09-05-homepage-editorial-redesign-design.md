@@ -144,7 +144,29 @@ narrow for an app meant to make an inaccessible world usable: headline is now
 sentence per line under 600px), lede opens with "Most places were built
 without you in mind." The footer tagline and the OG image carry the same line.
 
-Motion is the page's existing reveal-on-scroll and scrolly screen switching.
+Mockup pass and motion, later the same day. The Assistant active-session
+screen was rebuilt against `AssistantActiveSessionView.swift`: it uses the
+shared ActiveModeShell, so it now shows the same Ask Fathom + End footer and
+⋯ menu as every other active mode, the step number in the shell title, a
+120pt orb, the step text, executor status and one Next Step button. The
+invented End/Done bar, step card, chevrons and "+" tile are gone, along with
+the `&check;` entity that was rendering literally. The Snapshot subtitle holds
+to two lines at every width. Short windows now scale the whole device
+(`--phone-scale`) instead of squeezing screens designed for a 780px phone,
+which was pushing content under the footers.
+
+Motion, added at Ryan's request and gated on `@supports (animation-timeline:
+scroll())`: the hero phone sits at a fixed 3D tilt and straightens, lifts and
+settles as the page scrolls away; the sonar rings drift outward and fade
+behind it; the scrolly phone turns slowly through the feature story on a
+`view-timeline` named on `.scrolly`. Reveals gained depth (translateZ plus a
+small rotateX) and the spectrum cards stagger. Every resting state is the
+static composition, so engines without scroll timelines and readers with
+reduced motion get the page whole, and the reduced-motion block names the
+three new animated elements explicitly.
+
+Motion is otherwise the page's existing reveal-on-scroll and scrolly screen
+switching.
 The scroll-scrubbed choreography in the section above is not shipped; if it
 returns, it should be applied to the existing screens, not to new ones.
 
