@@ -295,14 +295,14 @@ export function FathomLanding() {
         <div className="hero-inner">
           <p className="eyebrow hero-eyebrow">Now on the App Store</p>
           <h1 className="hero-title">
-            <span className="line-a">Navigate any</span>
-            <span className="line-b">building.</span>
-            <span className="line-c">Your first time in.</span>
+            <span className="line-a"><span className="line-part">Walk in.</span> <span className="line-part">Know the room.</span></span>
+            <span className="line-b line-accent">Do what you came for.</span>
           </h1>
           <p className="hero-lede">
-            Fathom is an AI companion for blind and low-vision people. It tells you
-            what&apos;s ahead, walks you to where you&apos;re going, and helps you do what
-            you came for. On your iPhone. No maps, no beacons, no setup.
+            Fathom is an AI companion for blind and low-vision people. Most places
+            were built without you in mind. Fathom tells you what&apos;s around you,
+            walks you to where you&apos;re going, and works through the task with you.
+            On your iPhone. No maps, no beacons, no setup.
           </p>
           <div className="hero-actions">
             <a href={APP_STORE_URL} className="btn btn-primary" target="_blank" rel="noopener noreferrer">

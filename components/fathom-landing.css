@@ -91,13 +91,16 @@ a{color:inherit;text-decoration:none}
 .hero-inner{position:relative;max-width:960px;z-index:2}
 .hero-eyebrow{margin:0 0 28px}
 .hero-title{font-family:var(--font-display);font-size:clamp(46px,5.6vw,84px);font-weight:500;line-height:1.02;letter-spacing:-0.035em;margin:0 0 36px;display:grid}
-.hero-title .line-c{color:var(--accent-signal)}
-[data-theme='light'] .hero-title .line-c{color:var(--fathom-700)}
+.hero-title .line-accent{color:var(--accent-signal)}
+[data-theme='light'] .hero-title .line-accent{color:var(--fathom-700)}
 .hero-title span{display:block}
-.hero-title .line-a,.hero-title .line-b,.hero-title .line-c{animation:none}
+.hero-title .line-part{display:inline}
+/* Narrow screens break between sentences, never inside one. */
+@media (max-width:600px){.hero-title .line-part{display:block}}
+.hero-title .line-a,.hero-title .line-b{animation:none}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-.hero-lede{max-width:640px;font-size:clamp(18px,1.6vw,22px);color:var(--fg-secondary);line-height:1.5;margin:0 0 40px;text-wrap:pretty}
+.hero-lede{max-width:700px;font-size:clamp(18px,1.6vw,22px);color:var(--fg-secondary);line-height:1.5;margin:0 0 40px;text-wrap:pretty}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 /* Hero phone — desktop only; peeks in over the sonar animation so the app is visible immediately */
@@ -868,7 +871,7 @@ a{color:inherit;text-decoration:none}
   .theme-label{display:none}
 
   /* Hero */
-  .hero{padding:100px 20px 60px;min-height:90vh}
+  .hero{padding:100px 20px 120px;min-height:90vh}
   .hero-title{font-size:clamp(40px,11vw,60px);margin-bottom:24px}
   .hero-lede{font-size:17px;margin-bottom:32px}
   /* Stack the App Store badge + "See what it does" at even (full) widths */

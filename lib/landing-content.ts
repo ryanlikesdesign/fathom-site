@@ -75,8 +75,8 @@ export const POINTING = {
 export const COPY = {
   hero: {
     eyebrow: "Now on the App Store",
-    title: ["Navigate any", "building.", "Your first time in."],
-    lede: "Fathom is an AI companion for blind and low-vision people. It tells you what's ahead, walks you to where you're going, and helps you do what you came for. On your iPhone. No maps, no beacons, no setup.",
+    title: ["Walk in. Know the room.", "Do what you came for."],
+    lede: "Fathom is an AI companion for blind and low-vision people. Most places were built without you in mind. Fathom tells you what's around you, walks you to where you're going, and works through the task with you. On your iPhone. No maps, no beacons, no setup.",
     primary: "Download on the App Store",
     secondary: "See what it does",
   },

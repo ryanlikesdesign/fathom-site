@@ -79,8 +79,8 @@ export default function Image() {
             flexDirection: 'column',
           }}
         >
-          <span>Navigate any building.</span>
-          <span style={{ color: '#6ea8c8' }}>Your first time in.</span>
+          <span>Walk in. Know the room.</span>
+          <span style={{ color: '#6ea8c8' }}>Do what you came for.</span>
         </div>
 
         {/* Sub */}

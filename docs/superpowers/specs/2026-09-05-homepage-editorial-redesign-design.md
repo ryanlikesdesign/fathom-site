@@ -138,6 +138,12 @@ Not applied: replacing the 28% dimming of inactive steps, which is part of the
 scrolly's design; recorded here as a known AAA gap for low-vision readers
 using magnification without `prefers-contrast`.
 
+Hero, later the same day, on Ryan's note that "Navigate any building" was too
+narrow for an app meant to make an inaccessible world usable: headline is now
+*Walk in. Know the room. / Do what you came for.* (two lines on desktop, one
+sentence per line under 600px), lede opens with "Most places were built
+without you in mind." The footer tagline and the OG image carry the same line.
+
 Motion is the page's existing reveal-on-scroll and scrolly screen switching.
 The scroll-scrubbed choreography in the section above is not shipped; if it
 returns, it should be applied to the existing screens, not to new ones.

@@ -7,7 +7,7 @@ export function Footer() {
       <div className="footer-inner">
         <div className="footer-brand">
           <BrandMark className="brand-mark brand-mark-lg" />
-          <p className="footer-tag">Navigate any building. Your first time in.</p>
+          <p className="footer-tag">Walk in. Know the room. Do what you came for.</p>
         </div>
         <nav className="footer-cols" aria-label="Footer">
           <div>
