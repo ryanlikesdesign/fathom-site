@@ -680,31 +680,31 @@ export function FathomLanding() {
       {/* ── Spectrum ──────────────────────────────────────── */}
       <section className="spectrum" aria-labelledby="spectrum-title">
         <div className="spectrum-inner">
-          <p className="eyebrow reveal">Designed for the full spectrum</p>
+          <p className="eyebrow reveal">Day to day</p>
           <h2 id="spectrum-title" className="h-display reveal">Built for how you<br/><span className="muted">actually use it.</span></h2>
           <div className="spectrum-grid">
             <article className="spec-card reveal">
-              <div className="spec-icon spec-icon-sound" aria-hidden="true"><span className="wave w1"/><span className="wave w2"/><span className="wave w3"/></div>
-              <h3>Distinct sounds</h3>
-              <p>Every state change has its own earcon, so you know what happened without being told.</p>
+              <div className="spec-icon spec-icon-haptic" aria-hidden="true"><span className="haptic-dot"/><span className="haptic-ring"/><span className="haptic-ring haptic-ring-2"/></div>
+              <h3>Cues you feel</h3>
+              <p>A tap for a hazard, a pulse that quickens as a wall gets close, a pattern of its own when you&apos;ve arrived. Sound comes from the side it&apos;s on. You learn the vocabulary in a week.</p>
             </article>
             <article className="spec-card reveal">
-              <div className="spec-icon spec-icon-haptic" aria-hidden="true"><span className="haptic-dot"/><span className="haptic-ring"/><span className="haptic-ring haptic-ring-2"/></div>
-              <h3>Haptic patterns</h3>
-              <p>Every interaction has its own shape in your hand. You learn the vocabulary in a week.</p>
+              <div className="spec-icon spec-icon-sound" aria-hidden="true"><span className="wave w1"/><span className="wave w2"/><span className="wave w3"/></div>
+              <h3>Quick answers</h3>
+              <p>Ask Fathom in any mode: what does that sign say, is this seat taken, which way is the counter. One question, one answer, from what the camera sees right now.</p>
             </article>
             <article className="spec-card reveal">
               <div className="spec-icon spec-icon-spatial" aria-hidden="true"><span className="sp-dot"/><span className="sp-l"/><span className="sp-r"/></div>
-              <h3>Directional sound</h3>
-              <p>Sound comes from the side something is on. Left or right, before a word is spoken.</p>
+              <h3>Help with the hard parts</h3>
+              <p>Say the goal. The Assistant makes a plan, hands each step to the right mode, and walks you through it. Live Task stays on the line while your hands are busy.</p>
             </article>
             <article className="spec-card reveal">
               <div className="spec-icon spec-icon-low" aria-hidden="true"><span className="lv-bar"/><span className="lv-bar lv-bar-2"/><span className="lv-bar lv-bar-3"/></div>
-              <h3>Low-vision first</h3>
-              <p>High contrast, large targets, works without VoiceOver when you have the light for it.</p>
+              <h3>It knows you</h3>
+              <p>Tell Fathom once how you see, what you walk with, and your guide dog&apos;s name, and every answer accounts for it. Say &ldquo;forget that&rdquo; and it&apos;s gone. It all stays on your phone.</p>
             </article>
           </div>
-          <p className="spectrum-footer reveal">VoiceOver is a first-class citizen, not a retrofit. Low vision isn&apos;t a lesser version of blindness &mdash; the experience is complete either way.</p>
+          <p className="spectrum-footer reveal">VoiceOver is a first-class citizen, not a retrofit. Low vision isn&apos;t a lesser version of blindness: high contrast, large targets, and it works without VoiceOver when you have the light for it.</p>
         </div>
       </section>
 
