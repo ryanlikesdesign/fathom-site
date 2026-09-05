@@ -332,17 +332,18 @@ export function FathomLanding() {
       <section className="problem" id="problem" aria-labelledby="problem-title">
         <div className="problem-inner">
           <p className="eyebrow reveal">The gap</p>
-          <h2 id="problem-title" className="h-display reveal">Indoor navigation<br/><span className="muted">is still unsolved.</span></h2>
+          <h2 id="problem-title" className="h-display reveal">Indoors, you&apos;re<br/><span className="muted">on your own.</span></h2>
           <div className="problem-body">
             <p className="reveal">
-              GPS stops working the moment you step inside. Existing tools lean on
-              pre-built maps most buildings don&apos;t have, or on sighted guides who
-              aren&apos;t always around. Every unfamiliar building becomes a barrier &mdash;
-              and that&apos;s before you even try to get anything done once you&apos;re in.
+              GPS ends at the door. Inside, nothing tells you which way the counter
+              is, what the sign says, whether that seat is taken, how the kiosk
+              works, or where to sign. So you ask, or guess, or bring someone. Every
+              unfamiliar place costs you some independence before you&apos;ve done a
+              thing.
             </p>
             <p className="reveal accent">
-              Fathom walks you in, walks you through, and helps with the task at the
-              end. Anywhere. Your first time in.
+              Fathom gives you the room: what&apos;s in it, where things are, what the
+              words say, and what to do next. Anywhere, your first time in.
             </p>
           </div>
         </div>
