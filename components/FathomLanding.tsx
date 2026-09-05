@@ -620,7 +620,7 @@ export function FathomLanding() {
             <p className="eyebrow">Go</p>
             <h2>Turn-by-turn<br/><span className="muted">indoor navigation.</span></h2>
             <p className="step-body">Say where you&apos;re headed &mdash; &ldquo;the kitchen,&rdquo; &ldquo;Room 412,&rdquo; &ldquo;the pharmacy&rdquo; &mdash; and Fathom gets you there. It reads room numbers and signs as you pass them, calls turns before you need them, and tells you when you&apos;ve arrived, down to where the door handle is.</p>
-            <p className="step-body">Directions use a clock-face system: &ldquo;door at 2 o&apos;clock, about eight meters.&rdquo; Obstacle alerts pulse faster as you approach, so the space has a shape you can feel in your hand.</p>
+            <p className="step-body">Directions use a clock-face system: &ldquo;door at 2 o&apos;clock, about 25 feet.&rdquo; Obstacle alerts pulse faster as you approach, so the space has a shape you can feel in your hand.</p>
             <p className="step-whisper">On-device depth sensing and AI vision, together.</p>
           </div>
           <div className="step" data-step="live">
