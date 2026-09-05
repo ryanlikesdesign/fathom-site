@@ -287,6 +287,7 @@ export function FathomLanding() {
       </div>
 
       {/* ── Hero ──────────────────────────────────────────── */}
+      <div className="hero-stage">
       <section className="hero" id="top">
         <div className="hero-glow" aria-hidden="true" />
         <div className="hero-ripples" aria-hidden="true">
@@ -327,6 +328,10 @@ export function FathomLanding() {
           <span className="scroll-line" />
         </div>
       </section>
+      </div>
+
+      {/* Everything from here rides up over the pinned hero. */}
+      <div className="hero-cover">
 
       {/* ── Problem ───────────────────────────────────────── */}
       <section className="problem" id="problem" aria-labelledby="problem-title">
@@ -715,6 +720,7 @@ export function FathomLanding() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

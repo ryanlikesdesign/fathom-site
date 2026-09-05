@@ -74,6 +74,9 @@ a{color:inherit;text-decoration:none}
 /* ================================================================
    HERO
 ================================================================ */
+/* The hero pins for one screen of scrolling while the page below rides up
+   over it. The stage gives the sticky element somewhere to unpin. */
+.hero-stage{position:relative}
 .hero{position:relative;min-height:100vh;padding:clamp(120px,18vh,180px) clamp(20px,5vw,80px) 80px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
 .hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 55% at 30% 45%,color-mix(in oklab,var(--fathom-700) 22%,transparent) 0%,transparent 70%);opacity:.9}
 [data-theme='light'] .hero-glow{background:radial-gradient(ellipse 60% 55% at 30% 45%,color-mix(in oklab,var(--fathom-700) 14%,transparent) 0%,transparent 70%)}
@@ -111,9 +114,17 @@ a{color:inherit;text-decoration:none}
     top:clamp(92px,14vh,150px);
     right:clamp(8px,3vw,72px);
   }
-  .hero-phone .phone{width:clamp(248px,21vw,300px)}
+  /* Zoom, not width: the interior is drawn at one size and scaled whole, so
+     the status bar and the app content keep the same insets everywhere. */
+  .hero-phone .phone{zoom:.66}
   /* keep the headline + lede clear of the phone */
   .hero-inner{max-width:calc(100% - 360px)}
+}
+@media (min-width:1280px){
+  .hero-phone .phone{zoom:.74}
+}
+@media (min-width:1500px){
+  .hero-phone .phone{zoom:.8}
 }
 
 .hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--fg-muted);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
@@ -167,8 +178,11 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Phone chassis ---------- */
 .phone{
-  position:relative;width:min(380px,36vw);aspect-ratio:9/19.5;
-  border-radius:54px;background:#0A0C0F;padding:10px;
+  position:relative;width:380px;aspect-ratio:9/19.5;
+  /* iPhone corner is ~14% of the body width. Percentages keep the frame and
+     the screen concentric at every size instead of a fixed 54/44 pair that
+     only lined up on the 380px phone. */
+  border-radius:14.2% / 6.55%;background:#0A0C0F;padding:1.1%;
   box-shadow:
     0 50px 100px rgba(0,0,0,.6),
     0 0 0 1.5px rgba(90,100,112,.28),
@@ -187,7 +201,7 @@ a{color:inherit;text-decoration:none}
   --s-green:#7A8F6A; --s-green-fill:#6B7F4A; --s-green-text:#4A7A3E; --s-red:#B24840;
   --s-line:rgba(14,16,19,.10); --s-line-2:rgba(14,16,19,.06); --s-line-strong:rgba(14,16,19,.20);
   --s-shadow-pop:0 18px 40px rgba(14,16,19,.22),0 2px 6px rgba(14,16,19,.08);
-  position:relative;width:100%;height:100%;border-radius:44px;overflow:hidden;background:var(--s-bg);
+  position:relative;width:100%;height:100%;border-radius:13.4% / 6.11%;overflow:hidden;background:var(--s-bg);
 }
 [data-theme='dark'] .phone-screen{
   --s-bg:#0E1013; --s-surface:#181B1F; --s-surface-2:#1E2128; --s-surface-3:#232830;
@@ -197,7 +211,7 @@ a{color:inherit;text-decoration:none}
   --s-line:rgba(255,255,255,.10); --s-line-2:rgba(255,255,255,.06); --s-line-strong:rgba(255,255,255,.22);
   --s-shadow-pop:0 18px 40px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.25);
 }
-.phone-reflect{position:absolute;inset:10px;border-radius:44px;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 28%,transparent 72%,rgba(255,255,255,.04) 100%);z-index:6}
+.phone-reflect{position:absolute;inset:1.1%;border-radius:13.4% / 6.11%;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 28%,transparent 72%,rgba(255,255,255,.04) 100%);z-index:6}
 
 /* ---------- Screen base ---------- */
 .screen{
@@ -212,6 +226,9 @@ a{color:inherit;text-decoration:none}
 .screen.is-active{opacity:1;transform:none}
 
 /* ---------- iOS status bar (shared component) ---------- */
+/* Fixed pixels, like every other element inside the screen. The device is
+   drawn once at 380px and scaled per context, so these never drift out of
+   step with .screen-pad's own padding. */
 .ios-status{
   position:relative;height:50px;padding:0 26px;
   display:flex;align-items:center;justify-content:space-between;
@@ -220,8 +237,9 @@ a{color:inherit;text-decoration:none}
 .ios-time{font-size:13px;font-weight:600;letter-spacing:-0.01em;line-height:1}
 .ios-island{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:76px;height:23px;border-radius:12px;background:#0A0C0F;
+  width:76px;height:23px;border-radius:12px;background:#05070A;
 }
+[data-theme='dark'] .phone-screen .ios-island{box-shadow:0 0 0 1px rgba(255,255,255,.05)}
 .ios-right{display:flex;align-items:center;gap:5px}
 .ios-right svg{display:block;flex-shrink:0;color:currentColor}
 .ios-right .ios-ic-bars{width:14px;height:9px}
@@ -541,8 +559,8 @@ a{color:inherit;text-decoration:none}
     margin-bottom:8px;
   }
   .step .step-phone .phone{
-    width:min(300px,80vw);aspect-ratio:9/19.5;
-    border-radius:42px;background:#0A0C0F;padding:8px;
+    width:380px;zoom:.78;aspect-ratio:9/19.5;
+    background:#0A0C0F;
     box-shadow:0 30px 60px rgba(0,0,0,.4),0 0 0 1.5px rgba(90,100,112,.28);
     position:relative;
   }
@@ -550,10 +568,10 @@ a{color:inherit;text-decoration:none}
     box-shadow:0 24px 48px rgba(14,16,19,.15),0 0 0 1.5px rgba(14,16,19,.10);
   }
   .step .step-phone .phone-screen{
-    position:relative;width:100%;height:100%;border-radius:34px;overflow:hidden;background:var(--s-bg);
+    position:relative;width:100%;height:100%;border-radius:13.4% / 6.11%;overflow:hidden;background:var(--s-bg);
   }
   .step .step-phone .phone-reflect{
-    position:absolute;inset:8px;border-radius:34px;pointer-events:none;
+    position:absolute;inset:1.1%;border-radius:13.4% / 6.11%;pointer-events:none;
     background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 28%,transparent 72%,rgba(255,255,255,.04) 100%);
     z-index:6;
   }
@@ -861,7 +879,7 @@ a{color:inherit;text-decoration:none}
   .step-body{font-size:16px;margin-bottom:14px}
   .step-whisper{font-size:12px;margin-top:20px;padding-top:12px}
   .step .eyebrow{margin-bottom:14px;font-size:12px}
-  .step .step-phone .phone{width:min(280px,85vw)}
+  .step .step-phone .phone{zoom:.72}
 
   /* Everywhere */
   .everywhere{padding:64px 20px}
@@ -1012,7 +1030,7 @@ a{color:inherit;text-decoration:none}
    without scroll timelines, and readers with reduced motion, get the
    static composition. Compositor-only properties. */
 .hero-phone .phone{
-  transform:perspective(1500px) rotateY(-13deg) rotateX(3deg) translateZ(0);
+  transform:perspective(2400px) rotateY(-4deg) rotateX(1.2deg) translateZ(0);
   transition:transform 900ms var(--ease-gentle);
 }
 @supports (animation-timeline: scroll()){
@@ -1023,8 +1041,8 @@ a{color:inherit;text-decoration:none}
     animation-range:0 78vh;
   }
   @keyframes heroPhoneTurn{
-    from{transform:perspective(1500px) rotateY(-13deg) rotateX(3deg) translateZ(0) translateY(0)}
-    to{transform:perspective(1500px) rotateY(-2deg) rotateX(0deg) translateZ(60px) translateY(-26px)}
+    from{transform:perspective(2400px) rotateY(-4deg) rotateX(1.2deg) translateZ(0) translateY(0)}
+    to{transform:perspective(2400px) rotateY(-1deg) rotateX(0deg) translateZ(50px) translateY(-24px)}
   }
   /* The sonar opens outward behind it, so the two move as one object. */
   .hero-ripples{
@@ -1043,9 +1061,9 @@ a{color:inherit;text-decoration:none}
     animation-range:contain 0% contain 100%;
   }
   @keyframes stickyPhoneTurn{
-    from{transform:perspective(1700px) rotateY(8deg) rotateX(1.4deg) scale(var(--phone-scale))}
-    50%{transform:perspective(1700px) rotateY(0deg) rotateX(0deg) scale(calc(var(--phone-scale) * 1.015))}
-    to{transform:perspective(1700px) rotateY(-8deg) rotateX(-1.4deg) scale(var(--phone-scale))}
+    from{transform:perspective(2400px) rotateY(4deg) rotateX(.8deg) scale(var(--phone-scale))}
+    50%{transform:perspective(2400px) rotateY(0deg) rotateX(0deg) scale(calc(var(--phone-scale) * 1.012))}
+    to{transform:perspective(2400px) rotateY(-4deg) rotateX(-.8deg) scale(var(--phone-scale))}
   }
 }
 @media (prefers-reduced-motion: reduce){
@@ -1053,3 +1071,55 @@ a{color:inherit;text-decoration:none}
   .hero-ripples{transform:translateY(-50%);opacity:1}
   .scrolly-sticky .phone{transform:scale(var(--phone-scale))}
 }
+
+
+/* ── Sticky hero and the layer that covers it ──────────────────────
+   Desktop and tall windows only: a pinned hero needs room, and on a
+   short screen the hero is the whole page. */
+@media (min-width:1024px) and (min-height:720px){
+  .hero-stage{height:260vh}
+  .hero{position:sticky;top:0;height:100vh;min-height:100vh}
+  /* Everything after the hero is one opaque plane that rides over it. */
+  /* Pulled up a whole viewport so it rides over the hero while the hero is
+     still pinned. The hero itself never moves: by the time it unpins, this
+     plane has already covered it. */
+  .hero-cover{
+    position:relative;z-index:2;background:var(--bg);margin-top:-100vh;
+    border-radius:36px 36px 0 0;
+    box-shadow:0 -32px 64px rgba(0,0,0,.45),0 -1px 0 var(--divider);
+  }
+  [data-theme='light'] .hero-cover{box-shadow:0 -32px 64px rgba(14,16,19,.16),0 -1px 0 var(--divider)}
+}
+@supports (animation-timeline: scroll()){
+  @media (min-width:1024px) and (min-height:720px){
+    /* The device falls away in depth as the cover comes up, and the sonar
+       opens past it, so the two stay one object to the last frame. */
+    .hero-phone .phone{animation-range:0 95vh}
+    @keyframes heroPhoneTurn{
+      from{transform:perspective(2400px) rotateY(-4deg) rotateX(1.2deg) translate(0,0) scale(1);opacity:1}
+      50%{transform:perspective(2400px) rotateY(-2deg) rotateX(.6deg) translate(-1.6vw,.5vh) scale(.92);opacity:1}
+      to{transform:perspective(2400px) rotateY(0deg) rotateX(0deg) translate(-3.4vw,1.1vh) scale(.8);opacity:.92}
+    }
+    .hero-ripples{animation-range:0 95vh}
+    /* The sonar tightens as the device falls into it, then holds: it is what
+       the reader is left looking at. */
+    @keyframes heroSonarDrift{
+      from{transform:translateY(-50%) scale(1);opacity:1}
+      55%{transform:translateY(-50%) scale(.92);opacity:1}
+      to{transform:translateY(-50%) scale(1.06);opacity:.9}
+    }
+    /* The cue has done its job once the reader is scrolling. */
+    .hero-scroll-cue{
+      animation:heroCueOut linear both;
+      animation-timeline:scroll(root block);
+      animation-range:0 22vh;
+    }
+    @keyframes heroCueOut{from{opacity:1}to{opacity:0}}
+  }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-inner{animation:none !important;transform:none;opacity:1}
+}
+
+@media (max-width:400px){.step .step-phone .phone{zoom:.66}}
+@media (max-width:360px){.step .step-phone .phone{zoom:.58}}

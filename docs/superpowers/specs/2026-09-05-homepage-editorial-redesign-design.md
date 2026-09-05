@@ -165,6 +165,25 @@ static composition, so engines without scroll timelines and readers with
 reduced motion get the page whole, and the reduced-motion block names the
 three new animated elements explicitly.
 
+Phone geometry, after Ryan flagged the chrome as wonky. The device is now
+drawn once at a single design size (380px) and scaled per context with `zoom`,
+instead of each context setting its own width. Everything inside a phone is
+fixed pixels, so a per-context width made the status bar and the app content
+disagree on their insets at every size but the design width. The bezel is
+1.1% of the body (about 3px as rendered) and the frame and screen radii are
+percentages of each axis, so they stay concentric at any scale; before, a
+fixed 54/44 pair only lined up on the 380px phone and the screen's corners cut
+into the status bar on the smaller ones. The Dynamic Island is dark enough to
+read against the dark screen.
+
+The pinned hero, per Ryan: the hero never moves at all. It is sticky for the
+length of a 260vh stage, and everything below it sits in a `.hero-cover` plane
+pulled up a full viewport, so the page rides over the pinned hero and has
+covered it completely by the time it unpins. Through that, the device recedes
+subtly (to 80% and slightly toward the sonar's center) while the rings tighten
+and hold. Desktop and windows at least 720px tall only; everywhere else the
+hero is an ordinary section.
+
 Motion is otherwise the page's existing reveal-on-scroll and scrolly screen
 switching.
 The scroll-scrubbed choreography in the section above is not shipped; if it
