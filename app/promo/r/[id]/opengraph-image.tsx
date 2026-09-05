@@ -116,7 +116,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
               display: "flex",
             }}
           >
-            AI navigation for blind &amp; low-vision iPhone users · Tap to redeem
+            AI companion for blind &amp; low-vision iPhone users · Tap to redeem
           </div>
         </div>
       </div>

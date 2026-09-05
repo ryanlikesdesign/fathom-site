@@ -6,7 +6,7 @@ import { FAQ } from "@/lib/faq";
 
 export const metadata: Metadata = {
   title: "Support",
-  description: "Answers to common questions about Fathom — the AI navigation app for blind and low-vision iPhone users. Get help, contact us, and troubleshoot.",
+  description: "Answers to common questions about Fathom — the AI companion for blind and low-vision iPhone users. Get help, contact us, and troubleshoot.",
 };
 
 const SUPPORT_EMAIL = "support@fathomvision.app";

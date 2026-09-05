@@ -94,7 +94,7 @@ export default function Image() {
             display: 'flex',
           }}
         >
-          AI navigation for blind &amp; low-vision iPhone users · Free on the App Store
+          AI companion for blind &amp; low-vision iPhone users · Free on the App Store
         </div>
       </div>
     ),

@@ -373,7 +373,7 @@ function BatchPanel({
   }
 
   function shareMessage() {
-    return `Here's your ${batch.duration_label} of Fathom — the AI navigation app for blind and low-vision iPhone users.\n\nYour code: ${held!.code}\nRedeem it here: ${trackingUrl}`;
+    return `Here's your ${batch.duration_label} of Fathom — the AI companion for blind and low-vision iPhone users.\n\nYour code: ${held!.code}\nRedeem it here: ${trackingUrl}`;
   }
 
   async function recordShare(method: string, okMsg: string) {
@@ -389,7 +389,7 @@ function BatchPanel({
 
   async function onShare() {
     if (!held) return;
-    const text = `Here's your ${batch.duration_label} of Fathom — the AI navigation app for blind and low-vision iPhone users. Your code: ${held.code}.`;
+    const text = `Here's your ${batch.duration_label} of Fathom — the AI companion for blind and low-vision iPhone users. Your code: ${held.code}.`;
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({

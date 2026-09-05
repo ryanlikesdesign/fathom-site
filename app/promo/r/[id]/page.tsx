@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!found) {
     return {
       title: "Fathom free trial",
-      description: "A free trial of Fathom — AI navigation for blind and low-vision iPhone users.",
+      description: "A free trial of Fathom — AI companion for blind and low-vision iPhone users.",
       robots: { index: false, follow: false },
     };
   }
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `You've got ${found.durationLabel} of Fathom`;
   // The code rides in the description so it shows up right inside the
   // iMessage / Mail link-preview card.
-  const description = `Your code: ${found.code} — tap to redeem ${found.durationLabel} of Fathom, the AI navigation app for blind and low-vision iPhone users.`;
+  const description = `Your code: ${found.code} — tap to redeem ${found.durationLabel} of Fathom, the AI companion for blind and low-vision iPhone users.`;
 
   return {
     title,
@@ -93,7 +93,7 @@ export default async function RedeemPage({
             You&apos;ve got {found.durationLabel} of Fathom
           </h1>
           <p className="mt-3 text-[var(--text-secondary)]">
-            Fathom is the AI navigation app for blind and low-vision iPhone users — it describes
+            Fathom is the AI companion for blind and low-vision iPhone users — it describes
             what&apos;s ahead, guides you through indoor spaces, and helps you complete tasks.
           </p>
 

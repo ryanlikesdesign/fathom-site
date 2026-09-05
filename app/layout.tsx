@@ -22,7 +22,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://fathomvision.app"),
   title: {
-    default: "Fathom — AI Navigation for Blind & Low-Vision iPhone Users",
+    default: "Fathom — AI Companion for Blind & Low-Vision iPhone Users",
     template: "%s — Fathom",
   },
   description:
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   ],
   applicationName: "Fathom",
   openGraph: {
-    title: "Fathom — AI Navigation for Blind & Low-Vision iPhone Users",
+    title: "Fathom — AI Companion for Blind & Low-Vision iPhone Users",
     description:
       "Free iPhone app that uses AI to describe what's ahead, guide you through indoor spaces, and help you complete tasks. No maps, beacons, or setup.",
     url: "https://fathomvision.app",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fathom — AI Navigation for Blind & Low Vision",
+    title: "Fathom — AI Companion for Blind & Low Vision",
     description:
       "Free iPhone app that uses AI to describe what's ahead and guide you through indoor spaces. No maps, beacons, or setup.",
   },
@@ -90,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   name: "Fathom: Visual Assistance",
                   alternateName: "Fathom",
                   description:
-                    "AI navigation app for blind and low-vision iPhone users. Uses AI camera to describe surroundings, guide through indoor spaces, and assist with everyday tasks — no maps, beacons, or setup required. Free on the App Store.",
+                    "AI companion for blind and low-vision iPhone users. Uses AI camera to describe surroundings, guide through indoor spaces, and assist with everyday tasks — no maps, beacons, or setup required. Free on the App Store.",
                   applicationCategory: "HealthApplication",
                   applicationSubCategory: "Accessibility",
                   operatingSystem: "iOS 17 or later",
@@ -127,7 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   "@type": "WebPage",
                   "@id": "https://fathomvision.app/#webpage",
                   url: "https://fathomvision.app",
-                  name: "Fathom — AI Navigation for Blind & Low-Vision iPhone Users",
+                  name: "Fathom — AI Companion for Blind & Low-Vision iPhone Users",
                   description:
                     "Free iPhone app for blind and low-vision users. AI describes what's ahead, guides you through indoor spaces, and helps with tasks. No maps, beacons, or setup.",
                   speakable: {

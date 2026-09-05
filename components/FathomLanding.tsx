@@ -669,10 +669,10 @@ export function FathomLanding() {
       <section className="everywhere" id="how" aria-labelledby="everywhere-title">
         <div className="everywhere-inner">
           <p className="eyebrow reveal">Day one</p>
-          <h2 id="everywhere-title" className="h-display reveal">Open the app.<br/><span className="muted">That&apos;s the setup.</span></h2>
+          <h2 id="everywhere-title" className="h-display reveal">A pair of eyes<br/><span className="muted">looking out for you.</span></h2>
           <div className="everywhere-body">
-            <p className="reveal">Hold up your iPhone and Fathom starts talking: the door on your left, the sign above it, the person walking toward you. Say where you&apos;re going and it counts you in by the clock face. Ask what the form says and it reads it back. Nothing installed in the building, nothing to configure.</p>
-            <p className="reveal">In a basement, in an elevator, with no signal at all, on-device detection and LiDAR keep running and every safety alert with them. The parts that keep you safe never wait on a network.</p>
+            <p className="reveal">Fathom watches the room so you can get on with being in it. It tells you who&apos;s coming toward you, reads the sign you can&apos;t see, finds the counter, and stays with you through the form or the kiosk. Nothing installed in the building, nothing to configure. Open the app and it&apos;s already working.</p>
+            <p className="reveal">In a basement, in an elevator, with no signal at all, the part that looks out for you keeps running: on-device detection, LiDAR, and every safety alert. Your safety never waits on a network.</p>
           </div>
         </div>
       </section>
