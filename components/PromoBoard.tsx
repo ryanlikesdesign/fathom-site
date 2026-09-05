@@ -221,13 +221,10 @@ export function PromoBoard({
             tabIndex={active === i ? 0 : -1}
             onClick={() => setActive(i)}
             onKeyDown={onTabKeyDown}
-            // A selected tab is a state, not the page's main action, so it
-            // reads as a filled chip rather than borrowing the primary CTA's
-            // treatment — otherwise three max-emphasis elements stack up.
+            // Selected styling comes from the global [role="tab"][aria-selected]
+            // rule in globals.css, so every tablist on the site matches.
             className={`min-h-11 flex-1 basis-32 rounded-[var(--radius-full)] px-4 py-2.5 text-sm font-medium transition-colors sm:text-base ${
-              active === i
-                ? "bg-[var(--bg-hover)] text-[var(--text-primary)] shadow-[inset_0_0_0_1px_var(--border)]"
-                : "text-[var(--text-secondary)]"
+              active === i ? "" : "text-[var(--text-secondary)]"
             }`}
             style={{ transitionDuration: "var(--dur)" }}
           >

@@ -81,6 +81,14 @@
      not in this theme — both are #1e2128, so the bar had no visible scale. */
   --track: #31363f;
 
+  /* Selected state for chips/tabs. Must read as "chosen", not as the primary
+     CTA (which is cream-on-dark here), and must differ from the tablist it
+     sits on — --bg-hover did not, it IS --bg-raised in this theme (1.00:1).
+     Label on fill: 7.64:1. */
+  --selected-bg: #24485f;
+  --selected-fg: var(--fg);
+  --selected-border: var(--fathom-300);
+
   /* glass channels (RGB triples for rgba(var(--glass) / a)) */
   --glass: 24 27 31;
   --hi: 40 44 50;
@@ -120,6 +128,12 @@
 
   --track: #d3cdbe;
 
+  /* Tinted chip with a navy edge — clearly selected, clearly not the black
+     CTA. Label on fill: 12.68:1; border on fill: 7.80:1. */
+  --selected-bg: #c5d5e1;
+  --selected-fg: var(--fg);
+  --selected-border: var(--fathom-700);
+
   --glass: 248 245 239;
   --hi: 255 255 255;
   --sh: 14 16 19;
@@ -150,6 +164,28 @@
 }
 
 * { border-color: var(--border); }
+
+/* ── Selected chips / tabs (global) ────────────────────────────────
+   Any role="tab" on the site gets the same selected treatment, so it can't
+   drift per feature and can't be confused with an action button. */
+[role="tab"][aria-selected="true"] {
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+  box-shadow: inset 0 0 0 1px var(--selected-border);
+}
+
+/* ── Text wrapping ───────────────────────────────────────────────────
+   How lines break, not how they look. Headings balance so no line is left
+   holding a single word; body text avoids orphans and ragged final lines.
+   Native CSS (Safari 17.5+, Chrome 114+) — the audience is current iOS
+   Safari, so no wrap-balancing library is needed; older engines simply
+   ignore these and wrap as before. */
+h1, h2, h3, .eyebrow { text-wrap: balance; }
+p, li, dd, dt, summary, figcaption { text-wrap: pretty; }
+p { hanging-punctuation: first; }
+/* Hyphenation for long words only in flowing body copy; never in UI labels,
+   codes or URLs, which set their own breaking. */
+p { -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 8 4 4; }
 
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 

@@ -5,21 +5,6 @@ import './fathom-landing.css';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183';
 
-function AppStoreBadge() {
-  return (
-    <svg viewBox="0 0 156 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="appstore-badge-svg">
-      <rect width="156" height="52" rx="8" fill="black"/>
-      <rect x="0.5" y="0.5" width="155" height="51" rx="7.5" stroke="white" strokeOpacity="0.2"/>
-      {/* Apple logo */}
-      <path d="M27.5 26.5c-.03-3.3 2.7-4.9 2.82-4.97-1.54-2.25-3.93-2.56-4.78-2.6-2.03-.21-3.97 1.2-5 1.2-1.03 0-2.61-1.17-4.3-1.14-2.2.03-4.23 1.29-5.36 3.26-2.3 3.98-.59 9.87 1.64 13.1 1.1 1.58 2.4 3.35 4.1 3.28 1.65-.06 2.27-1.06 4.27-1.06 2 0 2.56 1.06 4.32 1.02 1.78-.03 2.9-1.61 3.98-3.2 1.25-1.83 1.77-3.6 1.8-3.69-.04-.02-3.47-1.33-3.5-5.28z" fill="white"/>
-      <path d="M24.24 16.95c.91-1.1 1.52-2.64 1.35-4.17-1.3.05-2.88.87-3.82 1.96-.84.97-1.57 2.53-1.38 4.02 1.45.11 2.93-.74 3.85-1.81z" fill="white"/>
-      {/* Text lines */}
-      <text x="39" y="23" fill="white" style={{fontSize:'11px',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Text",Helvetica,Arial,sans-serif',fontWeight:400,letterSpacing:'0.4px'}}>Download on the</text>
-      <text x="38" y="39" fill="white" style={{fontSize:'20px',fontFamily:'-apple-system,BlinkMacSystemFont,"SF Pro Display",Helvetica,Arial,sans-serif',fontWeight:500,letterSpacing:'-0.3px'}}>App Store</text>
-    </svg>
-  );
-}
-
 // ── iOS Status Bar SVG (shared across all screens) ───────────────
 function IosStatus({ time = '9:41' }: { time?: string }) {
   return (
@@ -279,8 +264,8 @@ export function FathomLanding() {
             no setup.
           </p>
           <div className="hero-actions">
-            <a href={APP_STORE_URL} className="appstore-badge-link" target="_blank" rel="noopener noreferrer" aria-label="Download Fathom on the App Store">
-              <AppStoreBadge />
+            <a href={APP_STORE_URL} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+              Download on the App Store
             </a>
             <a href="#problem" className="btn btn-ghost">
               <span>See what it does</span>
@@ -716,14 +701,8 @@ export function FathomLanding() {
           </div>
 
           <div className="download-card">
-            <a
-              href={APP_STORE_URL}
-              className="appstore-badge-link appstore-badge-lg"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Download Fathom on the App Store"
-            >
-              <AppStoreBadge />
+            <a href={APP_STORE_URL} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+              Download on the App Store
             </a>
             <p className="download-note">Free &middot; iPhone &middot; iOS&nbsp;17+</p>
             <p className="download-sub">The safety features are free forever &mdash; no subscription, no account.</p>
