@@ -7,7 +7,7 @@ export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  // A preview card is never worth failing over — fall back to generic wording.
+  // A preview card is never worth failing over; fall back to generic wording.
   let offer = "a free trial";
   try {
     const found = await findBySlug(id);

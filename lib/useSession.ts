@@ -7,9 +7,9 @@ import { useCallback, useSyncExternalStore } from "react";
  * setState-in-effect. The server snapshot is always null (locked/empty), so the
  * first paint matches the server; the real value hydrates in right after.
  *
- * `useSessionValue` uses sessionStorage (cleared when the tab closes) — right
+ * `useSessionValue` uses sessionStorage (cleared when the tab closes), right
  * for the soft password gate. `useLocalValue` uses localStorage (persists
- * across sessions) — right for a rep's share progress during a multi-day event.
+ * across sessions), right for a rep's share progress during a multi-day event.
  */
 
 const listeners = new Set<() => void>();
@@ -51,7 +51,7 @@ function useStoredValue(
           else store.setItem(key, next);
         }
       } catch {
-        /* storage unavailable — ignore */
+        /* storage unavailable; ignore */
       }
       listeners.forEach((l) => l());
     },

@@ -12,7 +12,7 @@ function failed(err: unknown) {
   return Response.json({ error: "Something went wrong. Try again." }, { status: 500 });
 }
 
-/** Batch list with live counts — what's left, what's gone out. */
+/** Batch list with live counts: what's left, what's gone out. */
 export async function GET() {
   const auth = await requireRep();
   if (!auth.ok) return auth.response;

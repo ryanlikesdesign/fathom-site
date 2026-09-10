@@ -1,4 +1,4 @@
-// Fathom brand mark — concentric "sonar" rings. Decorative; pair with a
+// Fathom brand mark: concentric "sonar" rings. Decorative; pair with a
 // text label (or aria-label on the link) for the accessible name.
 export function BrandMark({ className = "brand-mark" }: { className?: string }) {
   return (

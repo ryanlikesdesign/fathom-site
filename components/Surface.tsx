@@ -47,7 +47,7 @@ export function Surface({
           mixBlendMode: "overlay",
         }}
       />
-      <span className="relative" data-register={register}>{children}</span>
+      <div className="relative" data-register={register}>{children}</div>
     </Tag>
   );
 }

@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Source_Serif_4, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MIN_IOS } from "@/lib/landing-content";
 
 const serif = Source_Serif_4({
   subsets: ["latin"],
@@ -16,37 +17,38 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  // Nothing on the site sets the light weight; three files instead of four.
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://fathomvision.app"),
   title: {
-    default: "Fathom — AI Companion for Blind & Low-Vision iPhone Users",
-    template: "%s — Fathom",
+    default: "Fathom: AI companion for blind and low-vision iPhone users",
+    template: "%s | Fathom",
   },
   description:
     "Free iPhone app for blind and low-vision users. Fathom uses AI to describe what's ahead, guide you through indoor spaces, and help you complete tasks. No maps, beacons, or setup.",
   keywords: [
     "blind iPhone app",
     "app for blind people",
-    "navigation app for visually impaired",
-    "indoor navigation blind",
+    "AI companion for blind people",
+    "indoor wayfinding for blind",
     "AI camera for blind",
     "visual AI assistant iPhone",
-    "accessible navigation iPhone",
-    "wayfinding app blind",
+    "accessible AI assistant iPhone",
+    "wayfinding for the blind",
     "AI assistant for blind",
     "visually impaired app",
     "object recognition app blind",
     "assistive technology iPhone",
-    "low vision navigation app",
+    "low vision AI assistant",
     "free blind app iOS",
     "orientation mobility app",
   ],
   applicationName: "Fathom",
   openGraph: {
-    title: "Fathom — AI Companion for Blind & Low-Vision iPhone Users",
+    title: "Fathom: AI companion for blind and low-vision iPhone users",
     description:
       "Free iPhone app that uses AI to describe what's ahead, guide you through indoor spaces, and help you complete tasks. No maps, beacons, or setup.",
     url: "https://fathomvision.app",
@@ -56,16 +58,30 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fathom — AI Companion for Blind & Low Vision",
+    title: "Fathom: AI companion for blind and low-vision iPhone users",
     description:
       "Free iPhone app that uses AI to describe what's ahead and guide you through indoor spaces. No maps, beacons, or setup.",
   },
   manifest: "/manifest.webmanifest",
-  icons: {
-    icon: { url: "/favicon.svg", type: "image/svg+xml" },
-    apple: { url: "/favicon.svg", type: "image/svg+xml" },
-  },
+  // Icons are file-based: app/icon.svg (the favicon) and app/apple-icon.tsx
+  // (a rendered 180px PNG; Safari does not take an SVG there). Next links
+  // both on its own, and only if no `icons` block is set here: a config
+  // block, even for the favicon alone, switches the file-based ones off.
   category: "technology",
+};
+
+// Two theme-color metas so the browser chrome matches whichever scheme the OS
+// picks before our anti-flash script runs; ThemeProvider rewrites the
+// content on toggle. viewport-fit=cover lets the safe-area rules in
+// fathom-landing.css read the real insets on notched iPhones.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0e1013" },
+    { media: "(prefers-color-scheme: light)", color: "#f2ede4" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -74,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('fathom-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('fathom-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('fathom-motion')==='reduce'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.setAttribute('data-motion','reduce');}}catch(e){}})();`,
           }}
         />
       </head>
@@ -90,10 +106,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   name: "Fathom: Visual Assistance",
                   alternateName: "Fathom",
                   description:
-                    "AI companion for blind and low-vision iPhone users. Uses AI camera to describe surroundings, guide through indoor spaces, and assist with everyday tasks — no maps, beacons, or setup required. Free on the App Store.",
+                    "AI companion for blind and low-vision iPhone users. Uses AI camera to describe surroundings, guide through indoor spaces, and assist with everyday tasks. No maps, beacons, or setup required. Free on the App Store.",
                   applicationCategory: "HealthApplication",
                   applicationSubCategory: "Accessibility",
-                  operatingSystem: "iOS 17 or later",
+                  operatingSystem: `iOS ${MIN_IOS} or later`,
                   offers: {
                     "@type": "Offer",
                     price: "0",
@@ -103,7 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   downloadUrl:
                     "https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183",
                   keywords:
-                    "blind navigation app, AI camera for blind, visually impaired iPhone app, indoor navigation blind, accessible navigation, wayfinding app blind, visual AI assistant, assistive technology iOS",
+                    "AI companion for blind people, AI camera for blind, visually impaired iPhone app, indoor wayfinding for blind, accessible AI assistant, wayfinding for the blind, visual AI assistant, assistive technology iOS",
                   accessibilityFeature: [
                     "alternativeText",
                     "audioDescription",
@@ -118,7 +134,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   },
                   publisher: {
                     "@type": "Organization",
-                    name: "Fathom",
+                    name: "Unruly Vision, LLC",
+                    alternateName: "Fathom",
                     url: "https://fathomvision.app",
                     email: "support@fathomvision.app",
                   },
@@ -127,7 +144,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   "@type": "WebPage",
                   "@id": "https://fathomvision.app/#webpage",
                   url: "https://fathomvision.app",
-                  name: "Fathom — AI Companion for Blind & Low-Vision iPhone Users",
+                  name: "Fathom: AI companion for blind and low-vision iPhone users",
                   description:
                     "Free iPhone app for blind and low-vision users. AI describes what's ahead, guides you through indoor spaces, and helps with tasks. No maps, beacons, or setup.",
                   speakable: {
@@ -143,7 +160,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider>
             <a href="#main" className="skip-link">Skip to content</a>
             <Header />
-            <main id="main">{children}</main>
+            <main id="main" tabIndex={-1}>{children}</main>
             <Footer />
           </ThemeProvider>
         </PostHogProvider>

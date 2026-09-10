@@ -26,10 +26,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem("fathom-theme", next);
     } catch {
-      /* storage unavailable (private mode, etc.) — theme still applies for the session */
+      /* storage unavailable (private mode, etc.); theme still applies for the session */
     }
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", next === "dark" ? "#0e1013" : "#f2ede4");
+    // layout.tsx emits one theme-color meta per color scheme; collapse both to
+    // the chosen theme so the browser chrome follows the toggle, not the OS.
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.setAttribute("content", next === "dark" ? "#0e1013" : "#f2ede4");
+    });
     setTheme(next);
   }, []);
 

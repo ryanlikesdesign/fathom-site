@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 
 // posthog-js touches browser globals on import/use — stub it.
 // vi.hoisted so the stub exists before the hoisted vi.mock factory runs.
-const ph = vi.hoisted(() => ({ capture: vi.fn(), identify: vi.fn(), reset: vi.fn() }));
+const ph = vi.hoisted(() => ({ init: vi.fn(), capture: vi.fn(), identify: vi.fn(), reset: vi.fn() }));
 vi.mock("posthog-js", () => ({ default: ph }));
 
 import { qrShape } from "@/lib/qr";

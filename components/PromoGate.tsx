@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import posthog from "posthog-js";
 import { PromoBoard } from "@/components/PromoBoard";
 import type { CustomCodeView, PromoBatchView } from "@/components/PromoBoard";
+import { ensurePostHogReady } from "@/lib/posthog";
 
 /**
  * Password gate for the rep tools.
@@ -35,9 +36,15 @@ export function PromoGate({
   const errorRef = useRef<HTMLParagraphElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
 
+  // posthog-js loads on demand (lib/posthog.ts). Start it on mount so it is
+  // initialized long before the first unlock or share needs to report.
+  useEffect(() => {
+    void ensurePostHogReady();
+  }, []);
+
   // Unlocking replaces the form with the board, so focus would otherwise fall
-  // to <body>. Errors already moved focus; success — the path that runs a
-  // hundred times an event — did not.
+  // to <body>. Errors already moved focus; success, the path that runs a
+  // hundred times an event, did not.
   useEffect(() => {
     if (rep !== null) boardRef.current?.focus();
   }, [rep]);
@@ -97,7 +104,7 @@ export function PromoGate({
       if (name) posthog.identify(`rep:${name.toLowerCase()}`, { rep_name: name });
       posthog.capture("promo_page_unlocked", { rep_name: name || null });
       // The password was right, so open the board even if the code database is
-      // briefly unreachable — refresh() surfaces that as a banner instead of
+      // briefly unreachable; refresh() surfaces that as a banner instead of
       // bouncing them back to a password form they already passed.
       setRep(data.rep ?? name);
       await refresh();

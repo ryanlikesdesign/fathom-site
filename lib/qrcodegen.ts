@@ -1,7 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
 // Vendored from Project Nayuki's QR Code generator (MIT License).
-// https://www.nayuki.io/page/qr-code-generator-library — see license header below.
+// https://www.nayuki.io/page/qr-code-generator-library; see license header below.
 /* 
  * QR Code generator library (TypeScript)
  * 

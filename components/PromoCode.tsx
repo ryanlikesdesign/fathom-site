@@ -7,8 +7,8 @@
 
    1. A spelled-out reading. VoiceOver runs "338ATWNTWYA4YY3H3F"
       together into a part-word blur. Spacing the letters isn't enough
-      either — B/D/E/P/T/V/Z collapse into the same phoneme across a
-      noisy conference floor — so the spoken form is the NATO alphabet.
+      either (B/D/E/P/T/V/Z collapse into the same phoneme across a
+      noisy conference floor), so the spoken form is the NATO alphabet.
    2. That reading delivered WITHOUT `aria-label` on a paragraph, which
       ARIA prohibits (role="paragraph" takes no author name) and axe
       only ever reports as "incomplete", so it silently does nothing.
@@ -27,7 +27,7 @@ const PHONETIC: Record<string, string> = {
   "5": "Five", "6": "Six", "7": "Seven", "8": "Eight", "9": "Nine",
 };
 
-/** "3, 3, 8, Alpha, Tango…" — for screen readers and aria-labels alike. */
+/** "3, 3, 8, Alpha, Tango…", for screen readers and aria-labels alike. */
 export function spellCode(code: string): string {
   return code
     .split("")

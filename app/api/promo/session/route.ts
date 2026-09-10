@@ -3,8 +3,8 @@ import { endSession, passwordMatches, startSession } from "@/lib/promoAuth";
 export const dynamic = "force-dynamic";
 
 // One shared password guards a pool of live redeemable codes, so a wrong guess
-// costs something. Per-instance and best-effort — serverless means several
-// instances — but it turns "unlimited guesses" into "slow guesses".
+// costs something. Per-instance and best-effort (serverless means several
+// instances), but it turns "unlimited guesses" into "slow guesses".
 const attempts = new Map<string, { count: number; first: number }>();
 const WINDOW_MS = 10 * 60_000;
 const MAX_ATTEMPTS = 10;

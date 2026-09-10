@@ -8,6 +8,7 @@ import { Surface } from "@/components/Surface";
 import { expiryState } from "@/lib/promoExpiry";
 import { qrShape } from "@/lib/qr";
 import { useLocalValue, useOrigin } from "@/lib/useSession";
+import { ensurePostHogReady } from "@/lib/posthog";
 
 export interface PromoBatchView {
   batch_id: string;
@@ -62,6 +63,12 @@ export function PromoBoard({
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [heldRaw, setHeldRaw] = useLocalValue(HELD_KEY);
   const [message, setMessage] = useState("");
+
+  // posthog-js loads on demand (lib/posthog.ts); warm it so a share can
+  // report the moment it happens.
+  useEffect(() => {
+    void ensurePostHogReady();
+  }, []);
   // Setting the same string twice is a no-op in React, so the DOM never
   // changes and the screen reader never fires. A rep copying ten codes in a
   // row heard the confirmation once. Clearing first forces a real mutation.
@@ -88,7 +95,7 @@ export function PromoBoard({
     [held, setHeldRaw],
   );
 
-  // A held code may have been sent or released from another device — drop any
+  // A held code may have been sent or released from another device; drop any
   // pointer the server no longer recognizes as still reserved.
   const verified = useRef(false);
   useEffect(() => {
@@ -111,7 +118,7 @@ export function PromoBoard({
           const data = await res.json();
           if (data.status !== "assigned") setHeld(batchId, null);
         } catch {
-          /* offline — keep what we have and let the next action reconcile */
+          /* offline; keep what we have and let the next action reconcile */
         }
       }
     })();
@@ -179,16 +186,16 @@ export function PromoBoard({
         <div className="pb-3 text-[var(--text-secondary)]">
           <p>
             Tap <strong>Get a code</strong> and you&apos;ll be handed the next unused one. It&apos;s
-            reserved to you the moment you take it, so nobody else can hand out the same code — even
+            reserved to you the moment you take it, so nobody else can hand out the same code, even
             if you&apos;re both sharing at once.
           </p>
           <ul className="mt-3 space-y-2">
             <li>
-              <strong>Share</strong> — opens your phone&apos;s share sheet with a friendly message
+              <strong>Share</strong> opens your phone&apos;s share sheet with a friendly message
               and the code ready to send.
             </li>
             <li>
-              <strong>Copy</strong> — puts that same message on your clipboard.
+              <strong>Copy</strong> puts that same message on your clipboard.
             </li>
             <li>
               Once you&apos;ve handed it over, mark it sent and take the next one. If you took a code
@@ -290,7 +297,7 @@ function BatchPanel({
   const [error, setError] = useState<string | null>(null);
 
   // Every transition here unmounts the control the rep just activated, which
-  // drops VoiceOver focus to <body> — on iOS that resets the cursor to the top
+  // drops VoiceOver focus to <body>; on iOS that resets the cursor to the top
   // of the page, mid-conversation with the person they're helping. So focus
   // moves deliberately: into the panel when a code is claimed, back to the
   // claim button when it's handed over or returned.
@@ -341,8 +348,8 @@ function BatchPanel({
   }
 
   /**
-   * `okMsg` is announced only after the write succeeds. Announcing first —
-   * which this used to do — could tell a rep a code went out and then render a
+   * `okMsg` is announced only after the write succeeds. Announcing first,
+   * which this used to do, could tell a rep a code went out and then render a
    * contradicting error, in a tool whose entire job is an accurate ledger.
    */
   async function patch(action: string, method?: string, okMsg?: string) {
@@ -373,7 +380,7 @@ function BatchPanel({
   }
 
   function shareMessage() {
-    return `Here's your ${batch.duration_label} of Fathom — the AI companion for blind and low-vision iPhone users.\n\nYour code: ${held!.code}\nRedeem it here: ${trackingUrl}`;
+    return `Here's your ${batch.duration_label} of Fathom, the AI companion for blind and low-vision iPhone users.\n\nYour code: ${held!.code}\nRedeem it here: ${trackingUrl}`;
   }
 
   async function recordShare(method: string, okMsg: string) {
@@ -389,23 +396,23 @@ function BatchPanel({
 
   async function onShare() {
     if (!held) return;
-    const text = `Here's your ${batch.duration_label} of Fathom — the AI companion for blind and low-vision iPhone users. Your code: ${held.code}.`;
+    const text = `Here's your ${batch.duration_label} of Fathom, the AI companion for blind and low-vision iPhone users. Your code: ${held.code}.`;
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({
-          title: `Fathom — ${batch.duration_label}`,
+          title: `Fathom: ${batch.duration_label}`,
           text,
           url: trackingUrl,
         });
         await recordShare("web_share", "Shared, and marked as handed out.");
       } catch (err) {
         // AbortError IS the cancellation. This was inverted, so cancelling was
-        // silent and a genuine failure was reported as "canceled" — either way
+        // silent and a genuine failure was reported as "canceled"; either way
         // leaving the rep unsure whether they still held the code.
         if ((err as Error)?.name === "AbortError") {
           announce("Sharing canceled. You still have this code.");
         } else {
-          announce("Sharing didn't work. You still have this code — try Copy instead.");
+          announce("Sharing didn't work. You still have this code. Try Copy instead.");
         }
       }
     } else {
@@ -418,7 +425,7 @@ function BatchPanel({
       await navigator.clipboard.writeText(text);
       await recordShare(method, okMsg);
     } catch {
-      announce("Couldn't copy automatically — select the text to copy it.");
+      announce("Couldn't copy automatically. Select the text to copy it.");
     }
   }
 
@@ -498,7 +505,7 @@ function BatchPanel({
           <div className="justify-self-center">
             {/* Warm bone rather than pure #FFF: a 176px white block on a dark
                 page is a halation source for exactly this audience. Still
-                15.6:1 against the module color — far past what scanners need. */}
+                15.6:1 against the module color, far past what scanners need. */}
             <div className="rounded-[var(--radius-card)] bg-[var(--qr-field)] p-3 shadow-[var(--shadow-floating)]">
               {qr && (
                 <svg
@@ -531,7 +538,7 @@ function BatchPanel({
               tabIndex={-1}
               className="text-sm font-medium text-[var(--text-secondary)]"
             >
-              Reserved for you — nobody else can hand this one out
+              Reserved for you. Nobody else can hand this one out
             </h3>
 
             <div role="group" aria-label="The code to give out" className="mt-3">
@@ -557,7 +564,7 @@ function BatchPanel({
                 className="flex-1"
                 onClick={onShare}
                 disabled={busy}
-                aria-label={`Share — code ${spellCode(held.code)}`}
+                aria-label={`Share, code ${spellCode(held.code)}`}
               >
                 Share
               </Button>
@@ -575,7 +582,7 @@ function BatchPanel({
               <Button
                 variant="secondary"
                 className="flex-1"
-                aria-label={`Copy code — ${spellCode(held.code)}`}
+                aria-label={`Copy code, ${spellCode(held.code)}`}
                 disabled={busy}
                 onClick={() =>
                   copy(held.code, "Code copied, and marked as handed out.", "copy_code")
@@ -596,7 +603,7 @@ function BatchPanel({
                   patch("sent", "manual", `Code ${spellCode(held.code)} marked as handed out.`)
                 }
                 disabled={busy}
-                aria-label={`I handed it over — code ${spellCode(held.code)}`}
+                aria-label={`I handed it over, code ${spellCode(held.code)}`}
               >
                 I handed it over
               </Button>
@@ -606,7 +613,7 @@ function BatchPanel({
                   patch("released", undefined, "Code returned to the pool. You no longer have it.")
                 }
                 disabled={busy}
-                aria-label={`Put it back — code ${spellCode(held.code)}`}
+                aria-label={`Put it back, code ${spellCode(held.code)}`}
               >
                 Put it back
               </Button>
@@ -621,7 +628,7 @@ function BatchPanel({
 
 /* ---------------------------------------------------------------- */
 
-/** Color never carries the meaning alone — the badge always says the word. */
+/** Color never carries the meaning alone; the badge always says the word. */
 function ExpiryBadge({ expired, label }: { expired: boolean; label: string }) {
   return (
     <span
@@ -650,8 +657,8 @@ function ExpiryBadge({ expired, label }: { expired: boolean; label: string }) {
 }
 
 /**
- * Reusable broadcast codes. There's nothing to hand out here — one code goes to
- * everyone — so this is read-only. It exists because a live code with a
+ * Reusable broadcast codes. There's nothing to hand out here (one code goes to
+ * everyone), so this is read-only. It exists because a live code with a
  * redemption cap and an expiry date shouldn't be invisible to the team.
  */
 function CustomCodeList({ custom }: { custom: CustomCodeView[] }) {
@@ -663,7 +670,7 @@ function CustomCodeList({ custom }: { custom: CustomCodeView[] }) {
         Group codes
       </h2>
       <p className="mt-2 text-[var(--text-secondary)]">
-        One code that many people can redeem, up to a limit — separate from the one-per-person
+        One code that many people can redeem, up to a limit, separate from the one-per-person
         codes above. Nothing to hand out here; this is just so you know it&apos;s live.
       </p>
 

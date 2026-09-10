@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { APP_STORE_URL, trackedRedeemUrl } from "@/lib/promo";
 import { findBySlug, markOpened, trackQuietly } from "@/lib/promoDb";
-import { BrandMark } from "@/components/BrandMark";
+import { Button } from "@/components/Button";
 import { RedeemActions } from "@/components/RedeemActions";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +11,7 @@ type Params = Promise<{ id: string }>;
 type Search = Promise<{ rep?: string }>;
 
 /**
- * Never let a database hiccup turn into a 500 for someone holding a code —
+ * Never let a database hiccup turn into a 500 for someone holding a code,
  * but distinguish the two failures. "Not found" means the link really is
  * dead; an error on our side must not be reported to the recipient as a dead
  * code, or a misconfiguration reads to them as a canceled trial.
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!found) {
     return {
       title: "Fathom free trial",
-      description: "A free trial of Fathom — AI companion for blind and low-vision iPhone users.",
+      description: "A free trial of Fathom, the AI companion for blind and low-vision iPhone users.",
       robots: { index: false, follow: false },
     };
   }
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `You've got ${found.durationLabel} of Fathom`;
   // The code rides in the description so it shows up right inside the
   // iMessage / Mail link-preview card.
-  const description = `Your code: ${found.code} — tap to redeem ${found.durationLabel} of Fathom, the AI companion for blind and low-vision iPhone users.`;
+  const description = `Your code: ${found.code}. Tap to redeem ${found.durationLabel} of Fathom, the AI companion for blind and low-vision iPhone users.`;
 
   return {
     title,
@@ -75,25 +75,19 @@ export default async function RedeemPage({
     await trackQuietly(markOpened(id, userAgent), "opened");
   }
 
+  // page-section: same rhythm and header clearance as every other subpage
+  // (globals.css). The header already carries the brand; the card is the
+  // first thing under it.
   return (
-    <section
-      aria-labelledby="redeem-h"
-      className="mx-auto w-full max-w-xl px-6"
-      style={{ paddingTop: "var(--section-y)", paddingBottom: "var(--section-y)" }}
-    >
-      <div className="flex items-center gap-3">
-        <BrandMark className="brand-mark-lg" />
-        <span className="text-xl font-medium">Fathom</span>
-      </div>
-
+    <section aria-labelledby="redeem-h" className="page-section mx-auto w-full max-w-xl px-6">
       {found ? (
-        <div className="mt-10 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
+        <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
           <p className="eyebrow">{found.durationLabel} · Free trial</p>
           <h1 id="redeem-h" className="mt-3 font-display text-4xl">
             You&apos;ve got {found.durationLabel} of Fathom
           </h1>
           <p className="mt-3 text-[var(--text-secondary)]">
-            Fathom is the AI companion for blind and low-vision iPhone users — it describes
+            Fathom is the AI companion for blind and low-vision iPhone users. It describes
             what&apos;s ahead, guides you through indoor spaces, and helps you complete tasks.
           </p>
 
@@ -108,9 +102,13 @@ export default async function RedeemPage({
             />
           </div>
 
-          <details className="mt-8 border-t pt-4 text-[var(--text-secondary)]">
-            <summary className="cursor-pointer font-medium [&::-webkit-details-marker]:hidden">
+          <details className="group mt-8 border-t pt-2 text-[var(--text-secondary)]">
+            {/* Same disclosure as the support FAQ (components/Faq.tsx): the
+                chevron is the visual cue that the row opens, the focus ring is
+                restated because the marker reset outranks the global rule. */}
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-3 font-medium [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[var(--focus-ring)]">
               How to redeem
+              <svg aria-hidden="true" className="h-5 w-5 flex-none transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
             </summary>
             <ol className="mt-3 list-decimal space-y-2 pl-5">
               <li>Tap “Redeem in the App Store” above on your iPhone or iPad.</li>
@@ -123,12 +121,12 @@ export default async function RedeemPage({
           </details>
         </div>
       ) : result.state === "unavailable" ? (
-        <div className="mt-10 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
+        <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
           <h1 id="redeem-h" className="font-display text-3xl">
             We can&apos;t check this link right now
           </h1>
           <p className="mt-3 text-[var(--text-secondary)]">
-            Something on our end isn&apos;t responding — this isn&apos;t a problem with your code.
+            Something on our end isn&apos;t responding. This isn&apos;t a problem with your code.
             Please try again in a few minutes, or email{" "}
             <a href="mailto:support@fathomvision.app" className="underline underline-offset-4">
               support@fathomvision.app
@@ -137,7 +135,7 @@ export default async function RedeemPage({
           </p>
         </div>
       ) : (
-        <div className="mt-10 rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
+        <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
           <h1 id="redeem-h" className="font-display text-3xl">
             This trial link isn&apos;t active
           </h1>
@@ -145,12 +143,9 @@ export default async function RedeemPage({
             The code may have already been claimed. You can still download Fathom free from the App
             Store.
           </p>
-          <a
-            href={APP_STORE_URL}
-            className="mt-6 inline-flex items-center justify-center rounded-[var(--radius-btn)] bg-[var(--text-primary)] px-6 py-3 font-medium text-[var(--bg)]"
-          >
+          <Button href={APP_STORE_URL} size="xl" className="mt-6" rel="noopener noreferrer">
             Get Fathom on the App Store
-          </a>
+          </Button>
         </div>
       )}
     </section>

@@ -1,5 +1,5 @@
 /* ================================================================
-   Fathom promo codes — shared config.
+   Fathom promo codes: shared config.
 
    The codes themselves are NOT here any more. They live in Supabase
    (`fathom_promo_codes`), because:
@@ -13,7 +13,7 @@
 /** Apple App Store numeric app id for Fathom: Visual Assistance. */
 export const APP_STORE_APP_ID = "6760924183";
 
-/** Plain App Store product page — used as the fallback destination. */
+/** Plain App Store product page, used as the fallback destination. */
 export const APP_STORE_URL = `https://apps.apple.com/us/app/fathom-visual-assistance/id${APP_STORE_APP_ID}`;
 
 /**
@@ -26,11 +26,11 @@ export function redeemUrl(code: string): string {
   )}`;
 }
 
-/** Where the Redeem button points — tracked, then forwarded to Apple. */
+/** Where the Redeem button points: tracked, then forwarded to Apple. */
 export function trackedRedeemUrl(slug: string): string {
   return `/promo/r/${encodeURIComponent(slug)}/redeem`;
 }
 
-/** PostHog — same project the rest of the site already reports to. */
+/** PostHog, same project the rest of the site already reports to. */
 export const POSTHOG_KEY = "phc_mnsvmBfVeHfbN5n6xPXVV4tvRhkv6pLJrwwfKqAzon8G";
 export const POSTHOG_HOST = "https://us.i.posthog.com";

@@ -1,5 +1,5 @@
 /* ================================================================
-   Promo-code storage. SERVER ONLY — never import from a "use client"
+   Promo-code storage. SERVER ONLY; never import from a "use client"
    module. It carries the Supabase service-role key, and the codes it
    returns must never be shipped to the browser in bulk.
 
@@ -11,7 +11,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 /**
- * Names only, never values — this text is shown in the UI. Saying which
+ * Names only, never values; this text is shown in the UI. Saying which
  * variable is missing turns "it doesn't work" into a one-line fix; the
  * previous message named both and left you guessing which environment or
  * spelling was wrong.
@@ -102,7 +102,7 @@ export interface CodeDetail {
 }
 
 /**
- * A reusable code many people redeem, up to a cap — not a per-recipient code,
+ * A reusable code many people redeem, up to a cap; not a per-recipient code,
  * so it has no slug and no tracking. Apple reports no redemption count.
  */
 export interface CustomCode {
@@ -142,7 +142,7 @@ export interface UsedCode {
 }
 
 /**
- * Every code that has left the pool — the tracker's dataset.
+ * Every code that has left the pool: the tracker's dataset.
  *
  * Unpaginated on purpose: this is bounded by how many codes have actually been
  * handed out (53 at time of writing, out of 1,500). Add paging if that ever
@@ -218,7 +218,7 @@ export const markRedeemClicked = (slug: string) =>
   rpc("fathom_promo_mark_redeem_clicked", { p_slug: slug });
 
 /**
- * Tracking is never allowed to break the recipient's redeem journey — if the
+ * Tracking is never allowed to break the recipient's redeem journey; if the
  * write fails we log and carry on to the App Store.
  */
 export async function trackQuietly(work: Promise<unknown>, label: string) {

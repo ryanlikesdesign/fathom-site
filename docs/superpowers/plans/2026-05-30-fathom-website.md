@@ -1821,7 +1821,7 @@ export default function TermsPage() {
       <p>We grant you a personal, non-transferable license to use Fathom on devices you own or control, for your own use, subject to these terms and the App Store terms.</p>
 
       <h2>Subscriptions and billing</h2>
-      <p>Some features require a paid subscription. Founding-member pricing applies to eligible early supporters. Subscriptions are billed through your Apple account, renew automatically unless cancelled, and can be managed or cancelled in your Apple account settings. Prices and terms will be shown before you purchase.</p>
+      <p>Some features require a paid subscription. Founding-member pricing applies to eligible early supporters. Subscriptions are billed through your Apple account, renew automatically unless canceled, and can be managed or canceled in your Apple account settings. Prices and terms will be shown before you purchase.</p>
 
       <h2>Acceptable use</h2>
       <ul>

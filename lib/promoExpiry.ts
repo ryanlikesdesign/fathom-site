@@ -2,7 +2,7 @@
    Offer-code expiry.
 
    Apple reports an expiration date with no time (e.g. "2026-10-31"),
-   and App Store dates run on Pacific time — the app's own in-app offer
+   and App Store dates run on Pacific time; the app's own in-app offer
    banner ends at 2026-11-01T06:59Z, which is 23:59 on the 31st in Los
    Angeles. A code is therefore still good all through its expiration
    date and dead the day after.

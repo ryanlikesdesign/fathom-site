@@ -12,10 +12,12 @@ beforeEach(() => {
 describe("ThemeToggle", () => {
   it("toggles the data-theme attribute on the html element", async () => {
     render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
-    const btn = screen.getByRole("button", { name: /switch to (dark|light) theme/i });
+    // Icon-only control: the name is the action, and it flips with the state.
+    const btn = screen.getByRole("button", { name: "Switch to light theme" });
     // Default is dark; first activation flips to light and persists the choice.
     await userEvent.click(btn);
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     expect(localStorage.getItem("fathom-theme")).toBe("light");
+    expect(btn).toHaveAccessibleName("Switch to dark theme");
   });
 });

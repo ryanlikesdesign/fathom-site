@@ -20,13 +20,13 @@ export const RELEASES: Release[] = [
     version: '1.2.0',
     date: '2026-08-29',
     added: [
-      'Point at something — a label, a sign, a dial, a door, a screen, handwriting — and Fathom names it, then reads what\'s written on it.',
+      'Point at something (a label, a sign, a dial, a door, a screen, handwriting) and Fathom names it, then reads what\'s written on it.',
       'Setup is now tap-to-answer. A few quick questions about your sight and how you get around, every one skippable, no microphone required.',
-      'Notifications, if you want them — a few tips, a monthly usage note, occasional news from the developer. Never anything safety-related; hazards always stay in the app, spoken and by touch.',
+      'Notifications, if you want them: a few tips, a monthly usage note, occasional news from the developer. Never anything safety-related; hazards always stay in the app, spoken and by touch.',
     ],
     improved: [
       'Fathom now runs the camera and depth sensors at their optimal rate during Lookout and Go instead of full speed, for less heat and better battery life on longer walks.',
-      'Pointing is harder to trigger by accident — a relaxed hand resting near the camera no longer starts a scan.',
+      'Pointing is harder to trigger by accident: a relaxed hand resting near the camera no longer starts a scan.',
       'Refined contrast and visual polish throughout, including better support for larger text sizes.',
     ],
   },
@@ -43,10 +43,10 @@ export const RELEASES: Release[] = [
     ],
   },
   {
-    version: '1.1',
+    version: '1.1.0',
     date: '2026-06-15',
     added: [
-      '"Read this with Fathom" via Siri or the Action Button now works reliably — signs, labels, mail, anything on screen.',
+      '"Read this with Fathom" via Siri or the Action Button now works reliably: signs, labels, mail, anything on screen.',
       "New onboarding walks you through Snapshot's core moves (read text, name an object, ask a question) and how to run Fathom hands-free.",
       'Haptic strength and Awareness level are now part of first-run setup. Skip them if you want to.',
       'A "Cloud AI & Privacy" screen in Settings shows what leaves your device and what stays on it.',
@@ -57,25 +57,25 @@ export const RELEASES: Release[] = [
     ],
   },
   {
-    version: '1.0',
+    version: '1.0.0',
     date: '2026-03-15',
-    intro: 'Fathom is a spoken navigation aid for blind and low-vision users. Built around VoiceOver and meant to be used by ear.',
+    intro: 'Fathom is an AI companion for blind and low-vision people, spoken first. Built around VoiceOver and meant to be used by ear.',
     sections: [
       {
         label: 'Free',
         items: [
-          'Lookout — spoken description of what\'s ahead, updating as you move.',
-          'Snapshot — a one-shot scan of the scene in front of you, read aloud.',
-          'On-device safety layer — obstacle alerts with haptics, step and drop-off warnings, and object detection. No internet needed.',
+          'Lookout: spoken description of what\'s ahead, updating as you move.',
+          'Snapshot: a one-shot scan of the scene in front of you, read aloud.',
+          'On-device safety layer: obstacle alerts with haptics, step and drop-off warnings, and object detection. No internet needed.',
         ],
       },
       {
         label: 'Fathom Plus',
         items: [
-          'Go — turn-by-turn navigation to a destination.',
-          'Task — step-by-step help with a hands-on task.',
-          'Live Task — ongoing two-way guidance while the camera watches.',
-          'Assistant — tell Fathom your goal and it builds a plan, then walks you through it.',
+          'Go: turn-by-turn navigation to a destination.',
+          'Task: step-by-step help with a hands-on task.',
+          'Live Task: ongoing two-way guidance while the camera watches.',
+          'Assistant: tell Fathom your goal and it builds a plan, then walks you through it.',
         ],
       },
       {

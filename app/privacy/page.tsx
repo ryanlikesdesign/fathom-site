@@ -1,18 +1,17 @@
-import type { Metadata } from "next";
-import { Section } from "@/components/Section";
+import Link from "next/link";
+import { LEGAL_PROSE, Section } from "@/components/Section";
+import { pageMeta } from "@/lib/pageMeta";
 
-export const metadata: Metadata = {
-  title: "Privacy",
-  description:
-    "How Fathom handles camera, microphone, and anonymous usage data. Fathom works on your device, needs no account, doesn't track you, and never sells your data.",
-};
+export const metadata = pageMeta(
+  "Privacy",
+  "How Fathom handles camera, microphone, and anonymous usage data. Fathom works on your device, needs no account, doesn't track you, and never sells your data.",
+  "/privacy",
+);
 
 export default function PrivacyPage() {
   return (
-    <Section
-      labelledBy="pp-h"
-      className="[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_p]:mt-3 [&_p]:text-[var(--text-secondary)] [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-[var(--text-secondary)] [&_li]:mt-1"
-    >
+    <Section labelledBy="pp-h" className={LEGAL_PROSE}>
+      <p className="eyebrow">Legal</p>
       <h1 id="pp-h" className="font-display text-5xl">Privacy Policy</h1>
       <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: August 28, 2026</p>
 
@@ -27,49 +26,57 @@ export default function PrivacyPage() {
       </p>
 
       <h2>What Fathom collects</h2>
+      <h3 className="mt-6 font-medium">No account</h3>
       <p>
-        <strong>No account.</strong>{" "}There is no sign-up, no sign-in, and no login of any kind. You
+        There is no sign-up, no sign-in, and no login of any kind. You
         never give us your name, email, or any personal identity to use Fathom, so nothing you do in
         the app is tied to a personal profile.
       </p>
+      <h3 className="mt-6 font-medium">Camera and microphone</h3>
       <p>
-        <strong>Camera and microphone.</strong>{" "}To describe your surroundings and help with tasks,
+        To describe your surroundings and help with tasks,
         Fathom sends images from your camera through Fathom&apos;s own secure backend to Google&apos;s
         Gemini AI for processing. When you use voice features, your speech is turned into text on your
-        device, and only that text is sent. The one exception is a Live Task conversation: while the
-        microphone button is on, your voice is streamed over an encrypted connection to Gemini so the
-        AI can hear your question directly — the microphone stops streaming the moment the button is
+        device, and only that text is sent.
+      </p>
+      <p>
+        The one exception is a Live Task conversation: while the microphone button is on, your
+        voice is streamed over an encrypted connection to Gemini so the AI can hear your question
+        directly. The microphone stops streaming the moment the button is
         off, and no voice is ever sent outside of that. This happens in real time to answer your
         request. The images, text, and audio are processed and then discarded; they are not stored by
         Fathom or its backend. All connections are encrypted. You can also use Fathom in an on-device
         mode that sends nothing to the cloud.
       </p>
+      <h3 className="mt-6 font-medium">Anonymous usage data</h3>
       <p>
-        <strong>Anonymous usage data.</strong>{" "}To understand how Fathom is used and to fix problems,
+        To understand how Fathom is used and to fix problems,
         we collect anonymous analytics through PostHog: which features are used, app performance,
         crash reports, and screen recordings of how the app is used, which can include text and other
         content shown on screen. This is tied to a random identifier created on your device, not to
         you personally. We do not use an advertising identifier, and we do not track you across other
         apps or websites.
       </p>
+      <h3 className="mt-6 font-medium">Purchases</h3>
       <p>
-        <strong>Purchases.</strong>{" "}Subscriptions are handled by Apple through the App Store. We do
+        Subscriptions are handled by Apple through the App Store. We do
         not receive or store your payment details.
       </p>
+      <h3 className="mt-6 font-medium">Notifications</h3>
       <p>
-        <strong>Notifications.</strong>{" "}Notifications are optional, and there are three kinds you
+        Notifications are optional, and there are three kinds you
         can switch on or off separately in Settings. Tips and AI usage updates are scheduled entirely
         on your phone and involve no server. The third, News from Fathom, uses Apple&apos;s push
         service: while it is on, your device&apos;s notification token is stored on Fathom&apos;s
         backend next to the same random identifier described above, so an announcement can reach your
         device. It is not linked to your name or any personal identity, and turning the setting off
-        deletes it. Notifications never carry safety information — obstacles and hazards always reach
+        deletes it. Notifications never carry safety information. Obstacles and hazards always reach
         you inside the app, out loud and through touch, as they happen.
       </p>
 
       <h2>Who we share data with</h2>
       <ul>
-        <li><strong>Google (Gemini AI)</strong> processes camera images, text, and — in Live Task, while the microphone button is on — voice audio in real time to generate descriptions and guidance.</li>
+        <li><strong>Google (Gemini AI)</strong> processes camera images, text, and, in Live Task while the microphone button is on, voice audio in real time to generate descriptions and guidance.</li>
         <li><strong>Supabase</strong> hosts Fathom&apos;s secure backend, which relays those requests to Google and enforces usage limits. Camera images and text pass through it in real time and are not stored. If you turn on News from Fathom, it also stores your notification token so announcements can be delivered.</li>
         <li><strong>PostHog</strong> receives anonymous usage and diagnostic data.</li>
         <li><strong>Apple</strong> handles App Store purchases.</li>
@@ -111,8 +118,8 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         Questions about privacy? Email{" "}
-        <a className="underline" href="mailto:privacy@fathomvision.app">privacy@fathomvision.app</a>{" "}
-        or visit <a className="underline" href="https://fathomvision.app">fathomvision.app</a>.
+        <a href="mailto:privacy@fathomvision.app">privacy@fathomvision.app</a>{" "}
+        or visit <Link href="/">fathomvision.app</Link>.
       </p>
       <p className="mt-6 text-sm text-[var(--text-muted)]">Unruly Vision, LLC</p>
     </Section>

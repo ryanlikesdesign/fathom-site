@@ -40,7 +40,7 @@ function stageOf(c: UsedCodeView): Stage {
   if (c.first_opened_at) return "opened";
   // Handed out before this system existed, so there is nothing to report.
   if (isImported(c)) return "untracked";
-  // Taken from the pool but not yet given to anyone — not the same as untracked.
+  // Taken from the pool but not yet given to anyone; not the same as untracked.
   if (c.status === "assigned") return "reserved";
   return "sent";
 }
@@ -94,7 +94,7 @@ export function PromoTracker({
   const groups = useMemo(() => {
     const map = new Map<string, UsedCodeView[]>();
     for (const c of used) {
-      const key = c.assigned_to?.trim() || "Unlabelled";
+      const key = c.assigned_to?.trim() || "Unlabeled";
       const list = map.get(key);
       if (list) list.push(c);
       else map.set(key, [c]);
@@ -183,7 +183,7 @@ export function PromoTracker({
             {totals.untracked} of these predate tracking.
           </strong>{" "}
           They were handed out from the spreadsheet before this system existed, so they have no
-          open or redeem data — that&apos;s missing information, not evidence nobody used them.
+          open or redeem data. That&apos;s missing information, not evidence nobody used them.
           Codes handed out from now on record every step.
         </p>
       )}
@@ -202,7 +202,7 @@ export function PromoTracker({
           const panelId = `promo-group-${gi}`;
           return (
             <Surface key={g.recipient} register="lift" as="li">
-              {/* h3 so the list is navigable by heading — this page previously
+              {/* h3 so the list is navigable by heading; this page previously
                   had a single h1 and nothing else to rotor between. */}
               <h3>
                 <button
@@ -269,7 +269,7 @@ export function PromoTracker({
                           // Every one of these was named just "Mark redeemed",
                           // so the rotor showed a dozen identical entries for an
                           // irreversible action.
-                          aria-label={`Mark redeemed — code ${spellCode(c.code)}`}
+                          aria-label={`Mark redeemed, code ${spellCode(c.code)}`}
                         >
                           {busy === c.slug ? "Saving…" : "Mark redeemed"}
                         </Button>

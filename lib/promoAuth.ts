@@ -6,7 +6,7 @@
    is checked server-side and unlock issues a signed, httpOnly cookie;
    the codes never reach a client that hasn't presented it.
 
-   This is a shared-password gate, not per-person accounts — enough to
+   This is a shared-password gate, not per-person accounts; enough to
    keep a valuable code pool off the open web, not an identity system.
    ================================================================ */
 

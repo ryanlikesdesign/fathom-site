@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 import { axe } from "jest-axe";
 
-const ph = vi.hoisted(() => ({ capture: vi.fn() }));
+const ph = vi.hoisted(() => ({ init: vi.fn(), capture: vi.fn() }));
 vi.mock("posthog-js", () => ({ default: ph }));
 
 import { RedeemActions } from "@/components/RedeemActions";

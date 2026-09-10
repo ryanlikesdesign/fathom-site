@@ -189,6 +189,65 @@ switching.
 The scroll-scrubbed choreography in the section above is not shipped; if it
 returns, it should be applied to the existing screens, not to new ones.
 
+Re-review fixes, 2026-09-09. The sticky scrolly phone is now the same 380px
+device as the hero and the inline step phones, scaled with `zoom` (its old
+360x780 layout re-wrapped the Snapshot subtitle differently from the hero);
+the zoom steps land on the heights the old scale breakpoints produced. On
+landscape phones the sticky device has one sizing path (the height clamp no
+longer stacks on the short-window zoom, which had shrunk it to 96x207 at
+932x430 and clipped the Home mode list), and the inline step phone stays at a
+readable .62 instead of .35. The 28% step dim is gated on the scroll island
+(`html[data-motion-ready]`), so a no-JS load reads every step at full
+strength, and OS Reduce Motion now un-dims the steps exactly as the Pause
+motion button does. Light-theme screens get a Contrast Boost path (the app's
+boost is dark-only, so the light screens take the site's own boosted light
+ink). The Activities tap indicator lost its solid dot, which sat on the one
+label the step tells the reader to tap. The Home mockup's Task row shows the
+default backend with no BETA badge, since the app pairs the badge only with
+the "uses more AI budget" subtitle. Each step's visible eyebrow is
+`aria-hidden`; the heading already carries it. Site chrome: the header
+collapses to the icon-only controls at 1024px, not 940 (it overflowed from
+941 to 999px, the 200% zoom band); both control labels are visually hidden
+rather than `display:none`, so "Toggle theme" stays in the button's name; the
+mobile menu inerts the header and the skip link along with `main` and
+`footer`; the light `--field-border` is 0.5 alpha (3.49:1 on the field, was
+2.26). `lib/landing-content.ts` lost the titles, bodies, captions, steps,
+goal, plan and notes nothing rendered; it now holds only what the page reads.
+
+Accepted AAA gap, recorded like the step dim above: a set of `aria-hidden`
+mockup spots sit under the site's 5.6:1 secondary floor because they mirror
+`FathomColors.swift` for fidelity. Measured against the shipped tokens on
+2026-09-09 (the earlier record named only three). Light theme: the Assistant
+composer field (`.as-input`, `--s-ink-3` on `--s-surface-2`, 4.66:1) and the
+plan step subtitles (`.as-plan-sub`, 4.66:1); the "Analyzing..." line
+(`.as-step-analyzing`, `--s-ink-4` on `--s-bg`, 4.64:1); the next-step tile
+(`.as-next-step`, `--s-bg` on `--s-green-fill`, 4.84:1); the Home row chevron
+(`.row-chev`, `--s-ink-4` on `--s-surface`, 4.98:1; it was the one consumer of
+`--s-faint` at 4.12:1, a token the Contrast Boost block never lifted, so that
+token is gone); the `--s-ink-3` captions on `--s-bg` at 5.16:1 (`.home-tag`,
+the Home AI disclaimer, `.as-sub`, the RECENT divider, `.go-sub`); the tab-bar
+labels and plan step numbers (`.tab small`, `.as-plan-n`, 5.39:1); and the
+Assistant chips (`.as-chip`, 5.53:1 on `--s-surface`). Dark theme: `.as-input`
+and `.as-plan-sub` (`--s-ink-3` on `--s-surface-2`, 5.08:1) and `.as-next-step`
+(5.41:1). All clear AA, are hidden from readers, and are restated in the page
+text. Under Contrast Boost the ink spots lift to 10:1 or better in both themes
+(`--s-ink-2/3/4` are boosted; `.as-plan-n` on `--s-accent-text` is boosted in
+dark only); the green next-step tile keeps its app color. Making them stronger
+is a `fathomTextSecondary` / `fathomTextTertiary` light-mode change in
+project-homer, which the site would then mirror, not a site-only edit.
+
+Also from the 2026-09-09 re-review: the phone islands (`StickyPhone`,
+`MobilePhone`) now render both sets on the server and the hydration pass and
+let the 861px CSS breakpoint show one, so a no-JS load has its mockups (it had
+none but the hero's). That is a deliberate, no-JS-only exception to the "never
+a second hidden copy of every screen" rule in those files; a JS visitor still
+unmounts the losing set one render after hydration. The primary CTA carries a
+`--accent-signal` edge (7.4:1 on the dark ground; invisible in light, where
+the token equals the fill). The Pause motion control keeps one cue (a fixed
+name plus `aria-pressed`) and, with OS Reduce Motion on, reads "Motion off,
+set by your device" and is `aria-disabled`, since the OS block in
+`globals.css` cannot be overridden from the page.
+
 ## Design-system additions
 
 Reported for the decision log: `.mode-actions` / `.mode-primary` / `.mode-icon`

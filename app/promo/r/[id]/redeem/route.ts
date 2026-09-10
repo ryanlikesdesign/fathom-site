@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * The Redeem button points here rather than straight at Apple, so the tap is
- * recorded server-side — it works with JavaScript off, and it's the closest
+ * recorded server-side: it works with JavaScript off, and it's the closest
  * thing to a redemption signal that exists. Apple exposes no per-code
  * redemption status, so "tapped through to the redeem sheet" is as far as
  * automatic tracking can go; actual redemption is confirmed by a human.

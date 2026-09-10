@@ -81,7 +81,7 @@ describe("PromoTracker", () => {
     await userEvent.click(screen.getByRole("button", { name: /Kat Botner/i }));
     // Visible label first (Label in Name), then the spelled code.
     expect(
-      screen.getByRole("button", { name: /^Mark redeemed — code Bravo, Bravo, Bravo/ }),
+      screen.getByRole("button", { name: /^Mark redeemed, code Bravo, Bravo, Bravo/ }),
     ).toBeInTheDocument();
   });
 

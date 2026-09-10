@@ -55,7 +55,7 @@ export default async function TrackerPage() {
         Code tracker
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">
-        Every code that has left the pool, grouped by who got it — and how far each one got.
+        Every code that has left the pool, grouped by who got it, and how far each one got.
       </p>
       <p className="mt-4">
         <Link href="/promo" className="underline underline-offset-4">

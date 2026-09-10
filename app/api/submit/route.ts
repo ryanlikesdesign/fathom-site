@@ -10,7 +10,8 @@ interface Payload {
   email?: string;
   category?: string;
   message?: string;
-  company?: string; // honeypot — real users never fill this
+  company?: string; // honeypot; real users never fill this
+  renderedAt?: number; // when the form was drawn (ms epoch), sent by the client
 }
 
 export async function POST(request: Request) {
@@ -21,9 +22,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  // Honeypot: pretend success, send nothing.
+  // Honeypot. A filled field is not proof by itself: browser autofill can
+  // write into it too. A bot submits within a beat of the page loading (or
+  // never bothers to send renderedAt); a person takes longer than 1.5s to
+  // write a message. Automated: pretend success, send nothing. Otherwise
+  // note it and let the submission through to validation.
   if (body.company && body.company.trim() !== "") {
-    return NextResponse.json({ ok: true }, { status: 200 });
+    const elapsed = typeof body.renderedAt === "number" ? Date.now() - body.renderedAt : null;
+    const looksAutomated = elapsed === null || elapsed < 1500;
+    if (looksAutomated) {
+      console.warn("submit: honeypot hit, dropped", { elapsed });
+      return NextResponse.json({ ok: true }, { status: 200 });
+    }
+    console.warn("submit: honeypot filled after a human-paced delay, letting through", { elapsed });
   }
 
   const result = validateSubmission(body);
@@ -38,7 +49,7 @@ export async function POST(request: Request) {
   }
 
   const from = process.env.FROM_EMAIL ?? "Fathom <support@fathomvision.app>";
-  const subject = `Fathom feedback${body.category ? ` — ${body.category}` : ""}`;
+  const subject = `Fathom feedback${body.category ? `: ${body.category}` : ""}`;
   const text = [
     `Category: ${body.category ?? "General"}`,
     `Name: ${body.name ?? "(none)"}`,

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ================================================================
-   Fathom design tokens — ported from the portfolio landing page.
+   Fathom design tokens, ported from the portfolio landing page.
    Navy + parchment palette, dark-default, switched via [data-theme].
    Semantic aliases (--text-primary, --bg-subtle, --glass, ...) are
    kept so the components/pages built earlier recolor automatically.
@@ -9,7 +9,7 @@
 
 :root {
   /* Brand palette */
-  --fathom-300: #5a8ba8;
+  --fathom-300: #6fa8c9;
   --fathom-500: #2a5a78;
   --fathom-700: #1a3b52;
   --bone-100: #ede8de;
@@ -24,11 +24,11 @@
   --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
   /* Offer codes are read aloud, dictated and typed. The display serif
      collides 0/O and 1/l/I, so codes get a face with disambiguated
-     glyphs — legibility beats voice for machine-readable strings. */
+     glyphs; legibility beats voice for machine-readable strings. */
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
 
-  /* QR colors are functional, not thematic — they must stay dark-on-light in
+  /* QR colors are functional, not thematic: they must stay dark-on-light in
      BOTH themes or the code stops scanning. Deliberately outside the
      [data-theme] blocks for that reason. Warm ink, never pure #000/#FFF;
      14.71:1, far past any scanner's requirement. */
@@ -47,22 +47,36 @@
   --radius-btn: 8px;
 
   --section-y: 6rem;
+  --header-h: 80px;
   --dur: 150ms;
+  /* Motion scale. quick: hover/press feedback. base: menus, list rows,
+     transcript lines. screen: a whole phone screen or sheet switching.
+     reveal: reserved for time-based reveals (the homepage's are
+     scroll-driven and take no duration). */
+  --dur-quick: 160ms;
+  --dur-base: 320ms;
+  --dur-screen: 480ms;
+  --dur-reveal: 760ms;
 }
 
 /* ── Dark theme (default) ─────────────────────────────────────── */
 [data-theme="dark"], :root {
+  color-scheme: dark;
   --bg: #0e1013;
   --bg-elevated: #181b1f;
   --bg-hover: #1e2128;
   --bg-raised: #1e2128;
   --fg: #e8e4db;
   --fg-secondary: #a8a29a;
-  --fg-tertiary: #6a6560;
+  --fg-tertiary: #8b95a1;
   --fg-muted: #4a4540;
   --accent: var(--fathom-700);
   --accent-signal: var(--fathom-300);
   --divider: rgba(255, 255, 255, 0.08);
+  /* Form-field edge. --divider is a hairline for layout, too faint to find a
+     field by at 200% zoom; this reads as a boundary without competing with
+     the accent-signal invalid state. */
+  --field-border: rgba(255, 255, 255, 0.35);
   --focus-ring: var(--fathom-300);
   --shadow-floating: 0 20px 60px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
 
@@ -78,12 +92,12 @@
   --status-off-border: rgba(255, 255, 255, 0.28);
 
   /* Progress track. Must differ from --bg-raised, which --bg-hover does
-     not in this theme — both are #1e2128, so the bar had no visible scale. */
+     not in this theme; both are #1e2128, so the bar had no visible scale. */
   --track: #31363f;
 
   /* Selected state for chips/tabs. Must read as "chosen", not as the primary
      CTA (which is cream-on-dark here), and must differ from the tablist it
-     sits on — --bg-hover did not, it IS --bg-raised in this theme (1.00:1).
+     sits on; --bg-hover did not, it IS --bg-raised in this theme (1.00:1).
      Label on fill: 7.64:1. */
   --selected-bg: #24485f;
   --selected-fg: var(--fg);
@@ -95,6 +109,7 @@
   --sh: 0 0 0;
 
   /* aliases for earlier components */
+  /* --text-secondary: body-safe (>=5.6:1 both themes). --text-muted: NOT text-safe in dark (3.31:1 before the tertiary fix); use only for metadata lines and non-text. */
   --bg-subtle: var(--bg-elevated);
   --text-primary: var(--fg);
   --text-secondary: var(--fg-secondary);
@@ -104,17 +119,22 @@
 
 /* ── Light theme ──────────────────────────────────────────────── */
 [data-theme="light"] {
+  color-scheme: light;
   --bg: #f2ede4;
   --bg-elevated: #ede8de;
   --bg-hover: #e8e2d4;
   --bg-raised: #f8f5ef;
   --fg: #0e1013;
   --fg-secondary: #3a424c;
-  --fg-tertiary: #5a6470;
+  --fg-tertiary: #4a535e;
   --fg-muted: #8a95a2;
   --accent: var(--fathom-700);
   --accent-signal: var(--fathom-700);
   --divider: rgba(14, 16, 19, 0.1);
+  /* 0.5, not the dark theme's 0.35: composited over --bg-raised (#f8f5ef)
+     that was 2.26:1, under the 3:1 non-text floor. 0.5 is 3.49:1 there and
+     3.43:1 on the page ground. */
+  --field-border: rgba(14, 16, 19, 0.5);
   --focus-ring: var(--fathom-700);
   --shadow-floating: 0 20px 60px rgba(14, 16, 19, 0.12), 0 4px 16px rgba(14, 16, 19, 0.08);
 
@@ -128,7 +148,7 @@
 
   --track: #d3cdbe;
 
-  /* Tinted chip with a navy edge — clearly selected, clearly not the black
+  /* Tinted chip with a navy edge: clearly selected, clearly not the black
      CTA. Label on fill: 12.68:1; border on fill: 7.80:1. */
   --selected-bg: #c5d5e1;
   --selected-fg: var(--fg);
@@ -147,8 +167,8 @@
 
 /* Higher contrast where the OS asks for it */
 @media (prefers-contrast: more) {
-  [data-theme="dark"], :root { --fg-secondary: #cfcabf; --fg-tertiary: #a8a29a; --divider: rgba(255,255,255,0.22); }
-  [data-theme="light"] { --fg-secondary: #2a313a; --fg-tertiary: #3a424c; --divider: rgba(14,16,19,0.28); }
+  [data-theme="dark"], :root { --fg-secondary: #cfcabf; --fg-tertiary: #a8a29a; --divider: rgba(255,255,255,0.22); --fg-muted:#a8a29a; --accent-signal:#8fc2df; }
+  [data-theme="light"] { --fg-secondary: #2a313a; --fg-tertiary: #3a424c; --divider: rgba(14,16,19,0.28); --fg-muted:#3a424c; }
 }
 
 @theme inline {
@@ -163,7 +183,13 @@
   --color-accent-signal: var(--accent-signal);
 }
 
-* { border-color: var(--border); }
+/* Default border color for every element. Lives in the base layer, like
+   Tailwind's own preflight, so a color utility (border-[var(--field-border)],
+   aria-invalid:border-[var(--accent-signal)]) can still win; unlayered it
+   would outrank every utility and no border could ever be recolored. */
+@layer base {
+  * { border-color: var(--border); }
+}
 
 /* ── Selected chips / tabs (global) ────────────────────────────────
    Any role="tab" on the site gets the same selected treatment, so it can't
@@ -177,18 +203,24 @@
 /* ── Text wrapping ───────────────────────────────────────────────────
    How lines break, not how they look. Headings balance so no line is left
    holding a single word; body text avoids orphans and ragged final lines.
-   Native CSS (Safari 17.5+, Chrome 114+) — the audience is current iOS
+   Native CSS (Safari 17.5+, Chrome 114+); the audience is current iOS
    Safari, so no wrap-balancing library is needed; older engines simply
    ignore these and wrap as before. */
 h1, h2, h3, .eyebrow { text-wrap: balance; }
 p, li, dd, dt, summary, figcaption { text-wrap: pretty; }
 p { hanging-punctuation: first; }
 /* Hyphenation for long words only in flowing body copy; never in UI labels,
-   codes or URLs, which set their own breaking. */
-p { -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 8 4 4; }
+   codes or URLs, which set their own breaking. 12 6 6: only words of twelve
+   letters or more break, and never into fragments shorter than six, so
+   "awareness" and "something" stay whole at 320px. */
+p { -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 12 6 6; }
+/* Links (emails, URLs) and label-sized lines never hyphenate. */
+p a, .eyebrow, .step-whisper, .press-line, .download-note, .hero-eyebrow {
+  -webkit-hyphens: manual; hyphens: manual;
+}
 
 
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
 
 body {
   background: var(--bg);
@@ -216,7 +248,31 @@ h1, h2, .font-display {
   color: var(--accent-signal);
 }
 .muted { color: var(--fg-tertiary); font-weight: 400; }
-.footnote { font-size: 13px; color: var(--fg-muted); }
+.footnote { font-size: 13px; color: var(--fg-secondary); }
+/* Small caps label shared by release-notes group headings and the footer
+   column headings: one size, one tracking, one color. */
+.label-caps { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-secondary); }
+
+/* Subpage sections (components/Section.tsx). The first section on a page
+   also clears the fixed header so the eyebrow and h1 start below it.
+   first-of-type rather than first-child: the support page renders its
+   JSON-LD <script> ahead of its first section. */
+.page-section { padding-block: var(--section-y); }
+main > .page-section:first-of-type { padding-top: calc(var(--section-y) + var(--header-h)); }
+.page-section .eyebrow { margin: 0 0 16px; }
+/* Inline links on subpages: a thin accent rule, offset so descenders stay
+   clear, brightening to full ink on hover. Buttons keep their own style. */
+.page-section a:not([class*="btn"]) { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--accent-signal); }
+/* Buttons keep their own label color on hover too: the ink-colored hover
+   would sit on the primary's navy fill (components/Button.tsx, .ui-btn). */
+.page-section a:not([class*="btn"]):hover { color: var(--fg); }
+
+/* Form success card (feedback form). Tinted with the reed ramp so it reads
+   as "done" without color alone: the check icon and the title carry it too. */
+.form-success { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border-radius: var(--radius-md); background: color-mix(in oklab, var(--reed-500) 16%, var(--bg-raised)); border: 1px solid color-mix(in oklab, var(--reed-500) 40%, transparent); }
+.form-success svg { width: 24px; height: 24px; color: var(--reed-300); flex: none; }
+.success-title { margin: 0; font-weight: 600; font-size: 16px; }
+.success-body { margin: 4px 0 0; font-size: 14px; color: var(--fg-secondary); }
 
 /* Visible focus on every interactive element */
 :where(a, button, input, textarea, select, [tabindex]):focus-visible {
@@ -232,8 +288,8 @@ h1, h2, .font-display {
     animation-iteration-count: 1 !important;
     transition-duration: 0ms !important;
     scroll-behavior: auto !important;
-    /* Scroll-driven animations have no duration to zero — they follow the
-       scroll position — so they must be removed outright. With no keyframes
+    /* Scroll-driven animations have no duration to zero (they follow the
+       scroll position), so they must be removed outright. With no keyframes
        applied, every element sits in its plain, fully-visible state, which is
        the intended no-motion page. */
     animation-timeline: none !important;
@@ -255,7 +311,7 @@ h1, h2, .font-display {
 .skip-link:focus { left: 1rem; top: 1rem; }
 
 /* ================================================================
-   Site chrome — header, footer, brand mark, theme toggle.
+   Site chrome: header, footer, brand mark, theme toggle.
    Ported from the portfolio Fathom page so every page shares it.
    ================================================================ */
 
@@ -266,12 +322,21 @@ h1, h2, .font-display {
   padding: 18px clamp(20px, 4vw, 48px);
   background: color-mix(in oklab, var(--bg) 86%, transparent);
   border-bottom: 1px solid transparent;
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  /* Prefixed first: Lightning CSS keeps the last of the pair, and Chrome only honors the unprefixed one. */
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   transition: background 280ms var(--ease-standard), border-color 280ms var(--ease-standard);
 }
 .site-header.is-scrolled { border-bottom-color: var(--divider); background: color-mix(in oklab, var(--bg) 94%, transparent); }
+/* Phones: a lighter blur is cheaper to composite while scrolling. */
+@media (max-width: 860px) {
+  .site-header { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+}
+/* Reduce Transparency: an opaque header, no blur to composite. */
+@media (prefers-reduced-transparency: reduce) {
+  .site-header, .site-header.is-scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); }
+}
 
-.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.02em; }
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; letter-spacing: -0.02em; }
 .brand-mark { width: 28px; height: 28px; flex: none; }
 .brand-mark .ring-center { fill: var(--fg); }
 .brand-mark .ring { fill: none; stroke: var(--fg); stroke-width: 2.2; }
@@ -282,20 +347,39 @@ h1, h2, .font-display {
 
 .brand, .site-nav a, .footer-cols a, .footer-brand, .mobile-nav-overlay a { text-decoration: none; }
 .site-nav { display: flex; gap: 28px; align-items: center; }
-.site-nav a { font-size: 15px; color: var(--fg-secondary); transition: color 160ms; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; color: var(--fg-secondary); transition: color 160ms; }
+.site-nav a, .theme-toggle { white-space: nowrap; }
 .site-nav a:hover { color: var(--fg); }
-.site-nav .nav-cta { background: var(--accent); color: var(--bone-100); padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 600; }
-.site-nav .nav-cta:hover { background: var(--fathom-500); color: var(--bone-100); }
+/* The signal edge outlines the navy fill on the dark ground (7.4:1; the fill
+   alone is 1.63:1). In the light theme --accent-signal equals the fill. */
+.site-nav .nav-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--bone-100); padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 600; border: 1px solid var(--accent-signal); }
+.site-nav .nav-cta:hover { background: color-mix(in oklab, var(--accent) 80%, var(--fathom-500)); color: var(--bone-100); }
+/* Every header target is at least 44px both ways: the CTA pill and both
+   control pills. Vertical rhythm, not line-height, sets the height. */
+.site-nav .nav-cta, .theme-toggle, .motion-toggle { min-height: 44px; min-width: 44px; }
+/* Current page: ink plus a signal underline, so the cue is never color alone. */
+.site-nav a[aria-current='page'], .mobile-nav-overlay a[aria-current='page'] { color: var(--fg); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; text-decoration-color: var(--accent-signal); }
 
+.header-controls { display: inline-flex; align-items: center; gap: 8px; }
+/* One pill for both header controls (theme, motion). 44px tall so the
+   target meets the floor; this is also what sets --header-h. */
 .theme-toggle {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 12px 8px 10px; border-radius: var(--radius-full);
+  display: inline-flex; align-items: center; justify-content: center; gap: 0;
+  min-height: 44px; min-width: 44px; width: 44px;
+  padding: 0; border-radius: var(--radius-full);
   background: var(--bg-elevated); border: 1px solid var(--divider);
   font-size: 14px; color: var(--fg-secondary); cursor: pointer;
-  transition: background 160ms, color 160ms;
+  transition: background var(--dur-quick), color var(--dur-quick);
 }
 .theme-toggle:hover { background: var(--bg-hover); color: var(--fg); }
-.theme-icon { width: 16px; height: 16px; display: inline-flex; }
+/* Pressed = motion paused. aria-pressed carries the state for readers (the
+   name stays "Pause motion", so name and state never point opposite ways);
+   the filled pill carries it for sighted users, so color never works alone.
+   With the OS setting on the control is aria-disabled: the page is still by
+   CSS alone and nothing it could set would resume motion. */
+.motion-toggle[aria-pressed="true"] { background: var(--selected-bg); color: var(--selected-fg); border-color: var(--selected-border); }
+.motion-toggle[aria-disabled="true"] { cursor: default; }
+.theme-icon { width: 18px; height: 18px; display: inline-flex; }
 .theme-icon svg { width: 100%; height: 100%; }
 :root .theme-icon-light { display: none; }
 [data-theme='dark'] .theme-icon-light { display: none; }
@@ -305,16 +389,42 @@ h1, h2, .font-display {
 
 .mobile-nav-toggle { display: none; padding: 10px; border-radius: var(--radius-sm); color: var(--fg); background: none; border: none; cursor: pointer; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
 .mobile-nav-toggle svg { width: 22px; height: 22px; }
-.mobile-nav-overlay { display: none; position: fixed; inset: 0; z-index: 45; background: color-mix(in oklab, var(--bg) 96%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
-.mobile-nav-overlay.is-open { display: flex; }
-.mobile-nav-overlay a { font-size: 24px; font-weight: 500; color: var(--fg); padding: 12px 24px; min-height: 48px; display: flex; align-items: center; }
-.mobile-nav-overlay .nav-cta { background: var(--accent); color: var(--bone-100); padding: 16px 32px; border-radius: var(--radius-full); font-weight: 600; margin-top: 8px; }
+/* Always laid out (display:flex) so the open fade can run; visibility keeps
+   the closed menu out of the tab order and away from readers. The visibility
+   delay holds it on screen until the fade finishes, then drops to 0s on
+   open so it appears at once. Resting state = finished state, so the
+   global reduced-motion block leaves it correct with no transition. */
+.mobile-nav-overlay { display: flex; position: fixed; inset: 0; z-index: 45; background: color-mix(in oklab, var(--bg) 96%, transparent); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 32px; opacity: 0; visibility: hidden; transform: translateY(-8px); overscroll-behavior: contain; transition: opacity 220ms var(--ease-standard), transform 220ms var(--ease-standard), visibility 0s linear 220ms; }
+.mobile-nav-overlay.is-open { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.mobile-nav-overlay a { font-size: 24px; font-weight: 500; color: var(--fg); padding: 12px 24px; min-height: 48px; display: flex; align-items: center; transition: opacity 260ms var(--ease-standard), transform 260ms var(--ease-standard); }
+/* Links settle in one after another, 40ms apart, behind the panel fade. */
+.mobile-nav-overlay a:nth-child(2) { transition-delay: 40ms; }
+.mobile-nav-overlay a:nth-child(3) { transition-delay: 80ms; }
+.mobile-nav-overlay a:nth-child(4) { transition-delay: 120ms; }
+.mobile-nav-overlay a:nth-child(5) { transition-delay: 160ms; }
+.mobile-nav-overlay a:nth-child(6) { transition-delay: 200ms; }
+.mobile-nav-overlay:not(.is-open) a { opacity: 0; transform: translateY(6px); transition-delay: 0s; }
+/* No motion (OS setting or the header's Pause motion control): the global
+   block zeroes durations but not delays, so the menu would still lag its
+   220ms visibility hold. Drop every delay; it snaps open and shut. */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-overlay, .mobile-nav-overlay a { transition-delay: 0s !important; }
+}
+[data-motion='reduce'] .mobile-nav-overlay, [data-motion='reduce'] .mobile-nav-overlay a { transition: none; }
+.mobile-nav-overlay .nav-cta { background: var(--accent); color: var(--bone-100); padding: 16px 32px; border-radius: var(--radius-full); font-weight: 600; margin-top: 8px; border: 1px solid var(--accent-signal); }
 .mobile-nav-close { position: absolute; top: 20px; right: 20px; padding: 12px; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; color: var(--fg); background: none; border: none; cursor: pointer; }
 .mobile-nav-close svg { width: 24px; height: 24px; }
 
-@media (max-width: 860px) {
+/* 1024px, not 940: with two 44px control pills beside the full nav the
+   header overflowed its own viewport from 941 to 999px (200% zoom on a
+   1920px display lands at 960), clipping Toggle theme off the right edge. */
+@media (max-width: 1024px) {
   .site-nav { display: none; }
-  .theme-label { display: none; }
+  /* Icon only. Both labels stay in the DOM, visually hidden, because each
+     one is its button's accessible name: display:none drops "Toggle theme"
+     from the name computation and leaves ", switch to dark". */
+  .theme-label, .motion-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .theme-toggle { min-width: 44px; justify-content: center; }
   .mobile-nav-toggle { display: inline-flex; }
 }
 
@@ -325,22 +435,41 @@ h1, h2, .font-display {
 .brand-mark-lg { width: 48px; height: 48px; }
 .footer-tag { margin: 0; font-size: 15px; color: var(--fg-secondary); line-height: 1.5; }
 .footer-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-.footer-cols h4 { margin: 0 0 14px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-tertiary); }
-.footer-cols a { display: block; font-size: 15px; color: var(--fg-secondary); padding: 5px 0; transition: color 160ms; }
+.footer-cols .footer-heading { margin: 0 0 14px; } /* type comes from .label-caps */
+.footer-cols a { display: flex; align-items: center; min-height: 44px; font-size: 15px; color: var(--fg-secondary); padding: 9px 0; transition: color 160ms; }
 .footer-cols a:hover { color: var(--fg); }
 .footer-base { max-width: 1280px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--divider); display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   .footer-inner { grid-template-columns: 1fr; }
-  .footer-cols { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .footer-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .footer-cols a { overflow-wrap: anywhere; min-width: 0; }
 }
 
 @media (max-width: 480px) {
   .site-header { padding: 14px 16px; gap: 12px; }
   .brand-word { font-size: 17px; }
-  .brand-mark { width: 24px; height: 24px; }
-  .theme-toggle { padding: 6px 8px; }
+  .site-header .brand-mark { width: 24px; height: 24px; }
+  .theme-toggle, .motion-toggle { padding: 6px 10px; min-width: 44px; min-height: 44px; justify-content: center; }
+  .header-controls { gap: 6px; }
   .site-footer { padding: 48px 20px 24px; }
   .footer-cols { grid-template-columns: 1fr; gap: 20px; }
   .footer-base { flex-direction: column; align-items: center; gap: 4px; text-align: center; }
 }
+
+/* Print: warm light paper regardless of theme, chrome and phones dropped,
+   every reveal at its finished state, and external link targets spelled out. */
+@media print{:root,[data-theme="dark"]{--bg:#f2ede4;--bg-elevated:#ede8de;--bg-raised:#f8f5ef;--fg:#0e1013;--fg-secondary:#3a424c;--fg-tertiary:#4a535e;--fg-muted:#5a6470;--divider:rgba(14,16,19,.2)}.site-header,.progress-rail,.hero-ripples,.theme-toggle,.hero-phone,.scrolly-sticky,.step-phone,.mobile-nav-overlay{display:none!important}.reveal{opacity:1!important;transform:none!important;animation:none!important}.hero,.hero-stage{position:static!important;height:auto!important;min-height:0!important}.hero-cover{margin-top:0!important}a[href^="http"]::after{content:" (" attr(href) ")";font-size:.85em}}
+
+/* Forced colors (Windows High Contrast): the phones are pictures of the app,
+   so they keep their own paint; everything else takes the system palette.
+   Buttons and fields get a system-colored edge so they stay distinguishable
+   from plain text, the primary CTA and progress fill use Highlight, and the
+   :focus-visible line ADDS the Highlight outline on top of the global focus
+   block above (it never overrides it). The primary, fill and tick selectors
+   carry one extra class because fathom-landing.css loads after this file and
+   would otherwise re-paint them with brand colors at equal specificity. */
+@media (forced-colors: active){.phone,.phone-screen{forced-color-adjust:none}.btn,button,.nav-cta,.theme-toggle,.motion-toggle,input,select,textarea{border:1px solid ButtonText}.btn.btn-primary,.site-nav .nav-cta{background:Highlight;color:HighlightText;forced-color-adjust:none}.progress-rail{background:ButtonFace}.progress-rail .progress-fill{background:Highlight}.signup-points .tick{background:Highlight;forced-color-adjust:none}:focus-visible{outline:2px solid Highlight}}
+
+/* The Apple mark on every download button: sized to the label's cap height. */
+.apple-mark { width: 1em; height: 1.2em; flex: none; margin-top: -0.12em; }
