@@ -4,8 +4,26 @@
     {
       "name": "fathom-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "3007"],
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3007"
+      ],
       "port": 3007
+    },
+    {
+      "name": "fathom-revamp",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3009"
+      ],
+      "port": 3009
     }
   ]
 }
