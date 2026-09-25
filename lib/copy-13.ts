@@ -316,23 +316,23 @@ export const COPY_13 = {
       {
         // HAPTICS (OnboardingContent.swift:95-146): a pattern for each, felt in setup.
         title: "Cues you feel",
-        body: "fathom talks through touch too. Something’s close, Arrived, and Listening each have their own pattern, and setup lets you feel every one.",
+        body: "Something’s close, Arrived, and Listening each have their own buzz. Setup lets you feel them.",
       },
       {
         // SHORTCUT_COUNT, SIRI.description, SHORTCUT_PHRASES.whereIs.
         title: "Siri and the Action Button",
-        body: `${capitalize(spell(SHORTCUT_COUNT.value))} Siri shortcuts, and the Action Button can open Look Now. Ask Siri “fathom, where did I put it” and hear the answer without opening the app.`,
+        body: `${capitalize(spell(SHORTCUT_COUNT.value))} Siri shortcuts, and the Action Button can open Look Now. Ask where you left something without opening the app.`,
       },
       {
         // LANGUAGE.follow, LANGUAGE.footer, LANGUAGE.voice, LANGUAGE.voiceWhen.
         title: "Your language, your voice",
-        body: "fathom answers in your iPhone’s language when it can. Buttons and short alerts stay in English. With VoiceOver off, it speaks in the best voice installed on your phone.",
+        body: "fathom answers in your iPhone’s language and voice when it can. Buttons and alerts stay in English.",
       },
       {
         // PROFILE.intro, .sight, .gettingAround, .caneOrDog; sent with
         // requests: CONSENT.disclosure ("what you’ve told fathom about yourself").
         title: "It knows how you get around",
-        body: "Three quick questions at setup: your sight, how you get around, and anything else. Every one is optional. fathom won’t narrate things your cane or dog already handles. With Cloud AI on, your answers are sent with your requests.",
+        body: "Three optional questions at setup, so fathom skips what your cane or dog already handles. With Cloud AI on, your answers are sent with your requests.",
       },
     ],
   },
