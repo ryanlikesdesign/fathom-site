@@ -266,7 +266,7 @@ export const COPY_13 = {
   meta: {
     title: "fathom: visual assistance you can talk to",
     description:
-      "Visual assistance for blind and low-vision people. Ask, and fathom describes what’s around you, reads text, and watches for obstacles. It asks before it remembers anything. Free on iPhone.",
+      "Visual assistance for blind and low-vision people. Ask, and fathom describes what’s around you, reads text, and watches for obstacles. You decide what it remembers. Free on iPhone.",
   },
   og: {
     alt: "fathom. Visual assistance you can talk to. For blind and low-vision people, free on the App Store.",
@@ -282,7 +282,7 @@ export const COPY_13 = {
     // Go (GO.savedPlaces.detail). Learns rooms and where things are, asks
     // first: MemoryItem kinds (Place, Where things are) and MEMORY.empty. Obstacle alerts on the
     // phone, free: SAFETY.onPhone and PAYWALL.safetyNet.
-    lede: "Ask, and fathom describes what’s around you, reads what’s in front of you, and guides you to places you’ve named. It learns your rooms and where you keep things, and asks before it saves anything. Obstacle alerts run on your iPhone, free.",
+    lede: "Ask, and fathom describes what’s around you, reads what’s in front of you, and guides you to places you’ve named. It learns your rooms and where you keep things, and you decide what it keeps. Obstacle alerts run on your iPhone, free.",
     ctas: {
       primary: "Download on the App Store",
       secondary: "See what it does",

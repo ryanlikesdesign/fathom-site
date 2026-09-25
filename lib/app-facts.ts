@@ -911,8 +911,8 @@ export const EXAMPLES = {
   remember: {
     request: "Remember my keys hang on the hook by the door.",
     echo: `${REMEMBER.echoLead.value}${KEYS_MEMORY}`,
-    confirmed: `${MEMORY_SCREEN.confirmedLead.value}Oct 2, 2026`,
-    confirmedEarlier: `${MEMORY_SCREEN.confirmedLead.value}Sep 24, 2026`,
+    confirmed: `${MEMORY_SCREEN.confirmedLead.value}Sep 25, 2026`,
+    confirmedEarlier: `${MEMORY_SCREEN.confirmedLead.value}Sep 18, 2026`,
   },
   /** Illustrative, step 7: the request the laundry plan answers. */
   planRequest: "Help me do a load of laundry.",
