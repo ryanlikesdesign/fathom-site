@@ -14,16 +14,16 @@ export interface FaqItem {
 
 export const FAQ: FaqItem[] = [
   {
-    q: 'What is Fathom?',
+    q: 'What is fathom?',
     a: "An AI companion for blind and low-vision people, on iPhone. It tells you what's around you, warns you before you reach a hazard, walks you to where you're going inside a building, and works through the task with you once you get there. Or hand it the goal and let the Assistant figure out the steps.",
   },
   {
     q: 'What do I need to use it?',
-    a: "A recent iPhone. That's it. Fathom runs on the camera and sensors already in the phone, with no beacons, no building setup, and nothing to install. On iPhone Pro models, LiDAR adds depth-based hazard detection.",
+    a: "A recent iPhone. That's it. fathom runs on the camera and sensors already in the phone, with no beacons, no building setup, and nothing to install. On iPhone Pro models, LiDAR adds depth-based hazard detection.",
   },
   {
     q: 'Does it work with VoiceOver?',
-    a: 'Yes, from the first screen. Every control has a label and a hint, the rotor works, and everything Fathom notices is spoken. You can use it with the screen off. If you have some sight, the contrast is high and the targets are large, and it works without VoiceOver too.',
+    a: 'Yes, from the first screen. Every control has a label and a hint, the rotor works, and everything fathom notices is spoken. You can use it with the screen off. If you have some sight, the contrast is high and the targets are large, and it works without VoiceOver too.',
   },
   {
     q: 'Does it work without internet?',
@@ -37,23 +37,23 @@ export const FAQ: FaqItem[] = [
     q: 'Is my camera data private?',
     a: (
       <>
-        With Cloud AI on, pictures from your camera, the text of what you say, and what Fathom remembers about you go to Google&apos;s Gemini AI so it can answer you. While Lookout, Go, or a task is running, Fathom sends a picture every few seconds. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. Fathom&apos;s backend stores none of the pictures, text, or audio. With On-device AI, nothing goes to Google. Usage data, including recordings of Fathom&apos;s menu screens, is on by default in both modes, and you can turn it off in Settings. We never sell your data or use it for ads. The <Link href="/privacy">Privacy Policy</Link> has the full picture.
+        With Cloud AI on, pictures from your camera, the text of what you say, and what fathom remembers about you go to Google&apos;s Gemini AI so it can answer you. While Lookout, Go, or a task is running, fathom sends a picture every few seconds. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. fathom&apos;s backend stores none of the pictures, text, or audio. With On-device AI, nothing goes to Google. Usage data, including recordings of fathom&apos;s menu screens, is on by default in both modes, and you can turn it off in Settings. We never sell your data or use it for ads. The <Link href="/privacy">Privacy Policy</Link> has the full picture.
       </>
     ),
     plain:
-      "With Cloud AI on, pictures from your camera, the text of what you say, and what Fathom remembers about you go to Google's Gemini AI so it can answer you. While Lookout, Go, or a task is running, Fathom sends a picture every few seconds. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. Fathom's backend stores none of the pictures, text, or audio. With On-device AI, nothing goes to Google. Usage data, including recordings of Fathom's menu screens, is on by default in both modes, and you can turn it off in Settings. We never sell your data or use it for ads. The Privacy Policy has the full picture.",
+      "With Cloud AI on, pictures from your camera, the text of what you say, and what fathom remembers about you go to Google's Gemini AI so it can answer you. While Lookout, Go, or a task is running, fathom sends a picture every few seconds. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. fathom's backend stores none of the pictures, text, or audio. With On-device AI, nothing goes to Google. Usage data, including recordings of fathom's menu screens, is on by default in both modes, and you can turn it off in Settings. We never sell your data or use it for ads. The Privacy Policy has the full picture.",
   },
   {
     q: 'How much does it cost?',
-    a: `Free to download. The safety layer, Lookout, Look Now and pointing are always free. Fathom Plus is ${PLUS.price} a ${PLUS.period} after a ${PLUS_TRIAL_LABEL} free trial and adds Go, Task, Live mode and the Assistant.`,
+    a: `Free to download. The safety layer, Lookout, Look Now and pointing are always free. fathom plus is ${PLUS.price} a ${PLUS.period} after a ${PLUS_TRIAL_LABEL} free trial and adds Go, Task, Live mode and the Assistant.`,
   },
   {
-    q: 'How do I cancel Fathom Plus?',
+    q: 'How do I cancel fathom plus?',
     a: 'Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep Plus until the end of the period you paid for.',
   },
   {
     q: 'Is it safe to rely on?',
-    a: "Fathom uses AI and it can make mistakes. Keep your cane, your dog and your own judgment. Fathom is there for what they can't tell you.",
+    a: "fathom uses AI and it can make mistakes. Keep your cane, your dog and your own judgment. fathom is there for what they can't tell you.",
   },
   {
     q: 'How do I report a problem?',
