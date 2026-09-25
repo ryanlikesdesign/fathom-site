@@ -50,7 +50,7 @@ function fact(value: string, path: string, line: number, source?: string): AppFa
 export const APP_SOURCE = {
   repo: "ryanlikesdesign/homer",
   checkout: "device-test",
-  commit: "6f85740",
+  commit: "ba8e462",
   version: "1.3.0 (17)",
 } as const;
 
@@ -318,19 +318,21 @@ export const LOOKOUT = {
 } as const;
 
 export const GO = {
-  gettingClose: fact("Getting close", GO_VIEW, 256),
-  almostThere: fact("Almost there", GO_VIEW, 256),
-  heading: fact("Heading to {destination}…", GO_VIEW, 291),
-  shake: fact("Shake when you’ve arrived", GO_VIEW, 296),
+  gettingClose: fact("Getting close", GO_VIEW, 287),
+  almostThere: fact("Almost there", GO_VIEW, 287),
+  heading: fact("Heading to {destination}…", GO_VIEW, 322),
+  /** A text button under the guidance; it asks the arrival question, as a shake does. */
+  arrivedButton: fact("I’ve arrived", GO_VIEW, 344),
+  shakeHint: fact("or shake your phone", GO_VIEW, 357),
   /** Go never says you arrived. It says it looks like it, and asks. */
-  arrival: fact("It looks like you’ve reached {destination}", GO_VIEW, 348),
-  arrivalQuestion: fact("Did you arrive at {destination}?", GO_VIEW, 57),
-  yes: fact("Yes, finished", GO_VIEW, 67),
-  notYet: fact("Not yet", GO_VIEW, 71),
-  /** The dialog's own Cancel, which decides nothing (GoActiveView.swift:72-75). */
-  cancel: fact("Cancel", GO_VIEW, 75),
-  arrived: fact("You’re here.", GO_VIEW, 392),
-  backToConversation: fact("Back to the conversation…", GO_VIEW, 401),
+  arrival: fact("It looks like you’ve reached {destination}", GO_VIEW, 409),
+  arrivalQuestion: fact("Did you arrive at {destination}?", GO_VIEW, 61),
+  yes: fact("Yes, finished", GO_VIEW, 71),
+  notYet: fact("Not yet", GO_VIEW, 75),
+  /** The dialog's own Cancel, which decides nothing (GoActiveView.swift:76-79). */
+  cancel: fact("Cancel", GO_VIEW, 76),
+  arrived: fact("You’re here.", GO_VIEW, 453),
+  backToConversation: fact("Back to the conversation…", GO_VIEW, 462),
   savedPlaces: {
     title: fact("Saved places", ADD_SHEET, 112),
     detail: fact("Go to a place you’ve named", ADD_SHEET, 113),
@@ -387,10 +389,10 @@ export const LIVE = {
     117,
   ),
   /** Until a tap opens the mic. Never "Listening" before it is. */
-  micOff: fact("Microphone off", LIVE_VIEW, 356),
-  listening: fact("Listening…", LIVE_VIEW, 350),
-  sending: fact("Sending…", LIVE_VIEW, 350),
-  step: fact("Step {n}", LIVE_VIEW, 194),
+  micOff: fact("Microphone off", LIVE_VIEW, 360),
+  listening: fact("Listening…", LIVE_VIEW, 354),
+  sending: fact("Sending…", LIVE_VIEW, 354),
+  step: fact("Step {n}", LIVE_VIEW, 198),
 } as const;
 
 /* ---------------------------------------------------------------- *
@@ -507,7 +509,7 @@ export const SAFETY = {
   caution: fact(
     "fathom uses AI and it can make mistakes.",
     AUDIO_SERVICE,
-    2503,
+    2715,
     "\"Remember, fathom uses AI and it can make mistakes.\"",
   ),
   keepYourAids: fact(

@@ -2,7 +2,7 @@
   "source": {
     "repo": "ryanlikesdesign/homer",
     "checkout": "device-test",
-    "commit": "6f85740",
+    "commit": "ba8e462",
     "version": "1.3.0 (17)"
   },
   "facts": [
@@ -515,67 +515,73 @@
       "key": "GO.gettingClose",
       "value": "Getting close",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 256
+      "line": 287
     },
     {
       "key": "GO.almostThere",
       "value": "Almost there",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 256
+      "line": 287
     },
     {
       "key": "GO.heading",
       "value": "Heading to {destination}…",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 291
+      "line": 322
     },
     {
-      "key": "GO.shake",
-      "value": "Shake when you’ve arrived",
+      "key": "GO.arrivedButton",
+      "value": "I’ve arrived",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 296
+      "line": 344
+    },
+    {
+      "key": "GO.shakeHint",
+      "value": "or shake your phone",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 357
     },
     {
       "key": "GO.arrival",
       "value": "It looks like you’ve reached {destination}",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 348
+      "line": 409
     },
     {
       "key": "GO.arrivalQuestion",
       "value": "Did you arrive at {destination}?",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 57
+      "line": 61
     },
     {
       "key": "GO.yes",
       "value": "Yes, finished",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 67
+      "line": 71
     },
     {
       "key": "GO.notYet",
       "value": "Not yet",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 71
+      "line": 75
     },
     {
       "key": "GO.cancel",
       "value": "Cancel",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 75
+      "line": 76
     },
     {
       "key": "GO.arrived",
       "value": "You’re here.",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 392
+      "line": 453
     },
     {
       "key": "GO.backToConversation",
       "value": "Back to the conversation…",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
-      "line": 401
+      "line": 462
     },
     {
       "key": "GO.savedPlaces.title",
@@ -689,25 +695,25 @@
       "key": "LIVE.micOff",
       "value": "Microphone off",
       "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
-      "line": 356
+      "line": 360
     },
     {
       "key": "LIVE.listening",
       "value": "Listening…",
       "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
-      "line": 350
+      "line": 354
     },
     {
       "key": "LIVE.sending",
       "value": "Sending…",
       "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
-      "line": 350
+      "line": 354
     },
     {
       "key": "LIVE.step",
       "value": "Step {n}",
       "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
-      "line": 194
+      "line": 198
     },
     {
       "key": "MEMORY.title",
@@ -895,7 +901,7 @@
       "key": "SAFETY.caution",
       "value": "fathom uses AI and it can make mistakes.",
       "path": "Fathom/Fathom/Services/Audio/AudioService.swift",
-      "line": 2503,
+      "line": 2715,
       "source": "\"Remember, fathom uses AI and it can make mistakes.\""
     },
     {

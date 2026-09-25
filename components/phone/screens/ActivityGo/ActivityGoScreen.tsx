@@ -79,7 +79,10 @@ export function ActivityGoScreen({ active }: ScreenProps) {
                   {EXAMPLES.activityLines.goFinalApproach}
                 </Layer>
               </Stack>
-              <p className="go-shake">{GO.shake.value}</p>
+              <div className="go-arrived">
+                <span className="go-arrived-button">{GO.arrivedButton.value}</span>
+                <span className="go-shake">{GO.shakeHint.value}</span>
+              </div>
             </Layer>
             <Layer as="p" show={CONFIRMING} className="go-reached">
               {EXAMPLES.laundry.arrival}

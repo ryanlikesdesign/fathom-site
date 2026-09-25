@@ -173,13 +173,13 @@ const STEPS: readonly Step[] = [
     // GO.savedPlaces.detail "Go to a place you’ve named"; the camera: the
     // "Guide by camera instead" hint (GoActiveView.swift:325); the buzz:
     // HAPTICS.somethingClose; asking: GO.arrival and GO.arrivalQuestion;
-    // shaking: GO.shake. Plus: FathomCapability.swift:89.
+    // telling it: GO.arrivedButton and GO.shakeHint. Plus: FathomCapability.swift:89.
     slug: "go",
     eyebrow: "Go",
     headline: ["Say where.", "When it thinks you’re there, it asks."],
     body: [
       "Go guides you to places you’ve named, like the laundry room. It works from what the camera sees, and buzzes when something’s close.",
-      "Shake your phone when you’ve arrived, or answer when it asks.",
+      "When you get there, tap I’ve arrived or shake your phone. Or answer when it asks.",
     ],
     example: EXAMPLES.laundry.goRow,
     whisper: "fathom plus. Guided by the camera.",

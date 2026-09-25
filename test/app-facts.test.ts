@@ -53,7 +53,7 @@ describe("app facts are pinned to the reference build", () => {
     expect(APP_SOURCE).toEqual({
       repo: "ryanlikesdesign/homer",
       checkout: "device-test",
-      commit: "6f85740",
+      commit: "ba8e462",
       version: "1.3.0 (17)",
     });
     expect(`${APP_VERSION.value} (${APP_BUILD.value})`).toBe(APP_SOURCE.version);
@@ -154,7 +154,8 @@ describe("app facts are pinned to the reference build", () => {
     expect(ACTIVITY.running.value).toBe("Running");
     expect(ACTIVITY.paused.lookout.value).toBe("Lookout paused. Obstacle alerts stay on.");
     expect([GO.gettingClose.value, GO.almostThere.value]).toEqual(["Getting close", "Almost there"]);
-    expect(GO.shake.value).toBe("Shake when you’ve arrived");
+    expect(GO.arrivedButton.value).toBe("I’ve arrived");
+    expect(GO.shakeHint.value).toBe("or shake your phone");
     expect(fill(GO.arrival, { destination: "the laundry room" })).toBe("It looks like you’ve reached the laundry room");
     expect([GO.yes.value, GO.notYet.value, GO.arrived.value]).toEqual(["Yes, finished", "Not yet", "You’re here."]);
     expect([PLAN.title.value, PLAN.accept.value, PLAN.edit.value, PLAN.dismiss.value]).toEqual([

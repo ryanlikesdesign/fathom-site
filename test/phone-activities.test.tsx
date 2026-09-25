@@ -349,14 +349,14 @@ describe("each scene plays beat by beat while its screen is active and in view",
     const screen = screenOf(container);
     view(screen, 1);
     expect(shownStrings(screen)).toEqual(
-      expect.arrayContaining([GO.gettingClose.value, EXAMPLES.laundry.goInstruction, GO.shake.value]),
+      expect.arrayContaining([GO.gettingClose.value, EXAMPLES.laundry.goInstruction, GO.arrivedButton.value, GO.shakeHint.value]),
     );
     expect(shownStrings(screen)).not.toContain(GO.almostThere.value);
     expect(shownStrings(screen)).not.toContain(GO.arrived.value);
 
     playTo(GO_ARRIVAL, "almost");
     expect(shownStrings(screen)).toEqual(
-      expect.arrayContaining([GO.almostThere.value, EXAMPLES.activityLines.goFinalApproach, GO.shake.value]),
+      expect.arrayContaining([GO.almostThere.value, EXAMPLES.activityLines.goFinalApproach, GO.arrivedButton.value, GO.shakeHint.value]),
     );
     expect(shownStrings(screen)).not.toContain(GO.gettingClose.value);
     expect(attr(screen, "data-orb")).toBe("speaking");

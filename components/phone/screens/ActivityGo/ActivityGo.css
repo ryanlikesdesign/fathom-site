@@ -46,6 +46,25 @@
   color: var(--fathom-color-text-primary);
   text-wrap: balance;
 }
+.activity-go .go-arrived {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fathom-space-1);
+}
+/* GoActiveView's ArrivedButton (ba8e462): a plain text button in body medium,
+   accent foreground, 12 by 20 padding, the touch height; "or shake your
+   phone" under it in footnote tertiary. */
+.activity-go .go-arrived-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--fathom-size-touch-min);
+  padding: var(--fathom-space-3) var(--fathom-space-5);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  font-weight: 500;
+  color: var(--fathom-color-accent-fg);
+}
 .activity-go .go-shake {
   font-size: var(--fathom-type-footnote-size);
   line-height: var(--fathom-type-footnote-line-height);

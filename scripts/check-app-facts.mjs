@@ -137,7 +137,7 @@ function main() {
   const factsFile = args.facts ? resolve(args.facts) : FACTS_FILE;
   const data = JSON.parse(readFileSync(factsFile, "utf8"));
   const repo = args.repo ?? DEFAULT_REPO;
-  const sha = args.sha ?? data.source?.commit ?? "6f85740";
+  const sha = args.sha ?? data.source?.commit ?? "ba8e462";
 
   const git = (...a) =>
     execFileSync("git", ["-C", repo, ...a], {
