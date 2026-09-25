@@ -44,7 +44,7 @@ Every visual value comes from a token. No raw hex/rgb, no magic spacing, radii, 
 |---|---|
 | Colors | Tailwind utilities generated from `@theme inline` (`bg-bg`, `text-accent`…) or the CSS vars in `app/globals.css` |
 | Arbitrary values | Banned in new code: no `text-[#…]`, `p-[13px]`, `rounded-[7px]`, `text-[var(--…)]`. Older code still has some `-[var(--…)]` utilities; replace them when you touch the file |
-| Type | Zed Display (headlines) / Zed Text (body, UI) via `next/font/local`; sizes from the DS type styles |
+| Type | Atkinson Hyperlegible Next (all text) and Atkinson Hyperlegible Mono (distances, counters) via `next/font/google`, served from this domain; sizes from the DS type styles |
 | Radii / spacing / easing / section rhythm | DS `--fathom-radius-*`, `--fathom-space-*`, motion tokens; site rhythm in `app/site-tokens.css` |
 | Themes | Dark (default) and light via `[data-theme]`; `prefers-contrast: more` maps to the DS Contrast Boost values automatically. Every new color needs a dark and a light value |
 
