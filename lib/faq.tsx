@@ -37,15 +37,15 @@ export const FAQ: FaqItem[] = [
     q: 'Is my camera data private?',
     a: (
       <>
-        Camera frames and the text of what you ask go through Fathom&apos;s backend to Google&apos;s Gemini to answer your request, then are discarded. Your speech is turned into text on your phone, not sent as audio. The one exception is Live Task: while the microphone button is on, your voice streams to Gemini so it can hear you directly, and it stops the instant you turn the button off. There&apos;s also an on-device mode that sends nothing to the cloud. We never sell your data or use it for ads, and you can turn off anonymous analytics anytime in Settings. The <Link href="/privacy">Privacy Policy</Link> has the full picture.
+        With Cloud AI on, pictures from your camera, the text of what you say, and what Fathom remembers about you go to Google&apos;s Gemini AI so it can answer you. While Lookout, Go, or a task is running, Fathom sends a picture every few seconds. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. Fathom&apos;s backend stores none of the pictures, text, or audio. With On-device AI, nothing goes to Google. Usage data, including recordings of Fathom&apos;s menu screens, is on by default in both modes, and you can turn it off in Settings. We never sell your data or use it for ads. The <Link href="/privacy">Privacy Policy</Link> has the full picture.
       </>
     ),
     plain:
-      "Camera frames and the text of what you ask go through Fathom's backend to Google's Gemini to answer your request, then are discarded. Your speech is turned into text on your phone, not sent as audio. The one exception is Live Task: while the microphone button is on, your voice streams to Gemini so it can hear you directly, and it stops the instant you turn the button off. There's also an on-device mode that sends nothing to the cloud. We never sell your data or use it for ads, and you can turn off anonymous analytics anytime in Settings. The Privacy Policy has the full picture.",
+      "With Cloud AI on, pictures from your camera, the text of what you say, and what Fathom remembers about you go to Google's Gemini AI so it can answer you. While Lookout, Go, or a task is running, Fathom sends a picture every few seconds. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. Fathom's backend stores none of the pictures, text, or audio. With On-device AI, nothing goes to Google. Usage data, including recordings of Fathom's menu screens, is on by default in both modes, and you can turn it off in Settings. We never sell your data or use it for ads. The Privacy Policy has the full picture.",
   },
   {
     q: 'How much does it cost?',
-    a: `Free to download. The safety layer, Lookout, Snapshot and pointing are always free. Fathom Plus is ${PLUS.price} a ${PLUS.period} after a ${PLUS_TRIAL_LABEL} free trial and adds Go, Task, Live Task and the Assistant.`,
+    a: `Free to download. The safety layer, Lookout, Look Now and pointing are always free. Fathom Plus is ${PLUS.price} a ${PLUS.period} after a ${PLUS_TRIAL_LABEL} free trial and adds Go, Task, Live mode and the Assistant.`,
   },
   {
     q: 'How do I cancel Fathom Plus?',

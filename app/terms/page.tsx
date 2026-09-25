@@ -13,7 +13,7 @@ export default function TermsPage() {
     <Section labelledBy="tos-h" className={LEGAL_PROSE}>
       <p className="eyebrow">Legal</p>
       <h1 id="tos-h" className="font-display text-5xl">Terms</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: June 13, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: September 24, 2026</p>
 
       <h2>Acceptance</h2>
       <p>Fathom is operated by Unruly Vision, LLC (&quot;we&quot;). Using Fathom means you agree to these terms. If you don&apos;t, don&apos;t use the app.</p>
@@ -25,7 +25,7 @@ export default function TermsPage() {
       <p>We give you a personal, non-transferable license to use Fathom on devices you own or control, for your own use, subject to these terms and the App Store terms.</p>
 
       <h2>Subscriptions and billing</h2>
-      <p>Some features require Fathom Plus, an auto-renewing monthly subscription. New subscribers get a {PLUS_TRIAL_LABEL} free trial; after the trial it renews at {PLUS.price} a {PLUS.period}, the price shown before you purchase, until you cancel. The on-device safety net, Lookout, and Snapshot don&apos;t require a subscription. Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep Plus until the end of the period you paid for.</p>
+      <p>Some features require Fathom Plus, an auto-renewing monthly subscription. New subscribers get a {PLUS_TRIAL_LABEL} free trial; after the trial it renews at {PLUS.price} a {PLUS.period}, the price shown before you purchase, until you cancel. The on-device safety net, Lookout, and Look Now don&apos;t require a subscription. Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep Plus until the end of the period you paid for.</p>
 
       <h2>Acceptable use</h2>
       <ul>
