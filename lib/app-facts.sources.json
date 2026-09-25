@@ -1,0 +1,1220 @@
+{
+  "source": {
+    "repo": "ryanlikesdesign/homer",
+    "checkout": "device-test",
+    "commit": "6f85740",
+    "version": "1.3.0 (17)"
+  },
+  "facts": [
+    {
+      "key": "STAGE.idle.eyebrow",
+      "value": "Ready",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 195
+    },
+    {
+      "key": "STAGE.idle.headline",
+      "value": "Ask by voice, type, or tap More to look now.",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 196
+    },
+    {
+      "key": "STAGE.listening.eyebrow",
+      "value": "Listening",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 92
+    },
+    {
+      "key": "STAGE.listening.headline",
+      "value": "Tap again to send",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 98
+    },
+    {
+      "key": "STAGE.thinking.headline",
+      "value": "Thinking",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 121
+    },
+    {
+      "key": "STAGE.speaking.headline",
+      "value": "Speaking",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 145
+    },
+    {
+      "key": "STAGE.speaking.subline",
+      "value": "Tap anywhere to stop",
+      "path": "Fathom/Fathom/UI/Components/ConversationStage.swift",
+      "line": 171
+    },
+    {
+      "key": "STAGE.notConnected.eyebrow",
+      "value": "Not connected",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 169
+    },
+    {
+      "key": "STAGE.notConnected.headline",
+      "value": "Obstacle alerts still work. Ask again to retry.",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 170
+    },
+    {
+      "key": "STAGE.noCamera.eyebrow",
+      "value": "No camera",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 188
+    },
+    {
+      "key": "STAGE.noCamera.headline",
+      "value": "fathom can’t see. Check nothing is covering the lens.",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 189
+    },
+    {
+      "key": "STAGE.paused.eyebrow",
+      "value": "Paused",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 113
+    },
+    {
+      "key": "COMPOSER.type",
+      "value": "Type",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 126
+    },
+    {
+      "key": "COMPOSER.speak",
+      "value": "Speak",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 417
+    },
+    {
+      "key": "COMPOSER.more",
+      "value": "More",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 138
+    },
+    {
+      "key": "COMPOSER.pause",
+      "value": "Pause",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 554
+    },
+    {
+      "key": "COMPOSER.resume",
+      "value": "Resume",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 555
+    },
+    {
+      "key": "COMPOSER.end",
+      "value": "End",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 463
+    },
+    {
+      "key": "TALK",
+      "value": "Say what you need and fathom answers. Ask it to start Lookout or read a sign, and it does that instead of telling you where to tap.",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 42
+    },
+    {
+      "key": "STARTERS.firstRun.0",
+      "value": "Describe what’s around me",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 108
+    },
+    {
+      "key": "STARTERS.firstRun.1",
+      "value": "Watch for obstacles",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 109
+    },
+    {
+      "key": "STARTERS.firstRun.2",
+      "value": "Read this text",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 110
+    },
+    {
+      "key": "STARTERS.pool.0",
+      "value": "Describe what’s around me",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 92
+    },
+    {
+      "key": "STARTERS.pool.1",
+      "value": "Read this text",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 93
+    },
+    {
+      "key": "STARTERS.pool.2",
+      "value": "Watch for obstacles",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 94
+    },
+    {
+      "key": "STARTERS.pool.3",
+      "value": "Where did I leave my keys?",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 95
+    },
+    {
+      "key": "STARTERS.pool.4",
+      "value": "Remember where this is",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 96
+    },
+    {
+      "key": "STARTERS.pool.5",
+      "value": "Take me somewhere",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 98
+    },
+    {
+      "key": "STARTERS.pool.6",
+      "value": "Help me with a few steps",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 99
+    },
+    {
+      "key": "STARTERS.pool.7",
+      "value": "Walk me through something",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 100
+    },
+    {
+      "key": "STARTERS.pool.8",
+      "value": "Stay with me while I do this",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 101
+    },
+    {
+      "key": "STARTERS.goToPlace",
+      "value": "Take me to {place}",
+      "path": "Fathom/Fathom/Features/Conversation/StarterSuggestions.swift",
+      "line": 190,
+      "source": "Take me {place}"
+    },
+    {
+      "key": "STARTERS.runSkill",
+      "value": "Run {skill}",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationController.swift",
+      "line": 1345
+    },
+    {
+      "key": "STARTERS.plusBadge",
+      "value": "Plus",
+      "path": "Fathom/Fathom/UI/Components/SuggestionRow.swift",
+      "line": 243
+    },
+    {
+      "key": "LOOK_NOW.title",
+      "value": "More ways to start",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 142
+    },
+    {
+      "key": "LOOK_NOW.close",
+      "value": "Close",
+      "path": "Fathom/Fathom/FathomUI/Components/FathomSheetChrome.swift",
+      "line": 107
+    },
+    {
+      "key": "LOOK_NOW.section",
+      "value": "Look Now",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 92
+    },
+    {
+      "key": "LOOK_NOW.rows.0.title",
+      "value": "Describe what’s around me",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 233
+    },
+    {
+      "key": "LOOK_NOW.rows.0.detail",
+      "value": "One scan of the whole scene",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 237
+    },
+    {
+      "key": "LOOK_NOW.rows.1.title",
+      "value": "Read text",
+      "path": "Fathom/Fathom/Features/Snapshot/SnapshotIntentItem.swift",
+      "line": 24
+    },
+    {
+      "key": "LOOK_NOW.rows.1.detail",
+      "value": "Labels, mail, signs, read word for word",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 242
+    },
+    {
+      "key": "LOOK_NOW.rows.2.title",
+      "value": "What is this?",
+      "path": "Fathom/Fathom/Features/Snapshot/SnapshotIntentItem.swift",
+      "line": 25
+    },
+    {
+      "key": "LOOK_NOW.rows.2.detail",
+      "value": "Identify one thing you’re holding",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 243
+    },
+    {
+      "key": "LOOK_NOW.rows.3.title",
+      "value": "Read a screen",
+      "path": "Fathom/Fathom/Features/Snapshot/SnapshotIntentItem.swift",
+      "line": 28
+    },
+    {
+      "key": "LOOK_NOW.rows.3.detail",
+      "value": "A kiosk, ATM, monitor or appliance panel",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 244
+    },
+    {
+      "key": "LOOK_NOW.rows.4.title",
+      "value": "What am I pointing at?",
+      "path": "Fathom/Fathom/Features/Snapshot/SnapshotIntentItem.swift",
+      "line": 27
+    },
+    {
+      "key": "LOOK_NOW.rows.4.detail",
+      "value": "Point a finger and I’ll name it",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 245
+    },
+    {
+      "key": "LOOK_NOW.rows.5.title",
+      "value": "Take a closer look",
+      "path": "Fathom/Fathom/Features/Snapshot/SnapshotIntentItem.swift",
+      "line": 31
+    },
+    {
+      "key": "LOOK_NOW.rows.5.detail",
+      "value": "A fresh picture and a more careful look",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 252
+    },
+    {
+      "key": "READOUT.overline",
+      "value": "Look Now",
+      "path": "Fathom/Fathom/UI/Components/TranscriptView.swift",
+      "line": 181
+    },
+    {
+      "key": "READOUT.counter",
+      "value": "{n} of {total}",
+      "path": "Fathom/Fathom/FathomUI/Components/ReadoutPlaybackBar.swift",
+      "line": 107
+    },
+    {
+      "key": "READOUT.paused",
+      "value": "Paused",
+      "path": "Fathom/Fathom/FathomUI/Components/ReadoutPlaybackBar.swift",
+      "line": 114
+    },
+    {
+      "key": "READOUT.previous",
+      "value": "Previous item",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 494
+    },
+    {
+      "key": "READOUT.pause",
+      "value": "Pause",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 501
+    },
+    {
+      "key": "READOUT.next",
+      "value": "Next item",
+      "path": "Fathom/Fathom/UI/Components/AssistantFooterControls.swift",
+      "line": 515
+    },
+    {
+      "key": "READOUT.repeat",
+      "value": "Repeat item",
+      "path": "Fathom/Fathom/FathomUI/Components/ReadoutPlaybackBar.swift",
+      "line": 79
+    },
+    {
+      "key": "READOUT.showText",
+      "value": "Show text",
+      "path": "Fathom/Fathom/FathomUI/Components/ReadoutPlaybackBar.swift",
+      "line": 82
+    },
+    {
+      "key": "READOUT.askAbout",
+      "value": "Ask fathom about this",
+      "path": "Fathom/Fathom/FathomUI/Components/ReadoutPlaybackBar.swift",
+      "line": 154
+    },
+    {
+      "key": "TRANSCRIPT_EMPTY",
+      "value": "Tap the microphone and tell me what you need, or tap More to hear what’s around you.",
+      "path": "Fathom/Fathom/UI/Components/TranscriptView.swift",
+      "line": 79
+    },
+    {
+      "key": "ACTIVITY.running",
+      "value": "Running",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationStageModel.swift",
+      "line": 138
+    },
+    {
+      "key": "ACTIVITY.titles.lookout",
+      "value": "Lookout",
+      "path": "Fathom/Fathom/Features/Conversation/TranscriptEntry.swift",
+      "line": 24
+    },
+    {
+      "key": "ACTIVITY.titles.go",
+      "value": "Go",
+      "path": "Fathom/Fathom/Features/Conversation/TranscriptEntry.swift",
+      "line": 25
+    },
+    {
+      "key": "ACTIVITY.titles.task",
+      "value": "Task",
+      "path": "Fathom/Fathom/Features/Conversation/TranscriptEntry.swift",
+      "line": 33
+    },
+    {
+      "key": "ACTIVITY.titles.plan",
+      "value": "Assistant",
+      "path": "Fathom/Fathom/Features/Conversation/TranscriptEntry.swift",
+      "line": 41
+    },
+    {
+      "key": "ACTIVITY.paused.lookout",
+      "value": "Lookout paused. Obstacle alerts stay on.",
+      "path": "Fathom/Fathom/Features/Conversation/ActivityPauseRule.swift",
+      "line": 59
+    },
+    {
+      "key": "ACTIVITY.paused.go",
+      "value": "Go paused. Obstacle alerts stay on.",
+      "path": "Fathom/Fathom/Features/Conversation/ActivityPauseRule.swift",
+      "line": 60
+    },
+    {
+      "key": "ACTIVITY.paused.task",
+      "value": "Task paused. Obstacle alerts stay on.",
+      "path": "Fathom/Fathom/Features/Conversation/ActivityPauseRule.swift",
+      "line": 66
+    },
+    {
+      "key": "LOOKOUT.status",
+      "value": "Listening…",
+      "path": "Fathom/Fathom/UI/Screens/LookoutActiveView.swift",
+      "line": 153
+    },
+    {
+      "key": "LOOKOUT.switchTitle",
+      "value": "Lookout",
+      "path": "Fathom/Fathom/UI/Components/AssistantSideSheet.swift",
+      "line": 283
+    },
+    {
+      "key": "LOOKOUT.switchOn",
+      "value": "Continuous narration. fathom talks without being asked.",
+      "path": "Fathom/Fathom/UI/Components/AssistantSideSheet.swift",
+      "line": 287
+    },
+    {
+      "key": "LOOKOUT.levels.0",
+      "value": "Hazards Only",
+      "path": "Fathom/Fathom/Config/AwarenessLevel.swift",
+      "line": 45
+    },
+    {
+      "key": "LOOKOUT.levels.1",
+      "value": "Balanced",
+      "path": "Fathom/Fathom/Config/AwarenessLevel.swift",
+      "line": 46
+    },
+    {
+      "key": "LOOKOUT.levels.2",
+      "value": "Full Awareness",
+      "path": "Fathom/Fathom/Config/AwarenessLevel.swift",
+      "line": 47
+    },
+    {
+      "key": "LOOKOUT.about",
+      "value": "Continuous narration. It keeps describing your surroundings while you move, with obstacle alerts as you go.",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 44
+    },
+    {
+      "key": "LOOKOUT.pointingIntro",
+      "value": "Hold your arm out in front of the camera and point at anything for about a second, and fathom tells you what it is.",
+      "path": "Fathom/Fathom/UI/Components/PointingIntroPrompt.swift",
+      "line": 37
+    },
+    {
+      "key": "GO.gettingClose",
+      "value": "Getting close",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 256
+    },
+    {
+      "key": "GO.almostThere",
+      "value": "Almost there",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 256
+    },
+    {
+      "key": "GO.heading",
+      "value": "Heading to {destination}…",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 291
+    },
+    {
+      "key": "GO.shake",
+      "value": "Shake when you’ve arrived",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 296
+    },
+    {
+      "key": "GO.arrival",
+      "value": "It looks like you’ve reached {destination}",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 348
+    },
+    {
+      "key": "GO.arrivalQuestion",
+      "value": "Did you arrive at {destination}?",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 57
+    },
+    {
+      "key": "GO.yes",
+      "value": "Yes, finished",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 67
+    },
+    {
+      "key": "GO.notYet",
+      "value": "Not yet",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 71
+    },
+    {
+      "key": "GO.arrived",
+      "value": "You’re here.",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 392
+    },
+    {
+      "key": "GO.backToConversation",
+      "value": "Back to the conversation…",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 401
+    },
+    {
+      "key": "GO.savedPlaces.title",
+      "value": "Saved places",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 112
+    },
+    {
+      "key": "GO.savedPlaces.detail",
+      "value": "Go to a place you’ve named",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 113
+    },
+    {
+      "key": "PLAN.pitch",
+      "value": "Tell fathom the whole job, like getting checked in and finding your gate, and it builds the steps and guides you through them.",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 102
+    },
+    {
+      "key": "PLAN.readback",
+      "value": "Here is the plan, {n} {steps}. {itinerary} Start it, or tell me what to change.",
+      "path": "Fathom/Fathom/Features/Assistant/AssistantOrchestrator.swift",
+      "line": 672
+    },
+    {
+      "key": "PLAN.title",
+      "value": "Your plan",
+      "path": "Fathom/Fathom/UI/Screens/ConversationScreen.swift",
+      "line": 1087
+    },
+    {
+      "key": "PLAN.accept",
+      "value": "Accept plan",
+      "path": "Fathom/Fathom/UI/Components/AssistantPlanCard.swift",
+      "line": 139
+    },
+    {
+      "key": "PLAN.edit",
+      "value": "Edit",
+      "path": "Fathom/Fathom/UI/Components/AssistantPlanCard.swift",
+      "line": 155
+    },
+    {
+      "key": "PLAN.dismiss",
+      "value": "Dismiss",
+      "path": "Fathom/Fathom/UI/Components/AssistantPlanCard.swift",
+      "line": 163
+    },
+    {
+      "key": "PLAN.change",
+      "value": "Change the plan",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 98
+    },
+    {
+      "key": "PLAN.changeDetail",
+      "value": "Hold here and fix the steps",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 99
+    },
+    {
+      "key": "PLAN.stepModes.lookNow",
+      "value": "Look Now",
+      "path": "Fathom/Fathom/Models/AssistantEnums.swift",
+      "line": 20
+    },
+    {
+      "key": "PLAN.stepModes.lookout",
+      "value": "Lookout",
+      "path": "Fathom/Fathom/Models/AssistantEnums.swift",
+      "line": 21
+    },
+    {
+      "key": "PLAN.stepModes.go",
+      "value": "Go",
+      "path": "Fathom/Fathom/Models/AssistantEnums.swift",
+      "line": 22
+    },
+    {
+      "key": "PLAN.stepModes.task",
+      "value": "Task",
+      "path": "Fathom/Fathom/Models/AssistantEnums.swift",
+      "line": 23
+    },
+    {
+      "key": "PLAN.stepModes.kiosk",
+      "value": "Kiosk",
+      "path": "Fathom/Fathom/Models/AssistantEnums.swift",
+      "line": 24
+    },
+    {
+      "key": "TASK.pitch",
+      "value": "Hands-on help. Work through anything step by step, from finding a gate to using a kiosk, with the camera as your guide.",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 112
+    },
+    {
+      "key": "LIVE.mode",
+      "value": "Live mode",
+      "path": "Fathom/Fathom/UI/Screens/AdvancedSettingsView.swift",
+      "line": 205
+    },
+    {
+      "key": "LIVE.pitch",
+      "value": "Talk it through. Turn any task into a continuous conversation. fathom watches, listens, and answers in the moment instead of waiting between steps.",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 117
+    },
+    {
+      "key": "LIVE.micOff",
+      "value": "Microphone off",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
+      "line": 356
+    },
+    {
+      "key": "LIVE.listening",
+      "value": "Listening…",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
+      "line": 350
+    },
+    {
+      "key": "LIVE.sending",
+      "value": "Sending…",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
+      "line": 350
+    },
+    {
+      "key": "LIVE.step",
+      "value": "Step {n}",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskActiveView.swift",
+      "line": 194
+    },
+    {
+      "key": "MEMORY.title",
+      "value": "Remember these?",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 99
+    },
+    {
+      "key": "MEMORY.subtitle",
+      "value": "{checked} of {total} checked. Uncheck anything that’s wrong.",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 49
+    },
+    {
+      "key": "MEMORY.uncheckAll",
+      "value": "Uncheck all",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 132
+    },
+    {
+      "key": "MEMORY.checkAll",
+      "value": "Check all",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 132
+    },
+    {
+      "key": "MEMORY.rememberN",
+      "value": "Remember these {n}",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 59
+    },
+    {
+      "key": "MEMORY.rememberOne",
+      "value": "Remember this one",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 58
+    },
+    {
+      "key": "MEMORY.noThanks",
+      "value": "No thanks",
+      "path": "Fathom/Fathom/UI/Screens/LiveTaskWritebackView.swift",
+      "line": 176
+    },
+    {
+      "key": "MEMORY.empty",
+      "value": "fathom asks before saving anything. What it saves shows up here.",
+      "path": "Fathom/Fathom/UI/Screens/MemoryReviewList.swift",
+      "line": 209
+    },
+    {
+      "key": "SKILLS.offer",
+      "value": "That’s {times} you’ve done {subject}. Want me to save it as a skill so you can just say run {subject}?",
+      "path": "Fathom/Fathom/Features/Skills/RoutineOffer.swift",
+      "line": 39
+    },
+    {
+      "key": "SKILLS.third",
+      "value": "the third time",
+      "path": "Fathom/Fathom/Features/Skills/RoutineOffer.swift",
+      "line": 50
+    },
+    {
+      "key": "SKILLS.repeatsBeforeOffer",
+      "value": "3",
+      "path": "Fathom/Fathom/Features/Skills/RoutineDetector.swift",
+      "line": 92,
+      "source": "static let repeatsBeforeOffering = 3"
+    },
+    {
+      "key": "SKILLS.listTitle",
+      "value": "Skills",
+      "path": "Fathom/Fathom/UI/Screens/SkillsListView.swift",
+      "line": 60
+    },
+    {
+      "key": "SKILLS.empty",
+      "value": "No skills yet",
+      "path": "Fathom/Fathom/UI/Screens/SkillsListView.swift",
+      "line": 88
+    },
+    {
+      "key": "SKILLS.howTo",
+      "value": "Run a task with fathom, then say “save this as a skill”.",
+      "path": "Fathom/Fathom/UI/Screens/SkillsListView.swift",
+      "line": 92
+    },
+    {
+      "key": "SKILLS.run",
+      "value": "Run",
+      "path": "Fathom/Fathom/UI/Screens/SkillsListView.swift",
+      "line": 147
+    },
+    {
+      "key": "SKILLS.row",
+      "value": "Run {skill}",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationController.swift",
+      "line": 1345
+    },
+    {
+      "key": "CONSENT.title",
+      "value": "Allow cloud AI?",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 61
+    },
+    {
+      "key": "CONSENT.subtitle",
+      "value": "fathom uses cloud AI to describe what it sees",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 66
+    },
+    {
+      "key": "CONSENT.disclosure",
+      "value": "To do that, it sends pictures from your camera to Google’s Gemini AI. It also sends what you’ve told fathom about yourself and what it remembers for you, including whether you’re at home and which room you’re in. What you say is turned into text on your phone, and only the text is sent. In Live mode, your voice is sent too, while the microphone is on. Google uses this to answer you, and doesn’t use it to improve its products. Google keeps it for a limited time, only to check for misuse. Obstacle alerts run on your phone and never use the cloud. You can switch to On-device AI in Settings any time.",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 88
+    },
+    {
+      "key": "CONSENT.allow",
+      "value": "Allow cloud AI",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 119
+    },
+    {
+      "key": "CONSENT.decline",
+      "value": "Keep fathom on-device",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 120
+    },
+    {
+      "key": "CONSENT.readAloud",
+      "value": "Read it to me",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 129
+    },
+    {
+      "key": "CONSENT.privacyPolicy",
+      "value": "Read the full Privacy Policy",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 148
+    },
+    {
+      "key": "AI_MODES.cloud",
+      "value": "Cloud AI",
+      "path": "Fathom/Fathom/Config/SettingsPreset.swift",
+      "line": 32
+    },
+    {
+      "key": "AI_MODES.onDevice",
+      "value": "On-device AI",
+      "path": "Fathom/Fathom/Config/SettingsPreset.swift",
+      "line": 33
+    },
+    {
+      "key": "AI_MODES.cloudSummary",
+      "value": "Richer descriptions from Google Gemini. Sends camera pictures, the text of what you say, and what fathom remembers about you to Google. In Live mode, your voice is sent too, while the microphone is on. Needs internet.",
+      "path": "Fathom/Fathom/Config/SettingsPreset.swift",
+      "line": 46
+    },
+    {
+      "key": "AI_MODES.onDeviceSummary",
+      "value": "Camera pictures and your voice stay on your phone. Obstacle alerts and reading text work on every iPhone. On iOS 27 with Apple Intelligence, Look Now can also describe what is around you.",
+      "path": "Fathom/Fathom/Config/SettingsPreset.swift",
+      "line": 69
+    },
+    {
+      "key": "SAFETY_SHIELD",
+      "value": "Obstacle alerts are always on. This only sets how much fathom talks.",
+      "path": "Fathom/Fathom/UI/Components/AssistantSideSheet.swift",
+      "line": 306
+    },
+    {
+      "key": "SAFETY.caution",
+      "value": "fathom uses AI and it can make mistakes.",
+      "path": "Fathom/Fathom/Services/Audio/AudioService.swift",
+      "line": 2503,
+      "source": "\"Remember, fathom uses AI and it can make mistakes.\""
+    },
+    {
+      "key": "SAFETY.keepYourAids",
+      "value": "Always use your cane, guide dog, sighted guide, or other established mobility tools as your primary source of awareness.",
+      "path": "Fathom/Fathom/UI/Screens/TermsOfServiceView.swift",
+      "line": 148
+    },
+    {
+      "key": "SAFETY.onPhone",
+      "value": "Obstacle alerts run on your phone and never use the cloud.",
+      "path": "Fathom/Fathom/UI/Screens/CloudConsentView.swift",
+      "line": 88
+    },
+    {
+      "key": "SAFETY.pastAllowance",
+      "value": "Obstacle alerts still work, and it resets next month.",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationTools.swift",
+      "line": 48
+    },
+    {
+      "key": "SAFETY.cloudOffAnswer",
+      "value": "I can’t answer questions with Cloud AI off.",
+      "path": "Fathom/Fathom/Features/Conversation/ConversationTools.swift",
+      "line": 71
+    },
+    {
+      "key": "PAYWALL.title",
+      "value": "fathom plus",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 72
+    },
+    {
+      "key": "PAYWALL.features.0",
+      "value": "Step-by-step plans",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 101
+    },
+    {
+      "key": "PAYWALL.features.1",
+      "value": "Go",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 106
+    },
+    {
+      "key": "PAYWALL.features.2",
+      "value": "Task",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 111
+    },
+    {
+      "key": "PAYWALL.features.3",
+      "value": "Live mode",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 116
+    },
+    {
+      "key": "PAYWALL.safetyNet.title",
+      "value": "Your safety net is always free",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 127
+    },
+    {
+      "key": "PAYWALL.safetyNet.detail",
+      "value": "On-device obstacle haptics, step and drop-off alerts, and object detection never need a subscription.",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 128
+    },
+    {
+      "key": "PAYWALL.offer",
+      "value": "7 days free, then $12.99 a month",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 136
+    },
+    {
+      "key": "PAYWALL.price",
+      "value": "$12.99",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 136,
+      "source": "\"7 days free, then $12.99 a month\""
+    },
+    {
+      "key": "PAYWALL.trial",
+      "value": "7 days",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 136,
+      "source": "\"7 days free, then $12.99 a month\""
+    },
+    {
+      "key": "PLUS_GATE",
+      "value": "go, task, live_task, assistant, run_skill",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 89,
+      "source": ".go, .task, .liveTask, .assistant, .runSkill: return .plus"
+    },
+    {
+      "key": "PLUS_CAPABILITIES.0.name",
+      "value": "Go",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 104
+    },
+    {
+      "key": "PLUS_CAPABILITIES.1.name",
+      "value": "Task",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 105
+    },
+    {
+      "key": "PLUS_CAPABILITIES.2.name",
+      "value": "Live mode",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 116
+    },
+    {
+      "key": "PLUS_CAPABILITIES.3.name",
+      "value": "Step-by-step plans",
+      "path": "Fathom/Fathom/UI/Screens/PaywallView.swift",
+      "line": 101
+    },
+    {
+      "key": "PLUS_CAPABILITIES.4.name",
+      "value": "Skills",
+      "path": "Fathom/Fathom/UI/Screens/SkillsListView.swift",
+      "line": 60
+    },
+    {
+      "key": "FREE_CAPABILITIES.0.name",
+      "value": "Look Now",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 100
+    },
+    {
+      "key": "FREE_CAPABILITIES.1.name",
+      "value": "Read text",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 103
+    },
+    {
+      "key": "FREE_CAPABILITIES.2.name",
+      "value": "Lookout",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 101
+    },
+    {
+      "key": "FREE_CAPABILITIES.3.name",
+      "value": "Remember",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 130
+    },
+    {
+      "key": "FREE_CAPABILITIES.4.name",
+      "value": "Recall",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 131
+    },
+    {
+      "key": "FREE_CAPABILITIES.5.name",
+      "value": "Take a closer look",
+      "path": "Fathom/Fathom/Capabilities/FathomCapability.swift",
+      "line": 137
+    },
+    {
+      "key": "SHORTCUT_TITLES.0",
+      "value": "Look Now",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 43
+    },
+    {
+      "key": "SHORTCUT_TITLES.1",
+      "value": "Lookout",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 56
+    },
+    {
+      "key": "SHORTCUT_TITLES.2",
+      "value": "Read",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 75
+    },
+    {
+      "key": "SHORTCUT_TITLES.3",
+      "value": "Go",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 94
+    },
+    {
+      "key": "SHORTCUT_TITLES.4",
+      "value": "Task",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 107
+    },
+    {
+      "key": "SHORTCUT_TITLES.5",
+      "value": "Skill",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 133
+    },
+    {
+      "key": "SHORTCUT_TITLES.6",
+      "value": "Step-by-step plans",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 146
+    },
+    {
+      "key": "SHORTCUT_TITLES.7",
+      "value": "Where is",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 162
+    },
+    {
+      "key": "SHORTCUT_TITLES.8",
+      "value": "Remember",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 175
+    },
+    {
+      "key": "SHORTCUT_COUNT",
+      "value": 9,
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 19,
+      "countOf": "AppShortcut("
+    },
+    {
+      "key": "SHORTCUT_PHRASES.look",
+      "value": "Look with fathom",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 35
+    },
+    {
+      "key": "SHORTCUT_PHRASES.lookout",
+      "value": "Start Lookout with fathom",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 51
+    },
+    {
+      "key": "SHORTCUT_PHRASES.read",
+      "value": "Read this with fathom",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 69
+    },
+    {
+      "key": "SHORTCUT_PHRASES.goTo",
+      "value": "Take me to {place} with fathom",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 86
+    },
+    {
+      "key": "SHORTCUT_PHRASES.runSkill",
+      "value": "Run {skill} with fathom",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 129
+    },
+    {
+      "key": "SHORTCUT_PHRASES.plan",
+      "value": "Plan something with fathom",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 142
+    },
+    {
+      "key": "SHORTCUT_PHRASES.whereIs",
+      "value": "fathom, where did I put it",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 158
+    },
+    {
+      "key": "SHORTCUT_PHRASES.remember",
+      "value": "fathom, remember this",
+      "path": "Fathom/Fathom/Intents/FathomShortcuts.swift",
+      "line": 171
+    },
+    {
+      "key": "SIRI.headline",
+      "value": "Hands-free with Siri",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 68
+    },
+    {
+      "key": "SIRI.description",
+      "value": "Run fathom without opening it. Ask Siri, or set the Action Button to launch Look Now instantly.",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 69
+    },
+    {
+      "key": "HAPTICS.headline",
+      "value": "Feel the language",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 95
+    },
+    {
+      "key": "HAPTICS.somethingClose",
+      "value": "Something’s close",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 112
+    },
+    {
+      "key": "HAPTICS.gotIt",
+      "value": "Got it",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 118
+    },
+    {
+      "key": "HAPTICS.arrived",
+      "value": "Arrived",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 130
+    },
+    {
+      "key": "HAPTICS.listening",
+      "value": "Listening",
+      "path": "Fathom/Fathom/Data/OnboardingContent.swift",
+      "line": 142
+    },
+    {
+      "key": "PROFILE.title",
+      "value": "A little about you",
+      "path": "Fathom/Fathom/Features/Onboarding/ProfileSetupView.swift",
+      "line": 110
+    },
+    {
+      "key": "PROFILE.intro",
+      "value": "Three quick questions. They help fathom describe things the way you need. Every one is optional, and you can change them anytime in Settings.",
+      "path": "Fathom/Fathom/Features/Onboarding/ProfileSetupView.swift",
+      "line": 117
+    },
+    {
+      "key": "PROFILE.sight",
+      "value": "Your sight",
+      "path": "Fathom/Fathom/Features/Onboarding/ProfileSetupView.swift",
+      "line": 129
+    },
+    {
+      "key": "PROFILE.gettingAround",
+      "value": "How you get around",
+      "path": "Fathom/Fathom/Features/Onboarding/ProfileSetupView.swift",
+      "line": 186
+    },
+    {
+      "key": "PROFILE.caneOrDog",
+      "value": "fathom won’t narrate things your cane or dog already handles.",
+      "path": "Fathom/Fathom/Features/Onboarding/ProfileSetupView.swift",
+      "line": 187
+    },
+    {
+      "key": "LANGUAGE.follow",
+      "value": "Follow my device",
+      "path": "Fathom/Fathom/UI/Screens/AnswerLanguageView.swift",
+      "line": 36
+    },
+    {
+      "key": "LANGUAGE.footer",
+      "value": "Changes fathom’s descriptions and directions. Buttons, settings, and fathom’s own short alerts, like hazard warnings, stay in English.",
+      "path": "Fathom/Fathom/UI/Screens/AnswerLanguageView.swift",
+      "line": 38
+    },
+    {
+      "key": "LANGUAGE.voice",
+      "value": "fathom picks your best installed voice. It cannot read your VoiceOver voice.",
+      "path": "Fathom/Fathom/UI/Components/NarrationVoiceRow.swift",
+      "line": 172
+    },
+    {
+      "key": "LANGUAGE.voiceWhen",
+      "value": "This setting applies when VoiceOver is off.",
+      "path": "Fathom/Fathom/UI/Components/NarrationVoiceRow.swift",
+      "line": 162
+    },
+    {
+      "key": "SPLASH_LINE",
+      "value": "Visual assistance",
+      "path": "Fathom/Fathom/UI/Screens/SplashView.swift",
+      "line": 41
+    },
+    {
+      "key": "MIN_IOS",
+      "value": "17",
+      "path": "Fathom/Fathom.xcodeproj/project.pbxproj",
+      "line": 311,
+      "source": "IPHONEOS_DEPLOYMENT_TARGET = 17.0"
+    },
+    {
+      "key": "APP_VERSION",
+      "value": "1.3.0",
+      "path": "Fathom/Fathom.xcodeproj/project.pbxproj",
+      "line": 410,
+      "source": "MARKETING_VERSION = 1.3.0"
+    },
+    {
+      "key": "APP_BUILD",
+      "value": "17",
+      "path": "Fathom/Fathom.xcodeproj/project.pbxproj",
+      "line": 389,
+      "source": "CURRENT_PROJECT_VERSION = 17"
+    }
+  ]
+}

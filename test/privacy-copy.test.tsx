@@ -4,14 +4,12 @@ import { describe, it, expect } from "vitest";
 import PrivacyPage from "@/app/privacy/page";
 import TermsPage from "@/app/terms/page";
 import { FAQ, faqAnswerText } from "@/lib/faq";
+import { BRITISH_SPELLINGS, EM_DASH, LEGAL_RETIRED, expectNoMatch, words } from "./helpers/copy-rules";
 
 // The privacy policy is checked against the fathom app, not against its own
 // earlier text. Each expected value below is copied from project-homer with
 // its source, so this suite fails when the site drifts from what the app
 // tells people before they agree to Cloud AI.
-
-/** Curly and straight apostrophes read the same aloud; compare words only. */
-const words = (s: string) => s.replace(/[‘’]/g, "'").replace(/\s+/g, " ").trim();
 
 function textOf(Page: () => JSX.Element): string {
   const { container, unmount } = render(<Page />);
@@ -216,21 +214,13 @@ describe("legal pages and the FAQ use the app's current words", () => {
     ["FAQ privacy answer", privacyAnswer],
   ];
 
+  // The rules live in test/helpers/copy-rules.ts, shared with every
+  // marketing surface. The legal pages get only these three, unchanged.
   it.each(pages)("the %s drops claims 1.3 no longer makes", (_name, read) => {
-    const text = read();
-    // "Live Task" is "Live mode", and the microphone is no longer a held button.
-    expect(text).not.toMatch(/Live Task/);
-    expect(text).not.toMatch(/microphone button/);
-    // On-device AI still allows analytics, so "nothing to the cloud" is not exact.
-    expect(text).not.toMatch(/nothing to the cloud/);
-    expect(text).not.toMatch(/Snapshot/);
-    // Only the backend stores nothing; the phone keeps goals and memories.
-    expect(text).not.toMatch(/and its backend store none/i);
+    expectNoMatch(read(), LEGAL_RETIRED);
   });
 
   it.each(pages)("the %s has no em dashes or British spellings", (_name, read) => {
-    const text = read();
-    expect(text).not.toMatch(/—/);
-    expect(text).not.toMatch(/\b(metre|colour|labelled|cancelled|organis|recognis|licence)/i);
+    expectNoMatch(read(), [EM_DASH, BRITISH_SPELLINGS]);
   });
 });
