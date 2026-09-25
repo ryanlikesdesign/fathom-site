@@ -5,7 +5,7 @@ import { pageMeta } from "@/lib/pageMeta";
 
 export const metadata = pageMeta(
   "Release notes",
-  "What's new, improved, and fixed in each version of Fathom, the AI companion for blind and low-vision iPhone users.",
+  "What’s new, improved, and fixed in each version of fathom, visual assistance you can talk to.",
   "/release-notes",
 );
 
@@ -26,9 +26,9 @@ function Group({ label, items }: { label: string; items?: string[] }) {
 export default function ReleaseNotesPage() {
   return (
     <Section labelledBy="rn-h">
-      <p className="eyebrow">What&apos;s new</p>
+      <p className="eyebrow">What’s new</p>
       <h1 id="rn-h" className="font-display text-5xl">Release notes</h1>
-      <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">What&apos;s new in each version of Fathom.</p>
+      <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">What’s new in each version of fathom.</p>
       <ol className="mt-10 max-w-3xl space-y-8">
         {RELEASES.map((r) => (
           <Surface key={r.version} register="lift" as="li" className="p-6">

@@ -25,7 +25,7 @@ export default function ErrorPage({
       <p className="eyebrow">Something broke</p>
       <h1 id="err-h" className="font-display text-5xl">Something went wrong on our end</h1>
       <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">
-        This isn&apos;t anything you did. Try again, and if it keeps happening, email{" "}
+        This isn’t anything you did. Try again, and if it keeps happening, email{" "}
         <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and a person will look into it.
       </p>
       {error.digest && (

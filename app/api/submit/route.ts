@@ -1,8 +1,24 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { validateSubmission, type FormType } from "@/lib/validation";
+import { SITE_NAME } from "@/lib/site-meta";
 
 export const runtime = "nodejs";
+
+const DEFAULT_SENDER = "support@fathomvision.app";
+
+/**
+ * The address FROM_EMAIL names, with or without a display name
+ * ("fathom <a@b.co>" or "a@b.co"). Only the address is read: the name a
+ * person sees is always SITE_NAME, lowercase, so an env value set before
+ * the rename ("Fathom <…>") can't bring the capital back.
+ */
+function senderAddress(env: string | undefined): string {
+  const raw = (env ?? "").replace(/[\r\n]/g, "").trim();
+  const bracketed = /<([^<>\s@]+@[^<>\s@]+)>$/.exec(raw)?.[1];
+  if (bracketed) return bracketed;
+  return /^[^<>\s@]+@[^<>\s@]+$/.test(raw) ? raw : DEFAULT_SENDER;
+}
 
 interface Payload {
   formType: FormType;
@@ -48,8 +64,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Server not configured." }, { status: 500 });
   }
 
-  const from = process.env.FROM_EMAIL ?? "Fathom <support@fathomvision.app>";
-  const subject = `Fathom feedback${body.category ? `: ${body.category}` : ""}`;
+  // The sender's display name is the brand, lowercase like everywhere a
+  // person reads it; FROM_EMAIL supplies only the address.
+  const from = `${SITE_NAME} <${senderAddress(process.env.FROM_EMAIL)}>`;
+  const subject = `${SITE_NAME} feedback${body.category ? `: ${body.category}` : ""}`;
   const text = [
     `Category: ${body.category ?? "General"}`,
     `Name: ${body.name ?? "(none)"}`,

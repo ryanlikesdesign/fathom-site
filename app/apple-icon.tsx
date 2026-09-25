@@ -1,33 +1,24 @@
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from "next/og";
+import { APP_ICON } from "@/design-system/generated/logo-paths";
 
 export const size = { width: 180, height: 180 };
-export const contentType = 'image/png';
+export const contentType = "image/png";
 
 // The home-screen icon iOS asks for when someone adds the site. The SVG
-// favicon cannot serve it (Safari wants a raster here), so this is the same
-// sonar mark as components/BrandMark.tsx, drawn in bone on the site's dark
-// ground. iOS rounds the corners itself.
+// favicon cannot serve it (Safari wants a raster here), so this draws the
+// app's own icon from the design system (design-system/generated/
+// logo-paths.ts): the bone mark on fathom-900, the geometry of
+// fathom-app-icon.svg scaled from 1024 to 180, as iOS scales the app's
+// icon. iOS rounds the corners itself.
 export default function Icon() {
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#0e1013',
-        }}
-      >
-        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-          <circle cx="60" cy="60" r="7" fill="#e8e4db" />
-          <circle cx="60" cy="60" r="18" stroke="#e8e4db" strokeWidth="4" opacity="0.85" />
-          <circle cx="60" cy="60" r="30" stroke="#e8e4db" strokeWidth="3.2" opacity="0.55" />
-          <circle cx="60" cy="60" r="42" stroke="#e8e4db" strokeWidth="2.6" opacity="0.3" />
+      <div style={{ width: "100%", height: "100%", display: "flex", background: APP_ICON.background }}>
+        <svg width={size.width} height={size.height} viewBox={APP_ICON.viewBox}>
+          <path d={APP_ICON.d} fill={APP_ICON.foreground} fillRule={APP_ICON.fillRule} />
         </svg>
       </div>
     ),
-    { ...size }
+    { ...size },
   );
 }

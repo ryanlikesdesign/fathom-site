@@ -19,7 +19,7 @@ export default function AccessibilityPage() {
       <p className="mt-4 text-sm text-[var(--text-muted)]">Last reviewed: September 9, 2026</p>
 
       <p>
-        Fathom is made for blind and low-vision people, and this site is held to the same
+        fathom is made for blind and low-vision people, and this site is held to the same
         standard as the app. It is designed and tested by people who use a screen reader and
         magnification every day, not checked for them afterward.
       </p>
@@ -98,7 +98,7 @@ export default function AccessibilityPage() {
         into the site, not into a workaround list.
       </p>
       <p>
-        This statement covers fathomvision.app. Accessibility in the Fathom app itself is covered
+        This statement covers fathomvision.app. Accessibility in the fathom app itself is covered
         on the <Link href="/support">support page</Link>.
       </p>
     </Section>

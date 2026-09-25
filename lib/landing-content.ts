@@ -1,8 +1,8 @@
 /* ================================================================
    The few shared values other pages read: the tier type, the fathom plus
-   price and trial (Terms, the FAQ), and the minimum iOS (the JSON-LD in
-   app/layout.tsx). test/landing-content.test.ts holds each one to the app
-   facts (lib/app-facts.ts).
+   price and trial (Terms, the FAQ), and the minimum iOS (the FAQ).
+   test/landing-content.test.ts holds each one to the app facts
+   (lib/app-facts.ts).
 
    The homepage renders the 1.3 deck (lib/copy-13.ts), and its phones the
    app facts. The 1.2 deck and the 1.2 screen data (modes, Snapshot

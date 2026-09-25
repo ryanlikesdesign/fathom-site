@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site-meta";
 
-const base = "https://fathomvision.app";
+const base = SITE_URL;
 const routes = ["", "/support", "/feedback", "/release-notes", "/privacy", "/terms", "/accessibility"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

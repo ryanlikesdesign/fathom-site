@@ -5,7 +5,7 @@ import { APP_STORE_URL } from "@/lib/promo";
 import { pageMeta } from "@/lib/pageMeta";
 
 export const metadata: Metadata = {
-  ...pageMeta("Page not found", "That page isn't here. Head home, get help, or download Fathom.", "/"),
+  ...pageMeta("Page not found", "That page isn’t here. Head home, get help, or download fathom.", "/"),
   // A missing page has no address of its own to point a canonical at, and
   // must never be indexed.
   alternates: undefined,

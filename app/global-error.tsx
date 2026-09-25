@@ -38,13 +38,13 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        <title>Something went wrong | Fathom</title>
+        <title>Something went wrong | fathom</title>
         <style>{TOKENS}</style>
         <main id="main">
           <p className="eyebrow">Something broke</p>
-          <h1>Fathom&apos;s site hit a problem</h1>
+          <h1>fathom’s site hit a problem</h1>
           <p className="lede">
-            This isn&apos;t anything you did. Try again, and if it keeps happening, email{" "}
+            This isn’t anything you did. Try again, and if it keeps happening, email{" "}
             <a href="mailto:support@fathomvision.app">support@fathomvision.app</a> and a person will
             look into it.
           </p>

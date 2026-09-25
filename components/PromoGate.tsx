@@ -95,7 +95,7 @@ export function PromoGate({
 
       if (!res.ok) {
         setBadPassword(res.status === 401);
-        setError(data.error ?? "That password isn't right.");
+        setError(data.error ?? "That password isn’t right.");
         return;
       }
 
@@ -146,7 +146,7 @@ export function PromoGate({
   return (
     <form onSubmit={onSubmit} noValidate className="mt-10 max-w-md space-y-6" aria-labelledby="promo-h">
       <p className="text-[var(--text-secondary)]">
-        This page is for people sharing Fathom at events. Enter the access password to open it.
+        This page is for people sharing fathom at events. Enter the access password to open it.
       </p>
 
       {error && (

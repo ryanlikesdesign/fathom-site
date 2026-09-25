@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
   if (!passwordMatches(password)) {
     return Response.json(
-      { error: "That password isn't right. Please check with the Fathom team and try again." },
+      { error: "That password isn’t right. Please check with the fathom team and try again." },
       { status: 401 },
     );
   }

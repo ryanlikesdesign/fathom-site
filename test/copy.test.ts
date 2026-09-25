@@ -1,5 +1,18 @@
+import { Fragment, createElement, isValidElement } from "react";
+import { render } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { COPY_13 as COPY, EXAMPLES } from "@/lib/copy-13";
+import { FAQ, faqAnswerText } from "@/lib/faq";
+import { PITCH, PLUS_ADDS } from "@/lib/pitch";
+import { RELEASES } from "@/lib/releases";
+import {
+  REDEEM_FALLBACK,
+  redeemDescription,
+  redeemTitle,
+  shareMessage,
+  shareText,
+  shareTitle,
+} from "@/lib/promo-copy";
 import {
   AI_MODES,
   APP_FACTS,
@@ -8,6 +21,7 @@ import {
   MIN_IOS,
   PAYWALL,
   PLUS_CAPABILITIES,
+  SAFETY,
   SHORTCUT_COUNT,
   TRIAL_DAYS,
   consentParagraphs,
@@ -20,6 +34,7 @@ import {
   phoneFacts,
   retiredTerms,
   stringsIn,
+  words,
 } from "./helpers/copy-rules";
 
 /** Numbers the deck spells out. Extend when a new one is spelled. */
@@ -271,5 +286,114 @@ describe("strings shown inside the phones follow the rules too", () => {
       "APP_VERSION",
       "APP_BUILD",
     ]);
+  });
+});
+
+/* ---------------------------------------------------------------- *
+ * Site copy outside the deck: the support FAQ and the promo codes
+ * ---------------------------------------------------------------- */
+
+/** The FAQ's legal answer: frozen words, held by test/privacy-copy.test.tsx instead. */
+const LEGAL_FAQ = "Is my camera data private?";
+
+/** The 1.2 positioning, which no answer may bring back. */
+const OLD_POSITIONING = /AI companion|indoor|wayfinding|beacons|building setup|guides? you through|navigate any building|\bGPS\b|your eyes/i;
+
+const answer = (q: string) => {
+  const item = FAQ.find((it) => it.q === q);
+  if (!item) throw new Error(`The FAQ lost "${q}".`);
+  return faqAnswerText(item);
+};
+
+describe("the FAQ's non-legal answers follow the copy rules", () => {
+  const items = FAQ.filter((it) => it.q !== LEGAL_FAQ);
+
+  it("keeps the legal answer out of this check, and every other answer in it", () => {
+    expect(FAQ.some((it) => it.q === LEGAL_FAQ)).toBe(true);
+    expect(items).toHaveLength(FAQ.length - 1);
+  });
+
+  it.each(items.map((it) => [it.q, faqAnswerText(it)]))("%s", (q, text) => {
+    expect(marketingViolations(q)).toEqual([]);
+    // The cancel answer keeps Apple's own label, "choose Fathom", an exception the rules know.
+    expect(marketingViolations(text)).toEqual([]);
+    expect(text).not.toMatch(OLD_POSITIONING);
+  });
+
+  it("gives every JSX answer a plain twin that says the same words", () => {
+    for (const item of FAQ.filter((it) => isValidElement(it.a))) {
+      const { container, unmount } = render(createElement(Fragment, null, item.a));
+      expect(words(container.textContent ?? ""), item.q).toBe(words(item.plain ?? ""));
+      unmount();
+    }
+  });
+
+  it("states the app's facts: iOS, price, what fathom plus adds, the caution", () => {
+    expect(answer("What do I need to use it?")).toContain(`iOS ${MIN_IOS.value} or later`);
+    expect(answer("Which iPhones support pointing and LiDAR?")).toContain(`iOS ${MIN_IOS.value} or later`);
+    const cost = answer("How much does it cost?");
+    expect(cost).toContain(`${PAYWALL.price.value} a month after a ${SPELLED[TRIAL_DAYS]}-day free trial`);
+    for (const cap of PLUS_CAPABILITIES) expect(cost.toLowerCase(), cap.id).toContain(cap.name.value.toLowerCase());
+    expect(cost).toContain(PLUS_ADDS.replace(/\.$/, ""));
+    // The app's caution first, then every aid the Terms name (SAFETY.keepYourAids), not the deck's short line.
+    const safe = answer("Is it safe to rely on?");
+    expect(safe.startsWith(SAFETY.caution.value)).toBe(true);
+    for (const aid of ["cane", "guide dog", "sighted guide", "your own judgment"]) expect(safe).toContain(aid);
+    expect(SAFETY.keepYourAids.value).toMatch(/cane, guide dog, sighted guide/);
+    // Every iPhone 12 Pro and later Pro model has LiDAR; the iPhone 11 Pro runs iOS 17 without it.
+    expect(answer("What do I need to use it?")).toContain("iPhone 12 Pro and later Pro models");
+    expect(answer("Does it work with VoiceOver?")).toMatch(/Magic Tap opens the mic/);
+    // Describing on the phone needs iOS 27 (AI_MODES.onDeviceSummary); talking needs Cloud AI.
+    const offline = answer("Does it work without internet?");
+    expect(offline).toContain("iOS 27 with Apple Intelligence");
+    expect(offline).toMatch(/Talking to fathom.*use Cloud AI/);
+  });
+
+  it("keeps the cancel answer's Apple label, and names the tier in full", () => {
+    const cancel = answer("How do I cancel fathom plus?");
+    expect(cancel).toContain("choose Fathom and tap Cancel");
+    expect(cancel).toContain("You keep fathom plus");
+  });
+});
+
+describe("the release notes follow the copy rules", () => {
+  /** The names a release shipped under. They are history, so they stay. */
+  const HISTORICAL = /^(snapshot|live task)$/i;
+  /** Claims no release note may make now: 1.2 navigation, and on-device or audio promises the privacy page contradicts. */
+  const OUTDATED = /turn-by-turn|fully on-device|never leaves/i;
+
+  it.each(RELEASES.flatMap((r) => labeled(r, `RELEASES.${r.version}`)))("%s", (_key, text) => {
+    const violations = marketingViolations(text).filter(
+      (v) => !(v.rule === "retired term" && HISTORICAL.test(v.match)),
+    );
+    expect(violations).toEqual([]);
+    expect(text).not.toMatch(OLD_POSITIONING);
+    expect(text).not.toMatch(OUTDATED);
+  });
+});
+
+describe("the promo builders follow the copy rules", () => {
+  const texts = [
+    PITCH,
+    PLUS_ADDS,
+    redeemTitle("3 months free"),
+    redeemTitle("1 year free"),
+    redeemDescription("A1B2C3", "3 months free"),
+    REDEEM_FALLBACK.title,
+    REDEEM_FALLBACK.description,
+    shareTitle("3 months free"),
+    shareText("3 months free", "A1B2C3"),
+    shareMessage("3 months free", "A1B2C3", "https://fathomvision.app/promo/r/abcdefghij"),
+  ];
+
+  it.each(texts.map((t) => [t]))("%s", (text) => {
+    expect(marketingViolations(text)).toEqual([]);
+    expect(text).not.toMatch(OLD_POSITIONING);
+  });
+
+  it("names the trial fathom plus, since the codes are fathom plus offer codes", () => {
+    expect(redeemTitle("3 months free")).toBe("You’ve got 3 months free of fathom plus");
+    expect(shareText("3 months free", "A1B2C3")).toContain("of fathom plus");
+    expect(shareMessage("3 months free", "A1B2C3", "u")).toContain("Your code: A1B2C3\nRedeem it here: u");
   });
 });

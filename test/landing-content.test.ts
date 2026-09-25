@@ -71,7 +71,7 @@ describe("the homepage renders the deck", () => {
 
 describe("the 1.2 values other pages still read agree with the app", () => {
   it("prices fathom plus from the paywall", () => {
-    // lib/faq.tsx and app/terms/page.tsx read PLUS until P5.
+    // lib/faq.tsx (PLUS_SENTENCE) and app/terms/page.tsx (PLUS) read these until P5.
     expect(PLUS.price).toBe(PAYWALL.price.value);
     expect(PLUS.trialDays).toBe(TRIAL_DAYS);
     expect(PLUS_TRIAL_LABEL.startsWith("seven")).toBe(true);
@@ -79,7 +79,7 @@ describe("the 1.2 values other pages still read agree with the app", () => {
   });
 
   it("names the minimum iOS the app builds for", () => {
-    // app/layout.tsx's JSON-LD reads it.
+    // lib/faq.tsx reads it; the JSON-LD (lib/site-meta.ts) reads MIN_IOS itself.
     expect(LEGACY_MIN_IOS).toBe(MIN_IOS.value);
   });
 });

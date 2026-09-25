@@ -3,10 +3,11 @@ import { Section } from "@/components/Section";
 import { Faq } from "@/components/Faq";
 import { FAQ, SUPPORT_EMAIL, faqAnswerText } from "@/lib/faq";
 import { pageMeta } from "@/lib/pageMeta";
+import { jsonLdScript } from "@/lib/site-meta";
 
 export const metadata = pageMeta(
   "Support",
-  "Answers to common questions about Fathom, the AI companion for blind and low-vision iPhone users. Get help, contact us, and troubleshoot.",
+  "Answers to common questions about fathom, visual assistance you can talk to. Get set up, fix a problem, or reach a person.",
   "/support",
 );
 
@@ -17,7 +18,7 @@ export default function SupportPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLdScript({
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: FAQ.map((it) => ({

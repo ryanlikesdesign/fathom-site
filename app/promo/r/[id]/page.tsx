@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { APP_STORE_URL, trackedRedeemUrl } from "@/lib/promo";
-import { findBySlug, markOpened, trackQuietly } from "@/lib/promoDb";
+import { COPY_13 } from "@/lib/copy-13";
+import { PITCH, PLUS_ADDS } from "@/lib/pitch";
+import { REDEEM_FALLBACK, redeemDescription, redeemTitle } from "@/lib/promo-copy";
+import { lookupCode } from "@/lib/promo-lookup";
+import { markOpened, trackQuietly } from "@/lib/promoDb";
+import { OG_BASE, SITE_URL } from "@/lib/site-meta";
 import { Button } from "@/components/Button";
 import { RedeemActions } from "@/components/RedeemActions";
 
@@ -11,51 +16,36 @@ type Params = Promise<{ id: string }>;
 type Search = Promise<{ rep?: string }>;
 
 /**
- * Never let a database hiccup turn into a 500 for someone holding a code,
- * but distinguish the two failures. "Not found" means the link really is
- * dead; an error on our side must not be reported to the recipient as a dead
- * code, or a misconfiguration reads to them as a canceled trial.
+ * The redeem link's tab title and its iMessage or Mail preview. The page's
+ * openGraph replaces the layout's whole (lib/pageMeta.ts), so the shared
+ * fields are spread back in; the image is left out, since this segment's
+ * opengraph-image.tsx draws its own card. Title, description and card say
+ * the same thing, found or not.
  */
-type Lookup =
-  | { state: "found"; code: Awaited<ReturnType<typeof findBySlug>> & object }
-  | { state: "missing" }
-  | { state: "unavailable" };
-
-async function lookup(slug: string): Promise<Lookup> {
-  try {
-    const found = await findBySlug(slug);
-    return found ? { state: "found", code: found } : { state: "missing" };
-  } catch (err) {
-    console.error("[promo] redeem page lookup failed:", err);
-    return { state: "unavailable" };
-  }
-}
-
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { id } = await params;
-  const result = await lookup(id);
-  const found = result.state === "found" ? result.code : null;
-
-  if (!found) {
-    return {
-      title: "Fathom free trial",
-      description: "A free trial of Fathom, the AI companion for blind and low-vision iPhone users.",
-      robots: { index: false, follow: false },
-    };
-  }
-
-  const title = `You've got ${found.durationLabel} of Fathom`;
-  // The code rides in the description so it shows up right inside the
-  // iMessage / Mail link-preview card.
-  const description = `Your code: ${found.code}. Tap to redeem ${found.durationLabel} of Fathom, the AI companion for blind and low-vision iPhone users.`;
-
+function redeemMeta(id: string, title: string, description: string): Metadata {
+  const { siteName, type, locale } = OG_BASE;
   return {
     title,
     description,
     robots: { index: false, follow: false },
-    openGraph: { title, description, type: "website" },
+    openGraph: { siteName, type, locale, title, description, url: `${SITE_URL}/promo/r/${encodeURIComponent(id)}` },
     twitter: { card: "summary_large_image", title, description },
   };
+}
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { id } = await params;
+  const result = await lookupCode(id);
+
+  if (result.state !== "found") {
+    return redeemMeta(id, REDEEM_FALLBACK.title, REDEEM_FALLBACK.description);
+  }
+
+  // The words live in lib/promo-copy.ts, with the share text a rep sends.
+  // The code rides in the description so it shows up right inside the
+  // iMessage / Mail link-preview card.
+  const found = result.code;
+  return redeemMeta(id, redeemTitle(found.durationLabel), redeemDescription(found.code, found.durationLabel));
 }
 
 export default async function RedeemPage({
@@ -67,7 +57,7 @@ export default async function RedeemPage({
 }) {
   const { id } = await params;
   const { rep } = await searchParams;
-  const result = await lookup(id);
+  const result = await lookupCode(id);
   const found = result.state === "found" ? result.code : null;
 
   if (found) {
@@ -84,12 +74,14 @@ export default async function RedeemPage({
         <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
           <p className="eyebrow">{found.durationLabel} · Free trial</p>
           <h1 id="redeem-h" className="mt-3 font-display text-4xl">
-            You&apos;ve got {found.durationLabel} of Fathom
+            {redeemTitle(found.durationLabel)}
           </h1>
+          {/* What fathom is, in the homepage's words (COPY_13), then what
+              the trial adds: the codes are fathom plus offer codes. */}
           <p className="mt-3 text-[var(--text-secondary)]">
-            Fathom is the AI companion for blind and low-vision iPhone users. It describes
-            what&apos;s ahead, guides you through indoor spaces, and helps you complete tasks.
+            {PITCH} {COPY_13.hero.lede}
           </p>
+          <p className="mt-3 text-[var(--text-secondary)]">{PLUS_ADDS}</p>
 
           <div className="mt-8">
             <RedeemActions
@@ -113,38 +105,38 @@ export default async function RedeemPage({
             <ol className="mt-3 list-decimal space-y-2 pl-5">
               <li>Tap “Redeem in the App Store” above on your iPhone or iPad.</li>
               <li>
-                If it doesn&apos;t open automatically, open the App Store app, tap your profile, then
+                If it doesn’t open automatically, open the App Store app, tap your profile, then
                 “Redeem Gift Card or Code,” and enter the code above.
               </li>
-              <li>Fathom installs free, and your trial starts right away.</li>
+              <li>fathom installs free, and your trial starts right away.</li>
             </ol>
           </details>
         </div>
       ) : result.state === "unavailable" ? (
         <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
           <h1 id="redeem-h" className="font-display text-3xl">
-            We can&apos;t check this link right now
+            We can’t check this link right now
           </h1>
           <p className="mt-3 text-[var(--text-secondary)]">
-            Something on our end isn&apos;t responding. This isn&apos;t a problem with your code.
+            Something on our end isn’t responding. This isn’t a problem with your code.
             Please try again in a few minutes, or email{" "}
             <a href="mailto:support@fathomvision.app" className="underline underline-offset-4">
               support@fathomvision.app
             </a>{" "}
-            and we&apos;ll sort it out.
+            and we’ll sort it out.
           </p>
         </div>
       ) : (
         <div className="rounded-[var(--radius-card)] border bg-[var(--bg-raised)] p-6 sm:p-8">
           <h1 id="redeem-h" className="font-display text-3xl">
-            This trial link isn&apos;t active
+            This trial link isn’t active
           </h1>
           <p className="mt-3 text-[var(--text-secondary)]">
-            The code may have already been claimed. You can still download Fathom free from the App
+            The code may have already been claimed. You can still download fathom free from the App
             Store.
           </p>
           <Button href={APP_STORE_URL} size="xl" className="mt-6" rel="noopener noreferrer">
-            Get Fathom on the App Store
+            Get fathom on the App Store
           </Button>
         </div>
       )}

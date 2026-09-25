@@ -6,6 +6,7 @@ import { Button } from "@/components/Button";
 import { PromoCode, spellCode } from "@/components/PromoCode";
 import { Surface } from "@/components/Surface";
 import { expiryState } from "@/lib/promoExpiry";
+import { shareMessage as buildShareMessage, shareText, shareTitle } from "@/lib/promo-copy";
 import { qrShape } from "@/lib/qr";
 import { useLocalValue, useOrigin } from "@/lib/useSession";
 import { ensurePostHogReady } from "@/lib/posthog";
@@ -380,7 +381,7 @@ function BatchPanel({
   }
 
   function shareMessage() {
-    return `Here's your ${batch.duration_label} of Fathom, the AI companion for blind and low-vision iPhone users.\n\nYour code: ${held!.code}\nRedeem it here: ${trackingUrl}`;
+    return buildShareMessage(batch.duration_label, held!.code, trackingUrl);
   }
 
   async function recordShare(method: string, okMsg: string) {
@@ -396,11 +397,11 @@ function BatchPanel({
 
   async function onShare() {
     if (!held) return;
-    const text = `Here's your ${batch.duration_label} of Fathom, the AI companion for blind and low-vision iPhone users. Your code: ${held.code}.`;
+    const text = shareText(batch.duration_label, held.code);
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({
-          title: `Fathom: ${batch.duration_label}`,
+          title: shareTitle(batch.duration_label),
           text,
           url: trackingUrl,
         });

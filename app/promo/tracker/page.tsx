@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Code tracker",
-  description: "Which Fathom codes have gone out, and how far they got.",
+  description: "Which fathom codes have gone out, and how far they got.",
   robots: { index: false, follow: false, nocache: true },
 };
 
@@ -22,7 +22,7 @@ export default async function TrackerPage() {
   if (rep === null) {
     return (
       <Section labelledBy="tracker-h">
-        <p className="eyebrow">For Fathom reps</p>
+        <p className="eyebrow">For event reps</p>
         <h1 id="tracker-h" className="mt-3 font-display text-5xl">
           Code tracker
         </h1>
@@ -50,7 +50,7 @@ export default async function TrackerPage() {
 
   return (
     <Section labelledBy="tracker-h">
-      <p className="eyebrow">For Fathom reps</p>
+      <p className="eyebrow">For event reps</p>
       <h1 id="tracker-h" className="mt-3 font-display text-5xl">
         Code tracker
       </h1>

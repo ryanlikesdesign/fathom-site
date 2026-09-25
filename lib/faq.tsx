@@ -1,6 +1,23 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { PLUS, PLUS_TRIAL_LABEL } from '@/lib/landing-content';
+import { MIN_IOS, PLUS_SENTENCE } from '@/lib/landing-content';
+
+/* ================================================================
+   The support FAQ. The page renders `a`; the FAQPage JSON-LD reads
+   faqAnswerText(), so a JSX answer carries a `plain` twin that says the
+   same thing.
+
+   Every non-legal answer follows the copy rules (test/copy.test.ts) and
+   states only what the app does (lib/app-facts.ts, and the app source
+   noted beside each answer). The privacy answer is legal text: its words
+   are frozen, and test/privacy-copy.test.tsx holds them. So is Apple's
+   own label in the cancel answer ("choose Fathom").
+
+   This module is in every page's client bundle (app/error.tsx imports
+   SUPPORT_EMAIL from it), so it reads the app facts it needs through
+   lib/landing-content.ts, which test/landing-content.test.ts holds to
+   lib/app-facts.ts, and never imports lib/app-facts.ts itself.
+   ================================================================ */
 
 export const SUPPORT_EMAIL = 'support@fathomvision.app';
 
@@ -15,23 +32,37 @@ export interface FaqItem {
 export const FAQ: FaqItem[] = [
   {
     q: 'What is fathom?',
-    a: "An AI companion for blind and low-vision people, on iPhone. It tells you what's around you, warns you before you reach a hazard, walks you to where you're going inside a building, and works through the task with you once you get there. Or hand it the goal and let the Assistant figure out the steps.",
+    // COPY_13.tagline and hero; the safety net: SAFETY_SHIELD, PAYWALL.safetyNet.title.
+    a: 'Visual assistance you can talk to, for blind and low-vision people on iPhone. Ask what’s in front of you, what a letter says, or where you left your keys. It remembers what you tell it, and you decide what it keeps. Obstacle alerts are always on, and always free.',
   },
   {
     q: 'What do I need to use it?',
-    a: "A recent iPhone. That's it. fathom runs on the camera and sensors already in the phone, with no beacons, no building setup, and nothing to install. On iPhone Pro models, LiDAR adds depth-based hazard detection.",
+    // MIN_IOS (project.pbxproj); no account (the privacy page); PROFILE.intro;
+    // LiDAR: PAYWALL.safetyNet.detail, and the app's own note on phones
+    // without it (FathomViewModel.swift:1029).
+    a: `An iPhone on iOS ${MIN_IOS} or later. There’s no account to make, and every setup question is optional. On iPhone 12 Pro and later Pro models, LiDAR adds depth for step and drop-off alerts.`,
   },
   {
     q: 'Does it work with VoiceOver?',
-    a: 'Yes, from the first screen. Every control has a label and a hint, the rotor works, and everything fathom notices is spoken. You can use it with the screen off. If you have some sight, the contrast is high and the targets are large, and it works without VoiceOver too.',
+    // COPY_13.footerNote: Magic Tap (ConversationScreen.swift:1665-1675), the
+    // adjustable suggestion row (SuggestionRow.swift:48-83), readout headings
+    // (ReadoutResultView.swift:94), Contrast Boost (ProfileSetupView.swift:156);
+    // text sizes: the design system's accessibility sizes.
+    a: 'Yes, from the first screen. Magic Tap opens the mic. The suggestions are one stop, and you swipe up or down to move through them. Long readouts have headings on the rotor. If you have some sight, text grows to the largest accessibility sizes, and fathom comes in light, dark, and Contrast Boost.',
   },
   {
     q: 'Does it work without internet?',
-    a: "The safety layer (obstacle detection, step warnings, depth sensing) runs on-device and never needs a connection. Richer scene descriptions use cloud AI when you're online.",
+    // SAFETY.onPhone; AI_MODES.onDeviceSummary; talking needs Cloud AI
+    // (SAFETY.cloudOffAnswer); AI_MODES.cloudSummary "Needs internet".
+    a: 'Obstacle alerts run on your phone and never need a connection. With On-device AI, reading text works on every iPhone, and on iOS 27 with Apple Intelligence, Look Now can also describe what is around you. Talking to fathom, Go, Task, step-by-step plans, and Live mode use Cloud AI, which needs internet.',
   },
   {
     q: 'Which iPhones support pointing and LiDAR?',
-    a: 'Pointing works on any iPhone that runs iOS 17. Depth-based hazard detection uses LiDAR, which is on the Pro and Pro Max models (iPhone 12 Pro and later). Other iPhones use camera-based detection instead.',
+    // Pointing is Vision hand pose, on the phone (PointingDetector.swift);
+    // naming the thing is a Look Now answer: Cloud AI, or on-device on iOS 27
+    // (LocalVisionDescriber.swift:42-45). Without LiDAR: "Step and drop-off
+    // detection is limited" (FathomViewModel.swift:1029).
+    a: `Pointing works on any iPhone that runs iOS ${MIN_IOS} or later. fathom names what you’re pointing at with Cloud AI, or on your phone on iOS 27 with Apple Intelligence. LiDAR is on the Pro and Pro Max models from iPhone 12 Pro on, and adds depth for step and drop-off alerts. Other iPhones warn you about obstacles with the camera, and their step and drop-off alerts are more limited.`,
   },
   {
     q: 'Is my camera data private?',
@@ -45,15 +76,19 @@ export const FAQ: FaqItem[] = [
   },
   {
     q: 'How much does it cost?',
-    a: `Free to download. The safety layer, Lookout, Look Now and pointing are always free. fathom plus is ${PLUS.price} a ${PLUS.period} after a ${PLUS_TRIAL_LABEL} free trial and adds Go, Task, Live mode and the Assistant.`,
+    // COPY_13.download: FREE_CAPABILITIES, PLUS_CAPABILITIES, PAYWALL.offer,
+    // SAFETY.pastAllowance.
+    a: `fathom is free to download. Talking to fathom, Look Now, Lookout, Point to Ask, memory, and every obstacle alert are free. fathom plus adds step-by-step plans, Go, Task with Live mode, and skills, for ${PLUS_SENTENCE}. Cloud AI has a monthly allowance, and obstacle alerts keep working when it runs out.`,
   },
   {
     q: 'How do I cancel fathom plus?',
-    a: 'Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep Plus until the end of the period you paid for.',
+    a: 'Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep fathom plus until the end of the period you paid for.',
   },
   {
     q: 'Is it safe to rely on?',
-    a: "fathom uses AI and it can make mistakes. Keep your cane, your dog and your own judgment. fathom is there for what they can't tell you.",
+    // SAFETY.caution, the app's own words; then the Terms' rule
+    // (SAFETY.keepYourAids), which names every aid, not only a cane or a dog.
+    a: 'fathom uses AI and it can make mistakes. Don’t rely on it alone. Keep using your cane, guide dog, sighted guide, or whatever else you use to get around, and your own judgment.',
   },
   {
     q: 'How do I report a problem?',

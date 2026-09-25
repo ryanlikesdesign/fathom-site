@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
 import { FathomLanding } from "@/components/FathomLanding";
+import { COPY_13 } from "@/lib/copy-13";
+import { homePageJsonLd, jsonLdScript } from "@/lib/site-meta";
 
 export const metadata: Metadata = {
-  // absolute: the layout template would otherwise append "| Fathom" twice over.
-  title: { absolute: "Fathom: AI companion for blind and low-vision iPhone users" },
-  description:
-    "Free iPhone app for blind and low-vision users. AI describes what's ahead, guides you through indoor spaces, and helps with tasks. No maps, beacons, or setup.",
+  // absolute: the homepage title is the whole line; the layout template
+  // would otherwise append "| fathom" to it.
+  title: { absolute: COPY_13.meta.title },
+  description: COPY_13.meta.description,
+  // Resolved against metadataBase (SITE_URL, www), as every subpage's is.
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {
-  return <FathomLanding />;
+  return (
+    <>
+      {/* The homepage's own node; the layout carries the app's. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(homePageJsonLd) }} />
+      <FathomLanding />
+    </>
+  );
 }

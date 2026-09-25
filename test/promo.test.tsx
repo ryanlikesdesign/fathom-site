@@ -66,7 +66,7 @@ function mockApi({ unlocked = false }: { unlocked?: boolean } = {}) {
       ({ ok: status < 400, status, json: async () => data }) as Response;
 
     if (url === "/api/promo/session" && method === "POST") {
-      if (body.password !== "fathom-crew") return json({ error: "That password isn't right." }, 401);
+      if (body.password !== "fathom-crew") return json({ error: "That password isn’t right. Please check with the fathom team and try again." }, 401);
       open = true;
       return json({ rep: body.rep });
     }
@@ -138,7 +138,7 @@ describe("PromoGate", () => {
     render(<PromoGate {...locked} />);
     await userEvent.type(screen.getByLabelText(/access password/i), "nope");
     await userEvent.click(screen.getByRole("button", { name: /open the codes/i }));
-    expect(await screen.findByRole("alert")).toHaveTextContent(/isn't right/i);
+    expect(await screen.findByRole("alert")).toHaveTextContent(/isn’t right/i);
   });
 
   it("never checks the password in the browser", async () => {

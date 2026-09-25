@@ -1,7 +1,7 @@
 {
-  "name": "Fathom",
-  "short_name": "Fathom",
-  "description": "AI companion for blind and low-vision people.",
+  "name": "fathom",
+  "short_name": "fathom",
+  "description": "Visual assistance you can talk to.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#0e1013",
