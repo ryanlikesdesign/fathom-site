@@ -401,6 +401,11 @@ h1, h2, .font-display {
   letter-spacing: var(--site-type-section-tracking);
 }
 
+/* Smaller headings take the DS title line (title-xs, 20/25) instead of the
+   body's 1.7, which opened a gap inside any title that wraps. Any class
+   rule that sets its own line height still wins. */
+h3, h4 { line-height: var(--fathom-type-title-xs-line-height); }
+
 /* Shared helpers used by the ported landing markup */
 .eyebrow {
   font-family: var(--font-sans);
