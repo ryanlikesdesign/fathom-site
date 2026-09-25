@@ -27,6 +27,10 @@ export function ensurePostHogReady(): Promise<PostHog | null> {
             person_profiles: "identified_only",
             capture_pageview: false, // manual via PageViewTracker
             capture_pageleave: true,
+            // The privacy page says the site does not record your screen. The
+            // project setting already has recording off; this keeps it off if
+            // that setting ever changes.
+            disable_session_recording: true,
           });
         }
         return posthog;
