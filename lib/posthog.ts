@@ -18,6 +18,9 @@ let ready: Promise<PostHog | null> | null = null;
 
 export function ensurePostHogReady(): Promise<PostHog | null> {
   if (typeof window === "undefined") return Promise.resolve(null);
+  // `next dev` never reports: local work and capture runs would otherwise
+  // land in the production PostHog project.
+  if (process.env.NODE_ENV === "development") return Promise.resolve(null);
   if (!ready) {
     ready = import("posthog-js")
       .then(({ default: posthog }) => {
