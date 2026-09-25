@@ -135,7 +135,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     "Free iPhone app for blind and low-vision users. AI describes what's ahead, guides you through indoor spaces, and helps with tasks. No maps, beacons, or setup.",
                   speakable: {
                     "@type": "SpeakableSpecification",
-                    cssSelector: [".hero-title", ".hero-lede"],
+                    cssSelector: [".hero-eyebrow", ".hero-title", ".hero-lede"],
                   },
                 },
               ],

@@ -266,11 +266,11 @@ export const COPY_13 = {
   meta: {
     title: "fathom: visual assistance you can talk to",
     description:
-      "Visual assistance for blind and low-vision people. Ask, and fathom describes what’s around you, reads text, and watches for obstacles. You decide what it remembers. Free on iPhone.",
+      "For blind and low-vision people. Ask what’s in front of you, what a letter says, or where you left your keys. You decide what it remembers. Free on iPhone.",
   },
   og: {
-    alt: "fathom. Visual assistance you can talk to. For blind and low-vision people, free on the App Store.",
-    lines: ["Visual assistance", "you can talk to.", "For blind and low-vision people. Free on the App Store."],
+    alt: "fathom. Visual assistance you can talk to. For blind and low-vision people. Free on iPhone, no account.",
+    lines: ["Visual assistance", "you can talk to.", "For blind and low-vision people. Free on iPhone, no account."],
   },
   /** Footer, manifest and anywhere the brand line stands alone. */
   tagline: "Visual assistance you can talk to.",
@@ -278,21 +278,24 @@ export const COPY_13 = {
     eyebrow: "For blind and low-vision people",
     /** Ryan's line. The two parts render on two lines. */
     title: ["Visual assistance", "you can talk to."],
-    // Describes: Look Now. Reads: Read text. Guides to places you've named:
-    // Go (GO.savedPlaces.detail). Learns rooms and where things are, asks
-    // first: MemoryItem kinds (Place, Where things are) and MEMORY.empty. Obstacle alerts on the
-    // phone, free: SAFETY.onPhone and PAYWALL.safetyNet.
-    lede: "Ask, and fathom describes what’s around you, reads what’s in front of you, and guides you to places you’ve named. It learns your rooms and where you keep things, and you decide what it keeps. Obstacle alerts run on your iPhone, free.",
+    // Three free asks in the app's own terms: Look Now "Describe what’s around
+    // me" and "Read text" (Labels, mail, signs); recall "Where did I leave my
+    // keys?" (STARTERS.pool). "Remembers what you tell it": REMEMBER.echoLead.
+    // "You decide what it keeps": MEMORY and the Memory screen's Forget.
+    // Go stays out of the hero: it is fathom plus.
+    lede: "Ask fathom what’s in front of you, what a letter says, or where you left your keys. It remembers what you tell it, and you decide what it keeps.",
     ctas: {
-      primary: "Download on the App Store",
+      /** Visible: "Download free"; "on the App Store" is for screen readers. */
+      primary: "Download free",
+      primarySr: " on the App Store",
       secondary: "See what it does",
     },
   },
   gap: {
-    eyebrow: "The gap",
+    eyebrow: "Why we built it",
     title: ["Most of the day", "asks you to look."],
-    body: "The letter in today’s mail. The label on the can. Which door is the laundry room, and where you put your keys down. The kiosk that’s only a screen. So you ask someone, or guess, or wait.",
-    accent: "fathom is something you can ask instead.",
+    body: "The label on the can. The dial on the washer. The sign on the door. The kiosk that’s only a screen. So you ask someone, or guess, or wait.",
+    accent: "Or you ask fathom.",
   },
   steps: STEPS,
   safetyNet: {

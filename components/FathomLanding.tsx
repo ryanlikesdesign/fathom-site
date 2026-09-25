@@ -56,7 +56,7 @@ export function FathomLanding() {
           <p className="hero-lede">{hero.lede}</p>
           <div className="hero-actions">
             <a href={APP_STORE_URL} className="btn btn-primary" rel="noopener noreferrer">
-              <AppleMark />Download<span className="sr-only"> on the App Store</span>
+              <AppleMark />{hero.ctas.primary}<span className="sr-only">{hero.ctas.primarySr}</span>
             </a>
             <a href="#features" className="btn btn-ghost">{hero.ctas.secondary}</a>
           </div>
@@ -168,7 +168,7 @@ export function FathomLanding() {
 
           <div className="download-card reveal">
             <a href={APP_STORE_URL} className="btn btn-primary" rel="noopener noreferrer">
-              <AppleMark />Download<span className="sr-only"> on the App Store</span>
+              <AppleMark />{hero.ctas.primary}<span className="sr-only">{hero.ctas.primarySr}</span>
             </a>
             <p className="download-note">{download.metaLine}</p>
             <p className="download-sub">{download.freeLine}</p>

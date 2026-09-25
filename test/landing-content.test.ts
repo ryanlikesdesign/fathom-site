@@ -26,8 +26,9 @@ describe("the homepage renders the deck", () => {
     // .hero-title and .hero-lede are the speakable selectors in the JSON-LD (app/layout.tsx).
     expect(text(c.querySelector(".hero-lede"))).toBe(COPY.hero.lede);
     expect(text(c.querySelector(".hero-actions .btn-ghost"))).toBe(COPY.hero.ctas.secondary);
-    // "Download", with " on the App Store" for readers only.
-    expect(text(c.querySelector(".hero-actions .btn-primary"))).toBe(COPY.hero.ctas.primary);
+    // "Download free", with " on the App Store" for screen readers only.
+    expect(text(c.querySelector(".hero-actions .btn-primary"))).toBe(COPY.hero.ctas.primary + COPY.hero.ctas.primarySr);
+    expect(text(c.querySelector(".hero-actions .btn-primary .sr-only"))).toBe(COPY.hero.ctas.primarySr.trim());
   });
 
   it("renders the gap, the safety net and day to day from the deck", () => {
