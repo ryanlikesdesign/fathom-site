@@ -3,8 +3,9 @@
    because the app has no marketing pages. Hand-authored (not generated);
    every value is logged back to the design system as a web addition.
 
-   P1: declared only. Nothing reads these yet; each one mirrors the value
-   the current page uses, named beside it.
+   The homepage reads the display sizes and the page type below; each
+   display size started as a mirror of the value the 1.2 page used, named
+   beside it.
 
    Display sizes sit above the DS display-lg (64px). Every clamp() has a
    rem term, so the browser's text size still scales the type, and a rem
@@ -23,6 +24,15 @@
   --site-type-section-size: clamp(2.5rem, 0.5rem + 3.9vw, 4rem);
   --site-type-section-line-height: 1.04;
 
+  /* Feature headline: the gap, the safety net, day to day. Mirrors their
+     clamp(40px, 6vw, 80px), line-height 1.02. */
+  --site-type-feature-size: clamp(2.5rem, 0.5rem + 5.2vw, 5rem);
+  /* Download headline. Mirrors .signup-left h2: clamp(36px, 5vw, 64px), line-height 1.05. */
+  --site-type-download-size: clamp(2.25rem, 0.25rem + 4.6vw, 4rem);
+  /* Those headlines on phones (480px and under). Mirrors clamp(28px, 7vw, 48px);
+     within 1.5px from 375 to 480px wide. */
+  --site-type-feature-size-compact: clamp(1.75rem, 0.25rem + 6.3vw, 3rem);
+
   /* Lede under a headline. Mirrors .hero-lede: clamp(18px, 1.6vw, 22px), line-height 1.5. */
   --site-type-lede-size: clamp(1.125rem, 0.5rem + 1vw, 1.375rem);
   --site-type-lede-line-height: 1.5;
@@ -33,4 +43,22 @@
   /* Fixed header height. Mirrors --header-h (80px): 18px padding above and below
      the 44px controls. The sticky phone and scroll-padding depend on it. */
   --site-header-h: 80px;
+
+  /* Page type in Atkinson Hyperlegible Next (lib/fonts.ts). Its cap height is
+     about 6% under SF Pro's at the same size, so page text is set 6% over the
+     DS size to read at the size the design system means. Phones keep the DS
+     sizes exactly: they draw in the system face, like the app. */
+  --site-type-optical-scale: 1.06;
+  --site-type-body-size: calc(var(--fathom-type-body-size) * var(--site-type-optical-scale)); /* 17 -> 18px */
+  --site-type-callout-size: calc(var(--fathom-type-callout-size) * var(--site-type-optical-scale)); /* 16 -> 17px */
+  --site-type-subhead-size: calc(var(--fathom-type-subhead-size) * var(--site-type-optical-scale)); /* 15 -> 15.9px */
+  --site-type-footnote-size: calc(var(--fathom-type-footnote-size) * var(--site-type-optical-scale)); /* 13 -> 13.8px, the page floor */
+  --site-type-title-xs-size: calc(var(--fathom-type-title-xs-size) * var(--site-type-optical-scale)); /* 20 -> 21.2px */
+
+  /* Headlines at display sizes: the DS display weight (500), tracked in a
+     little as SF Display does at 40px and up. Section headlines sit a step
+     looser than the hero. */
+  --site-type-display-weight: 500;
+  --site-type-hero-tracking: -0.02em;
+  --site-type-section-tracking: -0.015em;
 }

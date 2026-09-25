@@ -1,0 +1,107 @@
+/* ================================================================
+   Step 6, Go (ActivityGoScreen.tsx). The kit draws the chrome; this file
+   draws GoActiveView's own parts (the proximity pill, the status lines)
+   and the system confirmation dialog, all from --fathom-* tokens, and
+   lays them out the way the app's stage content does. Every rule sits
+   under .activity-go.
+   ================================================================ */
+
+/* ConversationScreen.stageContent: the stage on top (the kit's Stage
+   top), the activity card (the kit's ActivityCard) stack(3) below it;
+   GoActiveView fills the card (maxHeight .infinity), so its center sits in
+   the middle of the room below the headline. NavigatingPhaseView and
+   ArrivalConfirmingCenter: the orb, then s8 to each line. The orb stays
+   put while the lines under it change. */
+.activity-go .go-card {
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+  gap: var(--fathom-space-8);
+  margin: calc(var(--fathom-space-2) * 3) var(--fathom-layout-gutter) var(--fathom-space-6);
+}
+.activity-go .go-lines { width: 100%; align-items: start; justify-items: center; }
+.activity-go .go-nav { display: flex; flex-direction: column; align-items: center; gap: var(--fathom-space-8); width: 100%; }
+.activity-go .go-pills { justify-items: center; }
+.activity-go .go-instructions { width: 100%; }
+
+/* The proximity pill: footnote semibold in text-on-accent on an
+   accent-fill capsule, s4 by s2; "Getting close" at 80% fill. */
+.activity-go .go-pill {
+  padding: var(--fathom-space-2) var(--fathom-space-4);
+  border-radius: var(--fathom-radius-full);
+  background: var(--fathom-color-accent-fill);
+  color: var(--ph-on-accent);
+  font-size: var(--fathom-type-footnote-size);
+  line-height: var(--fathom-type-footnote-line-height);
+  font-weight: var(--ph-weight-semibold);
+  white-space: nowrap;
+}
+.activity-go .go-pill-close { background: color-mix(in oklab, var(--fathom-color-accent-fill) 80%, transparent); }
+
+/* The one status line: body in the primary text, centered, s8 in. */
+.activity-go :is(.go-instruction, .go-reached) {
+  padding: 0 var(--fathom-space-8);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  color: var(--fathom-color-text-primary);
+  text-wrap: balance;
+}
+.activity-go .go-shake {
+  font-size: var(--fathom-type-footnote-size);
+  line-height: var(--fathom-type-footnote-line-height);
+  color: var(--fathom-color-text-tertiary);
+}
+
+/* ── The arrival question: iOS's confirmation dialog ───────────────
+   Two cards over the kit's scrim at the foot of the screen: the title in
+   footnote semibold and one row per answer in the app's accent, hairlines
+   between; then Cancel on its own card, semibold, as iOS sets a cancel
+   role. It rises on the settle spring. It is not a sheet, so the header
+   stays under the scrim. */
+.activity-go .go-dialog {
+  position: absolute;
+  left: var(--fathom-space-2);
+  right: var(--fathom-space-2);
+  bottom: var(--fathom-space-6);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fathom-space-2);
+  text-align: center;
+  transition:
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear 0s;
+}
+.activity-go .go-dialog:not([data-on]) {
+  transform: translateY(calc(100% + var(--fathom-space-6)));
+  transition:
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear var(--fathom-motion-settle-duration);
+}
+.activity-go .go-dialog-group {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--fathom-radius-3xl);
+  background: var(--ph-raised);
+  box-shadow: var(--fathom-shadow-lg);
+  overflow: hidden;
+}
+.activity-go .go-dialog-title {
+  padding: var(--fathom-space-4) var(--fathom-space-5);
+  font-size: var(--fathom-type-footnote-size);
+  line-height: var(--fathom-type-footnote-line-height);
+  font-weight: var(--ph-weight-semibold);
+  color: var(--fathom-color-text-secondary);
+}
+.activity-go .go-dialog-action {
+  display: grid;
+  place-items: center;
+  min-height: var(--fathom-size-touch-comfort);
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  color: var(--fathom-color-accent-fg);
+}
+.activity-go .go-dialog-cancel { border-top: 0; font-weight: var(--ph-weight-semibold); }

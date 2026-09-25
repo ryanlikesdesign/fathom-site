@@ -33,6 +33,17 @@ describe("Header", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
+  it("links home with the lockup, named for readers", () => {
+    renderHeader();
+    const home = screen.getByRole("link", { name: "fathom, home" });
+    expect(home).toHaveAttribute("href", "/");
+    // The drawing is the design system's lockup, decorative inside the named link.
+    const lockup = home.querySelector("svg.brand-lockup");
+    expect(lockup).not.toBeNull();
+    expect(lockup).toHaveAttribute("aria-hidden", "true");
+    expect(lockup?.querySelectorAll("path")).toHaveLength(2);
+  });
+
   it("marks the current page in both navs", () => {
     renderHeader();
     const current = screen.getAllByRole("link", { name: "Support", current: "page" });

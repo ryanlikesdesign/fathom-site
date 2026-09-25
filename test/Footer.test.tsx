@@ -15,6 +15,12 @@ describe("Footer", () => {
     expect(headings.map((h) => h.textContent)).toEqual(["Product", "Help", "Legal"]);
   });
 
+  it("signs off with the lockup and the tagline", () => {
+    render(<Footer />);
+    expect(screen.getByRole("img", { name: "fathom" })).toHaveClass("brand-lockup");
+    expect(screen.getByText("Visual assistance you can talk to.")).toBeInTheDocument();
+  });
+
   it("opens the App Store link in the same tab", () => {
     render(<Footer />);
     expect(screen.getByRole("link", { name: "Download on the App Store" })).not.toHaveAttribute("target");

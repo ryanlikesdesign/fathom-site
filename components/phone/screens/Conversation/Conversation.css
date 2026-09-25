@@ -1,0 +1,33 @@
+/* ================================================================
+   The conversation screen (ConversationScreen.tsx). The kit draws every
+   part, lays the stage and the transcript in the body as views, settles
+   the transcript up as it arrives, and folds the suggestion strip away
+   and back; this file only lines up the stage's headlines and
+   choreographs step 9's strip.
+   ================================================================ */
+
+.cv .cv-lines { width: 100%; }
+
+/* Skills: three rows show at a time. The list starts a row up, with the new
+   skill above the window; when fathom has saved it (the strip channel) the
+   list moves down one row (a chip plus its gap) and the last starter falls
+   away. A max-height, not a height, so the kit can still fold the strip. */
+.cv-skills .cv-skill-strip .ph-suggest-rows {
+  --cv-pitch: calc(var(--fathom-size-control-md) + var(--fathom-space-2));
+  max-height: calc(var(--cv-pitch) * 3 - var(--fathom-space-2));
+}
+.cv-skills .cv-skill-strip .ph-chip {
+  flex: none;
+  transform: translateY(calc(var(--cv-pitch) * -1));
+  transition:
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear 0s;
+}
+.cv-skills[data-strip="skills"] .cv-skill-strip .ph-chip { transform: none; }
+.cv-skills .cv-skill-strip .ph-chip.ph-layer:not([data-on]) {
+  transition:
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear var(--fathom-motion-crossfade-duration);
+}

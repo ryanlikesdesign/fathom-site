@@ -256,8 +256,13 @@ describe("strings shown inside the phones follow the rules too", () => {
       .map((f) => f.key);
     expect(left).toEqual([
       "STARTERS.goToPlace",
+      // A plural the app builds in code: the phone shows EXAMPLES.libraryLetter.summary.
+      "READOUT.summary",
       "PLAN.readback",
+      "SKILLS.offerAsk",
       "SKILLS.repeatsBeforeOffer",
+      // The same, shown as EXAMPLES.laundry.skill.saved.
+      "SKILLS.saved",
       "SAFETY.caution",
       "PAYWALL.price",
       "PAYWALL.trial",

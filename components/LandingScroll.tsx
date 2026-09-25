@@ -162,13 +162,24 @@ export function LandingScroll() {
       // intersects it exactly while it holds the middle of the screen.
       stepIO = new IntersectionObserver(
         (entries) => {
+          let centered = false;
+          let left = false;
           for (const e of entries) {
-            if (!e.isIntersecting) continue;
             const step = e.target as HTMLElement;
+            if (!e.isIntersecting) {
+              if (step.dataset.step === activeKey) left = true;
+              continue;
+            }
+            centered = true;
             const key = step.dataset.step;
             if (key) activate(key);
             steps.forEach((s) => s.classList.toggle('is-visible', s === step));
           }
+          // The sticky phone's scenes play only while a step holds the
+          // center (components/phone/scene/engine.ts reads data-live), so
+          // step 1's scene starts when step 1 does, not in the section above.
+          if (centered) host?.toggleAttribute('data-live', true);
+          else if (left) host?.removeAttribute('data-live');
         },
         { rootMargin: '-50% 0px -50% 0px', threshold: 0 },
       );
@@ -239,6 +250,7 @@ export function LandingScroll() {
       window.clearTimeout(leaveTimer);
       disconnectStepObserver();
       disconnectCopyObserver();
+      host?.removeAttribute('data-live');
       document.documentElement.removeAttribute('data-motion-ready');
       offIO?.disconnect();
     };

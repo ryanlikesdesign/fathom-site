@@ -86,6 +86,8 @@ describe("app facts are pinned to the reference build", () => {
     const withSource = flattenFacts(APP_FACTS).filter((f) => f.source !== undefined).map((f) => f.key);
     expect(withSource).toEqual([
       "STARTERS.goToPlace",
+      // The tail of one concatenated utterance (AssistantOrchestrator.swift:1264).
+      "SKILLS.offerAsk",
       "SKILLS.repeatsBeforeOffer",
       "SAFETY.caution",
       "PAYWALL.price",
@@ -175,7 +177,7 @@ describe("app facts are pinned to the reference build", () => {
     expect(MEMORY.empty.value).toBe("fathom asks before saving anything. What it saves shows up here.");
     expect(SKILLS.repeatsBeforeOffer.value).toBe("3");
     expect(EXAMPLES.laundry.skill.offer).toBe(
-      "That’s the third time you’ve done the laundry. Want me to save it as a skill so you can just say run the laundry?",
+      "That’s the third time you’ve done the laundry. Want me to save it as a skill so you can just say run the laundry? Say save this as a skill and I’ll keep it.",
     );
     expect(EXAMPLES.laundry.skill.row).toBe("Run the laundry");
     expect(EXAMPLES.laundry.skill.siri).toBe("Run the laundry with fathom");

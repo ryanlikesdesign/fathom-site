@@ -1,100 +1,108 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { axe } from "jest-axe";
 import { FathomLanding } from "@/components/FathomLanding";
-import { ACTIVE_MODE_CONTROLS, SNAPSHOT_OPTIONS } from "@/lib/landing-content";
+import { COPY_13 as COPY } from "@/lib/copy-13";
+import { isPhoneString, marketingViolations } from "./helpers/copy-rules";
+import { phoneStrings, renderAt } from "./helpers/phones";
 
-// The setup stub answers matchMedia as a desktop window, so a plain render
-// carries the sticky phone set. Narrowing it renders the inline set instead
-// (lib/useWide.ts reads the query on mount, so the swap is per render).
-function renderAt(width: "wide" | "narrow") {
-  const original = window.matchMedia;
-  window.matchMedia = (query: string) => ({ ...original(query), matches: width === "wide" && query.includes("min-width") });
-  try {
-    return render(<FathomLanding />);
-  } finally {
-    window.matchMedia = original;
-  }
-}
-
-// The mockups are decorative (aria-hidden phones), but their text still ends
-// up in the DOM, which is exactly what lets these tests hold the site to the
-// app: only controls that exist, none that were invented.
-describe("the homepage tells the truth about the app", () => {
-  it("shows only controls the app has, in every active mode", () => {
-    const { container } = render(<FathomLanding />);
-    const text = container.textContent ?? "";
-    for (const invented of ["Ask or Command", "Quick Scan", "End Navigation", "Ask a Question", "End Session"]) {
-      expect(text).not.toContain(invented);
-    }
-    // Lookout, Point, Go, Live Task and the Assistant's active session: one
-    // per active mode on the rendered desktop set.
-    expect(container.querySelectorAll(".mode-actions").length).toBeGreaterThanOrEqual(5);
-    expect(screen.getAllByText(ACTIVE_MODE_CONTROLS.primary).length).toBeGreaterThanOrEqual(5);
-    expect(screen.getAllByText(ACTIVE_MODE_CONTROLS.end).length).toBeGreaterThanOrEqual(5);
+// The mockups are decorative (aria-hidden phones), but their text is in the
+// DOM, which is exactly what lets these tests hold the site to the app: every
+// string a phone draws is an app string or a marked example.
+describe("the homepage tells the 1.3 story", () => {
+  it("opens on the hero line, then the gap", () => {
+    render(<FathomLanding />);
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/visual assistance you can talk to/i);
+    expect(screen.getByRole("heading", { level: 2, name: /Most of the day\s*asks you to look/ })).toBeInTheDocument();
   });
 
-  it("renders one phone set per width, and the mobile set has every active mode too", () => {
-    const desktop = renderAt("wide");
-    expect(desktop.container.querySelectorAll(".scrolly-sticky").length).toBe(1);
-    expect(desktop.container.querySelectorAll(".step-phone").length).toBe(0);
+  it("tells ten steps, each with its eyebrow, two-line headline, body and tier line", () => {
+    const { container } = render(<FathomLanding />);
+    const steps = Array.from(container.querySelectorAll<HTMLElement>(".scrolly .step"));
+    expect(steps).toHaveLength(10);
+    steps.forEach((el, i) => {
+      const step = COPY.steps[i];
+      expect(el.dataset.step).toBe(step.screen);
+      expect(el.dataset.tier).toBe(step.tier);
+      expect(el.querySelector(".eyebrow")?.textContent).toBe(step.eyebrow);
+      const h2 = within(el).getByRole("heading", { level: 2 });
+      // The eyebrow rides along as an sr-only prefix, so it is heard once.
+      expect(h2.textContent).toBe(`${step.eyebrow}: ${step.headline[0]}${step.headline[1]}`);
+      expect(Array.from(el.querySelectorAll(".step-body")).map((p) => p.textContent)).toEqual([...step.body]);
+      expect(el.querySelector(".step-whisper")?.textContent).toBe(step.whisper);
+      if (step.example) expect(el.querySelector(".step-example")?.textContent).toBe(`“${step.example}”`);
+      else expect(el.querySelector(".step-example")).toBeNull();
+    });
+  });
+
+  it("renders one phone set per width", () => {
+    const desktop = renderAt("wide", <FathomLanding />);
+    expect(desktop.container.querySelectorAll(".scrolly-sticky")).toHaveLength(1);
+    expect(desktop.container.querySelectorAll(".scrolly-sticky .screen")).toHaveLength(10);
+    expect(desktop.container.querySelectorAll(".step-phone")).toHaveLength(0);
     desktop.unmount();
 
-    const mobile = renderAt("narrow");
-    expect(mobile.container.querySelectorAll(".scrolly-sticky").length).toBe(0);
-    expect(mobile.container.querySelectorAll(".step-phone").length).toBeGreaterThanOrEqual(11);
-    expect(mobile.container.querySelectorAll(".mode-actions").length).toBeGreaterThanOrEqual(5);
-    expect(screen.getAllByText(ACTIVE_MODE_CONTROLS.primary).length).toBeGreaterThanOrEqual(5);
-    expect(screen.getAllByText(ACTIVE_MODE_CONTROLS.end).length).toBeGreaterThanOrEqual(5);
+    const mobile = renderAt("narrow", <FathomLanding />);
+    expect(mobile.container.querySelectorAll(".scrolly-sticky")).toHaveLength(0);
+    expect(mobile.container.querySelectorAll(".step-phone")).toHaveLength(10);
+    // Every inline phone is its step's screen, shown.
+    mobile.container.querySelectorAll<HTMLElement>(".scrolly .step").forEach((step) => {
+      const shown = step.querySelectorAll<HTMLElement>(".step-phone .screen");
+      expect(shown).toHaveLength(1);
+      expect(shown[0].dataset.screen).toBe(step.dataset.step);
+      expect(shown[0].classList.contains("is-active")).toBe(true);
+    });
   });
 
-  it("names the Snapshot options and the pointing feature as the app does", () => {
-    render(<FathomLanding />);
-    for (const o of SNAPSHOT_OPTIONS) expect(screen.getAllByText(o).length).toBeGreaterThan(0);
-    expect(screen.getByRole("heading", { name: /Point at anything/ })).toBeInTheDocument();
-    expect(screen.getAllByText("Looking where you're pointing.").length).toBeGreaterThan(0);
-    // HomeView.swift:378-386: BETA appears only with the live Task backend,
-    // which also swaps the subtitle. The mockup shows the default row, so
-    // the badge must never sit beside "Step-by-step guidance".
-    expect(screen.getAllByText("Step-by-step guidance").length).toBeGreaterThan(0);
-    expect(screen.queryByText("BETA")).toBeNull();
+  it.each(["wide", "narrow"] as const)("draws only app strings and marked examples in every phone (%s)", (width) => {
+    const { container } = renderAt(width, <FathomLanding />);
+    const phones = container.querySelectorAll(".phone-screen");
+    expect(phones.length).toBeGreaterThan(1);
+    const invented: string[] = [];
+    phones.forEach((phone) => {
+      for (const text of phoneStrings(phone)) if (!isPhoneString(text)) invented.push(text);
+    });
+    expect(invented).toEqual([]);
   });
 
-  it("counts five modes and states the tiers plainly", () => {
-    render(<FathomLanding />);
-    expect(screen.getByRole("heading", { name: /Five modes/ })).toBeInTheDocument();
-    expect(screen.getByText(/\$12\.99 a month after a seven-day free trial/)).toBeInTheDocument();
-    expect(screen.getByText(/free forever/)).toBeInTheDocument();
-  });
-
-  it("does not overstate what the app does", () => {
-    const { container } = render(<FathomLanding />);
-    const text = container.textContent ?? "";
-    expect(text).not.toMatch(/10 fps/);
-    expect(text).not.toMatch(/ahead, behind/);
-  });
-
-  it("shows the Assistant's real listening bar, with no invented prompt or em dashes in the mockups", () => {
-    const { container } = render(<FathomLanding />);
-    expect(container.textContent).not.toContain("Go ahead, I'm listening");
-    // Short copy never carries an em dash. Scoped to the phone screens for now;
-    // the long-copy em dashes come out with the editorial pass.
+  it.each(["wide", "narrow"] as const)("keeps every phone string to the copy rules, no em dash (%s)", (width) => {
+    const { container } = renderAt(width, <FathomLanding />);
     container.querySelectorAll(".phone-screen").forEach((phone) => {
       expect(phone.textContent).not.toMatch(/—/);
+      for (const text of phoneStrings(phone)) expect(marketingViolations(text), text).toEqual([]);
     });
   });
 
-  it("puts nothing focusable inside the decorative phones", () => {
+  it("keeps the page's own words to the copy rules", () => {
     const { container } = render(<FathomLanding />);
-    const hidden = container.querySelectorAll('[aria-hidden="true"] button, [aria-hidden="true"] a, [aria-hidden="true"] [tabindex]');
-    expect(hidden.length).toBe(0);
+    const page = container.cloneNode(true) as HTMLElement;
+    page.querySelectorAll(".phone").forEach((phone) => phone.remove());
+    expect(marketingViolations(page.textContent ?? "")).toEqual([]);
   });
 
-  it("has a heading for every section and passes axe", async () => {
-    const { container } = render(<FathomLanding />);
-    container.querySelectorAll("section").forEach((s) => {
-      expect(s.querySelector("h1, h2")).not.toBeNull();
+  it.each(["wide", "narrow"] as const)("puts nothing focusable inside the decorative phones (%s)", (width) => {
+    const { container } = renderAt(width, <FathomLanding />);
+    const hidden = container.querySelectorAll(
+      '[aria-hidden="true"] :is(a, button, input, select, textarea, [tabindex], [contenteditable])',
+    );
+    expect(hidden).toHaveLength(0);
+    container.querySelectorAll(".phone").forEach((phone) => {
+      expect(phone.closest('[aria-hidden="true"]'), "every phone is inside an aria-hidden wrapper").not.toBeNull();
     });
+  });
+
+  it("gives every section a heading and passes axe", async () => {
+    const { container } = render(<FathomLanding />);
+    const sections = container.querySelectorAll("section");
+    expect(sections.length).toBe(6);
+    sections.forEach((s) => {
+      expect(s.querySelector("h1, h2"), s.className).not.toBeNull();
+    });
+    expect(await axe(container)).toHaveNoViolations();
+  }, 20000);
+
+  it("passes axe at a phone width too", async () => {
+    const { container } = renderAt("narrow", <FathomLanding />);
     expect(await axe(container)).toHaveNoViolations();
   }, 20000);
 });

@@ -2,9 +2,9 @@
    COPY_13: the 1.3 homepage deck.
 
    The site's own words for the revamped homepage, in reading order:
-   hero, the gap, ten steps, the safety net, day to day, download. Nothing
-   renders it yet. When the new page lands (P5) it moves into
-   lib/landing-content.ts as COPY, replacing today's deck there.
+   hero, the gap, ten steps, the safety net, day to day, download. The
+   homepage renders it (components/FathomLanding.tsx). In P5 it moves into
+   lib/landing-content.ts as COPY, replacing the 1.2 deck there.
 
    It lives in its own module until then because landing-content.ts is in
    every page's client bundle (app/error.tsx is a client component and
@@ -37,7 +37,7 @@ import type { Tier } from "./landing-content";
 
 export { EXAMPLES } from "./app-facts";
 
-/** Which phone screen a step shows. P3 maps each to a component in components/phone/. */
+/** Which phone screen a step shows: a key in components/phone/screens/index.ts (SCREENS). */
 export type ScreenKey =
   | "conversation"
   | "look-now"
@@ -87,7 +87,7 @@ const STEPS: readonly Step[] = [
     eyebrow: "Just ask",
     headline: ["One screen.", "Say what you need."],
     body: [
-      "Speak, type, or take a suggestion, and fathom does it on the same screen. There are no modes to switch.",
+      "Speak, type, or take a suggestion, and fathom does it on the same screen.",
       "The mic is always in the same place, and Magic Tap opens it. Tap anywhere to stop fathom talking.",
     ],
     whisper: "Free. Talking to fathom uses Cloud AI.",
@@ -153,17 +153,17 @@ const STEPS: readonly Step[] = [
     // fathom plus. Settings, More options, Memory: AdvancedSettingsView.swift
     // :327-332, :504, and the privacy page. Kept on the phone and sent with
     // Cloud AI requests: the privacy page and CONSENT.disclosure.
-    // The screen still shows the checklist; that pairing is a question for
-    // Ryan (copy deck, Questions).
+    // The phone shows the free path: "Remember …", fathom's echo
+    // (REMEMBER.echoLead), then the Memory list. The example is that request.
     slug: "memory",
     eyebrow: "Memory",
-    headline: ["It learns your world.", "It asks first."],
+    headline: ["It learns your world.", "You decide what it keeps."],
     body: [
       "Tell it where things are, then ask later. When you tell it something, it says back what it saved.",
       "After a longer task or plan, fathom plus shows you a checklist of what it learned before it keeps any of it. Uncheck anything that’s wrong.",
       "Everything it keeps is in Settings, under More options, then Memory, where you can correct it or delete it.",
     ],
-    example: EXAMPLES.laundry.teach,
+    example: EXAMPLES.remember.request,
     whisper:
       "Free. The checklist after a task or plan comes with fathom plus. What it remembers is kept on your iPhone, and sent to Google with your requests when Cloud AI is on.",
     tier: "free",
@@ -204,9 +204,13 @@ const STEPS: readonly Step[] = [
   },
   {
     // TASK.pitch, LIVE.pitch (PaywallView.swift:112, :117); a tap, never a
-    // hold (design system README). The mic opens on a tap, Magic Tap or
-    // fathom's own question (LiveTaskActiveView.swift:352-355; auto-listen,
-    // LiveTaskSession.swift:1576-1600); LIVE.micOff otherwise. Whisper:
+    // hold (design system README). The mic opens on a tap on the task
+    // (LiveTaskActiveView.swift:270-274), Magic Tap (ConversationScreen.swift
+    // :1667) or fathom's own question (LiveTaskActiveView.swift:352-355;
+    // auto-listen, LiveTaskSession.swift:1576-1600); LIVE.micOff otherwise.
+    // The app's own words: "The microphone turns on when you tap the task,
+    // and after fathom asks you a question" (AdvancedSettingsView.swift:152).
+    // The composer's mic is not Live mode's. Whisper:
     // CONSENT.disclosure, and the privacy page's "the times fathom turns
     // the microphone on by itself after asking you a question".
     slug: "task-live",
@@ -214,7 +218,7 @@ const STEPS: readonly Step[] = [
     headline: ["Hands busy?", "Talk it through."],
     body: [
       "Task coaches you through one hands-on job in front of the camera.",
-      "Turn on Live mode and it becomes a conversation. Tap the mic and talk while you work. fathom also opens the mic after it asks you something. When the mic is off, the screen says “Microphone off.”",
+      "Turn on Live mode and it becomes a conversation. Tap the task, or use Magic Tap, and talk while you work. fathom also opens the mic after it asks you something. When the mic is off, the screen says “Microphone off.”",
     ],
     example: EXAMPLES.laundry.task.goal,
     whisper: "fathom plus. In Live mode, your voice is sent to Google while the microphone is on.",

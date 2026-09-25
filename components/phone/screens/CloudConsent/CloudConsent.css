@@ -1,0 +1,77 @@
+/* ================================================================
+   Step 10, Your choice (CloudConsentScreen.tsx). The kit draws the
+   conversation, the buttons and their press, the sheet's rise (with the
+   header receding behind it), and the header's glyph turning; this file
+   lays out the consent pop-up (components.md, CloudConsentView) and
+   scrolls it. Every rule is scoped under .cloud-consent.
+   ================================================================ */
+
+/* ── The pop-up: a scrolling column, the answers pinned below ─────── */
+.cloud-consent .cc-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  /* Its height is the scroll's viewport: the column below reads it (cqh)
+     to scroll exactly to its end, whatever the text's length. */
+  container-type: size;
+}
+.cloud-consent .cc-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fathom-space-4);
+  padding: var(--fathom-space-8) var(--fathom-layout-gutter) var(--fathom-space-4);
+  transition: transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing);
+}
+/* Scrolled to the end: up by the overflow, never down. */
+.cloud-consent[data-scroll="end"] .cc-content { transform: translateY(min(0px, calc(100cqh - 100%))); }
+
+.cloud-consent .cc-antenna {
+  width: calc(var(--fathom-size-icon-xl) * var(--ph-glyph-scale));
+  height: calc(var(--fathom-size-icon-xl) * var(--ph-glyph-scale));
+  color: var(--fathom-color-accent-fg);
+}
+.cloud-consent .cc-title {
+  font-size: var(--fathom-type-title-sm-size);
+  line-height: var(--fathom-type-title-sm-line-height);
+  font-weight: var(--fathom-type-title-sm-weight);
+  letter-spacing: var(--fathom-type-title-sm-tracking);
+  color: var(--fathom-color-text-primary);
+}
+/* The disclosure in body-reading, three paragraphs of the same words. */
+.cloud-consent .cc-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fathom-space-2);
+  font-size: var(--fathom-type-body-reading-size);
+  line-height: var(--fathom-type-body-reading-line-height);
+  color: var(--fathom-color-text-primary);
+}
+/* The headline leads the first paragraph, with its full stop (the app's own). */
+.cloud-consent .cc-lead::after { content: "."; }
+.cloud-consent .cc-policy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fathom-space-2);
+  min-height: var(--fathom-size-touch-comfort);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  font-weight: var(--ph-weight-medium);
+  color: var(--fathom-color-accent-fg);
+}
+.cloud-consent .cc-policy .ph-glyph {
+  width: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale));
+  height: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale));
+}
+/* FathomPinnedFooter on the sheet's ground, its rule drawn while the text
+   overflows. The gap is the capture's: each 48pt button sits in a taller
+   target, so they read further apart than the stack spacing. */
+.cloud-consent .cc-answers {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fathom-space-4);
+  padding: var(--fathom-space-4) var(--fathom-layout-gutter) var(--fathom-space-8);
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+  background: var(--fathom-sheet-bg);
+}

@@ -1,0 +1,95 @@
+/* ================================================================
+   Step 7, Step-by-step plans (PlanReviewScreen.tsx). The kit draws the
+   transcript, the plan card and its rows arriving in turn, the buttons
+   and the composer; this file draws the "Your plan" cover and
+   choreographs the scene. Every rule is scoped under .plan-review.
+   ================================================================ */
+
+/* ── The "Your plan" cover (a full-screen cover under the status bar) ── */
+.plan-review .pr-cover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--ph-status-h);
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  background: var(--fathom-color-bg-default);
+  --ph-glyph-ground: var(--fathom-color-bg-default);
+}
+.plan-review .pr-cover.ph-layer {
+  transition:
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    visibility 0s linear 0s;
+}
+.plan-review .pr-cover.ph-layer:not([data-on]) {
+  opacity: 1;
+  transform: translateY(100%);
+  transition:
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    visibility 0s linear var(--fathom-motion-settle-duration);
+}
+.plan-review .pr-cover-bar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  min-height: var(--fathom-size-touch-min);
+}
+.plan-review .pr-cover-title {
+  font-size: var(--fathom-type-body-strong-size);
+  line-height: var(--fathom-type-body-strong-line-height);
+  font-weight: var(--fathom-type-body-strong-weight);
+  color: var(--fathom-color-text-primary);
+}
+.plan-review .pr-cover-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--fathom-layout-gutter);
+}
+/* AssistantPlanCard: the goal centered in title-sm, a hairline beneath. */
+.plan-review .pr-cover-goal {
+  text-align: center;
+  text-wrap: balance;
+  font-size: var(--fathom-type-title-sm-size);
+  line-height: var(--fathom-type-title-sm-line-height);
+  font-weight: var(--fathom-type-title-sm-weight);
+  letter-spacing: var(--fathom-type-title-sm-tracking);
+  color: var(--fathom-color-text-primary);
+}
+.plan-review .pr-rule {
+  display: block;
+  flex: none;
+  margin: var(--fathom-space-4) 0;
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+}
+/* space-6 below the steps, then Accept plan; Edit and Dismiss side by
+   side. The gaps are the capture's: each drawn button sits in a taller
+   target, so the space between them reads wider than the stack spacing. */
+.plan-review .pr-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fathom-space-5);
+  margin-top: var(--fathom-space-6);
+}
+.plan-review .pr-actions-row { display: flex; gap: var(--fathom-space-3); }
+.plan-review .pr-actions-row .ph-btn { flex: 1; min-width: 0; }
+
+/* The answers arrive after the steps (the kit's .ph-stagger), one row later. */
+.plan-review .pr-actions.ph-layer {
+  --pr-actions-at: calc(var(--ph-stagger-lead) + 5 * var(--ph-stagger));
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing) var(--pr-actions-at),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing) var(--pr-actions-at),
+    visibility 0s linear var(--pr-actions-at);
+}
+.plan-review .pr-actions.ph-layer:not([data-on]) {
+  transform: translateY(var(--fathom-space-2));
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    visibility 0s linear var(--fathom-motion-crossfade-duration);
+}

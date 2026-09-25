@@ -1,0 +1,848 @@
+/* ================================================================
+   Phone kit: the primitives every app mockup is built from.
+   See components/phone/README.md for the kit, the scene engine, and the
+   one-folder-per-screen convention.
+
+   Every value is a --fathom-* token. Where components.md gives a metric
+   the tokens don't carry (the usage ring's 42pt, the stage glow's 220pt),
+   it is named ONCE in the scope block below with its source, and logged
+   back to the design system. Sizes are in px: inside .phone-screen one DS
+   point is one pixel, and the device is scaled whole with zoom.
+   ================================================================ */
+
+/* ── Scope ─────────────────────────────────────────────────────── */
+.phone-screen {
+  /* No pure white on the web (spec, site-only rules): every DS role that
+     resolves to bone-0 draws as bone-25 inside a phone. */
+  --ph-on-accent: var(--fathom-bone-25);
+  --ph-raised: var(--fathom-color-bg-raised);
+  --ph-chrome: var(--fathom-color-bg-raised);
+  --ph-mic-fg-listening: var(--fathom-mic-fg-listening);
+  /* Cut-outs in solid glyphs take the ground they sit on (Glyph.tsx). */
+  --ph-glyph-ground: var(--fathom-color-bg-default);
+
+  /* The stand-in glyphs are drawn inside a 24 grid with SF Symbols' own
+     margin; a glyph box is its SF point size times this. */
+  --ph-glyph-scale: 1.35;
+
+  /* Metrics from components.md with no token of their own. */
+  --ph-status-h: 50px; /* the iOS status bar at the mockup's width (phone chrome) */
+  --ph-island-w: 76px;
+  --ph-island-h: 23px;
+  --ph-usage-button: 42px; /* AssistantBrandMarkButton: drawn at 42 */
+  --ph-row-glyph: 22px; /* AddSheetRow: the glyph column */
+  --ph-sheet-row-min: 60px; /* AddSheetRow: 60pt tall at least */
+  --ph-readout-position: 80px; /* ReadoutPlaybackBar: the position label's fixed width */
+  --ph-glow-reach: 220px; /* ConversationStage: the glow's radius, at most 220pt */
+  --ph-glow-center: 16%; /* ConversationStage: glowOpacity at the center */
+  --ph-glow-mid: 7.2%; /* ConversationStage: glowOpacity x glowMidFraction (0.45), at 40% of the reach */
+  --ph-glow-floor: 0.9; /* ConversationStage: glowFloor, the scale the glow breathes down to */
+  --ph-orb-halo: 30%; /* AssistantOrbIndicator: coreGlowOpacity */
+  --ph-orb-ring-boost: 2.34; /* AssistantOrbIndicator: ringStrokeBoosted (3pt at radius 64), in the orb's 50-unit radius */
+  --ph-orb-breathe: 4s; /* AssistantOrbIndicator: idle */
+  --ph-orb-in: 2.2s; /* listening */
+  --ph-orb-in-stagger: 0.32s;
+  --ph-orb-out: 1.9s; /* speaking */
+  --ph-orb-out-stagger: 0.3s;
+  --ph-orb-spin: 1.2s; /* working */
+  --ph-orb-core: 1.4s; /* the core's pulse while not idle */
+  --ph-glow-breathe: 2.2s; /* ConversationStage: the glow's breath */
+  /* SwiftUI's curves for the loops: the idle breath and the glow ease in and
+     out (.easeInOut, the DS pulse curve); the listening and speaking rings
+     and the working dot move at one speed (a lerp over the cycle's phase). */
+  --ph-breathe-easing: var(--fathom-motion-pulse-easing);
+  --ph-orb-flow: linear;
+  /* FathomButton (README, Interaction): pressed is opacity-pressed plus this scale while motion is on. */
+  --ph-press-scale: 0.97;
+  /* SwiftUI's .medium and .semibold, which the app sets on top of a DS style
+     (the DS carries a weight only per style). */
+  --ph-weight-medium: 500;
+  --ph-weight-semibold: 600;
+
+  /* Scene pacing, one set for every screen (no app equivalent: the app
+     paces words by speech callbacks and shows a list at once). */
+  --ph-word-pace: 180ms;
+  /* The finger-tap ring. A tap beat holds TAP_MS (scene/types.ts), at least this. */
+  --ph-tap: calc(var(--fathom-motion-press-duration) + var(--fathom-motion-settle-duration));
+  /* The ring is a scene device, not app UI: a soft disc in the text color
+     with a firmer edge, faint enough to read as a fingertip over any ground. */
+  --ph-touch-fill: color-mix(in oklab, var(--fathom-color-text-primary) 22%, transparent);
+  --ph-touch-edge: color-mix(in oklab, var(--fathom-color-text-primary) 45%, transparent);
+  /* A list that arrives row by row: the first row waits half a sheet's rise,
+     each next one half a crossfade later. */
+  --ph-stagger-lead: calc(var(--fathom-motion-settle-duration) / 2);
+  --ph-stagger: calc(var(--fathom-motion-crossfade-duration) / 2);
+}
+[data-theme="light"] .phone-screen {
+  --ph-raised: var(--fathom-bone-25);
+  --ph-chrome: var(--fathom-bone-25);
+  --ph-mic-fg-listening: var(--fathom-bone-25);
+}
+
+/* ── The screen ────────────────────────────────────────────────── */
+.ph-screen {
+  display: flex;
+  flex-direction: column;
+  background: var(--fathom-color-bg-default);
+  color: var(--fathom-color-text-primary);
+  font-family: var(--fathom-font-sans);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+.ph-screen p { margin: 0; hanging-punctuation: none; -webkit-hyphens: manual; hyphens: manual; }
+.ph-sprite { display: none; }
+.ph-glyph { display: block; flex: none; width: 1em; height: 1em; overflow: visible; }
+.ph-body { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.ph-stack { display: grid; }
+.ph-stack > * { grid-area: 1 / 1; min-width: 0; }
+/* A Stack directly in the body fills it, and each child is a view (the
+   stage, the transcript) that takes the whole room. Low specificity, so a
+   screen can lay a view out its own way. */
+:where(.ph-body) > .ph-stack { flex: 1; min-height: 0; grid-template-rows: minmax(0, 1fr); }
+:where(.ph-body > .ph-stack) > * { display: flex; flex-direction: column; min-height: 0; }
+
+/* ── Layers: parts of a scene that come and go (scene/Layer.tsx) ── */
+.ph-layer {
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear 0s;
+}
+.ph-layer:not([data-on]) {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear var(--fathom-motion-crossfade-duration);
+}
+/* Nothing hidden keeps animating: an orb or a glow in an off layer waits, paused. */
+.ph-layer:not([data-on]) * { animation-play-state: paused; }
+/* The engine jumps to a frame with every transition off, then turns them back on. */
+.ph-screen[data-scene="reset"] :is(*, *::before, *::after) { transition: none !important; animation: none !important; }
+
+/* ── Status bar (iOS chrome) ───────────────────────────────────── */
+.ph-status {
+  position: relative;
+  flex: none;
+  height: var(--ph-status-h);
+  padding: 0 var(--fathom-space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--fathom-color-text-primary);
+}
+.ph-status-time { font-size: var(--fathom-type-footnote-size); font-weight: var(--ph-weight-semibold); line-height: 1; font-variant-numeric: tabular-nums; }
+.ph-status-island {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--ph-island-w);
+  height: var(--ph-island-h);
+  border-radius: var(--fathom-radius-md);
+  background: var(--fathom-ink-990);
+  transform: translate(-50%, -50%);
+}
+.ph-status-right { display: flex; align-items: center; gap: var(--fathom-space-1); }
+.ph-status-bars, .ph-status-wifi { width: var(--fathom-size-icon-sm); height: var(--fathom-size-icon-sm); }
+.ph-status-battery { width: var(--fathom-size-icon-lg); height: var(--fathom-size-icon-lg); }
+
+/* ── Header (AssistantConnectionStatusView, AssistantBrandMarkButton) ── */
+.ph-header {
+  flex: none;
+  height: var(--fathom-layout-header-height);
+  padding: 0 var(--fathom-layout-gutter);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+.ph-hdr-cell { position: relative; display: grid; place-items: center; width: var(--fathom-layout-glyph-column); height: var(--fathom-layout-glyph-column); }
+.ph-hdr-start { justify-self: start; }
+.ph-hdr-end { justify-self: end; color: var(--fathom-color-text-secondary); }
+.ph-hdr-center { display: flex; align-items: center; gap: var(--fathom-space-2); }
+.ph-hdr-toggle { position: relative; display: grid; place-items: center; color: var(--fathom-color-text-secondary); }
+.ph-hdr-toggle .ph-glyph { grid-area: 1 / 1; width: calc(var(--fathom-size-icon-lg) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-lg) * var(--ph-glyph-scale)); transition: opacity var(--fathom-motion-color-duration) var(--fathom-motion-color-easing); }
+.ph-hdr-toggle-open { opacity: 0; }
+.ph-hdr-toggle[data-open] .ph-hdr-toggle-open, .ph-screen[data-transcript="open"] .ph-hdr-toggle-open { opacity: 1; }
+.ph-hdr-toggle[data-open] .ph-hdr-toggle-closed, .ph-screen[data-transcript="open"] .ph-hdr-toggle-closed { opacity: 0; }
+.ph-screen[data-transcript="closed"] .ph-hdr-toggle-open { opacity: 0; }
+.ph-screen[data-transcript="closed"] .ph-hdr-toggle-closed { opacity: 1; }
+.ph-hdr-connection { width: calc(var(--fathom-size-icon-lg) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-lg) * var(--ph-glyph-scale)); }
+[data-connection="cloud"] { color: var(--fathom-color-accent-fg); }
+[data-connection="device"] { color: var(--fathom-color-text-tertiary); }
+[data-connection="offline"] { color: var(--fathom-color-caution-fg); }
+.ph-hdr-narration, .ph-hdr-menu { width: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); }
+[data-narration="on"] { color: var(--fathom-color-accent-fg); }
+[data-narration="off"] { color: var(--fathom-color-text-tertiary); }
+.ph-usage { position: relative; display: grid; place-items: center; width: var(--ph-usage-button); height: var(--ph-usage-button); color: var(--fathom-color-accent-fg); }
+.ph-usage-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.ph-usage-track, .ph-usage-progress { fill: none; stroke-width: var(--fathom-border-emphasis); stroke-linecap: round; }
+.ph-usage-track { stroke: var(--fathom-usage-track); }
+.ph-usage-progress { stroke: var(--fathom-usage-progress); }
+.ph-usage-mark { position: relative; }
+
+/* ── Orb (AssistantOrbIndicator) ───────────────────────────────── */
+.ph-orb {
+  --ph-orb: var(--fathom-size-orb);
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--ph-orb);
+  height: var(--ph-orb);
+  margin-block: calc(var(--ph-orb) * 0.1);
+  color: var(--fathom-orb-tint);
+}
+/* The activity views' own orb: size-orb less space-2 (120). */
+.ph-orb[data-size="120"] { --ph-orb: calc(var(--fathom-size-orb) - var(--fathom-space-2)); }
+.ph-orb-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--ph-orb) * 0.44);
+  height: calc(var(--ph-orb) * 0.44);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, currentColor var(--ph-orb-halo), transparent), transparent);
+  transform: translate(-50%, -50%);
+}
+.ph-orb-svg { position: absolute; left: -15%; top: -15%; width: 130%; height: 130%; overflow: visible; }
+.ph-orb-ring { fill: none; stroke: currentColor; opacity: var(--o); transform-box: fill-box; transform-origin: center; }
+.ph-orb-core { fill: currentColor; transform-box: fill-box; transform-origin: center; }
+.ph-orb-orbit { fill: currentColor; opacity: 0; transform-box: fill-box; transform-origin: center; }
+
+/* Idle: the rings and the core breathe together, each ring idleRingStagger
+   (0.085 of the breath) after the one outside it. */
+.ph-orb-ring { animation: ph-orb-breathe var(--ph-orb-breathe) var(--ph-breathe-easing) infinite; animation-delay: calc(var(--i) * var(--ph-orb-breathe) * 0.085); }
+.ph-orb-core { animation: ph-orb-core-idle var(--ph-orb-breathe) var(--ph-breathe-easing) infinite; }
+/* Listening pulls the rings in; speaking pushes them out; working holds them and spins a dot. */
+.ph-orb[data-mood="listening"] .ph-orb-ring,
+.ph-screen[data-orb="listening"] .ph-orb-ring { animation: ph-orb-in var(--ph-orb-in) var(--ph-orb-flow) infinite; animation-delay: calc(var(--i) * var(--ph-orb-in-stagger)); }
+.ph-orb[data-mood="speaking"] .ph-orb-ring,
+.ph-screen[data-orb="speaking"] .ph-orb-ring { animation: ph-orb-out var(--ph-orb-out) var(--ph-orb-flow) infinite; animation-delay: calc(var(--i) * var(--ph-orb-out-stagger)); }
+.ph-orb[data-mood="working"] .ph-orb-ring,
+.ph-screen[data-orb="working"] .ph-orb-ring { animation: none; }
+.ph-orb:is([data-mood="listening"], [data-mood="speaking"], [data-mood="working"]) .ph-orb-core,
+.ph-screen:is([data-orb="listening"], [data-orb="speaking"], [data-orb="working"]) .ph-orb-core { animation: ph-orb-core var(--ph-orb-core) var(--ph-breathe-easing) infinite; }
+.ph-orb[data-mood="working"] .ph-orb-orbit,
+.ph-screen[data-orb="working"] .ph-orb-orbit { opacity: 1; animation: ph-orb-spin var(--ph-orb-spin) var(--ph-orb-flow) infinite; }
+.ph-screen[data-orb]:not([data-orb="working"]) .ph-orb-orbit { opacity: 0; }
+
+/* The keyframes are AssistantOrbIndicator's Metrics: idle (idleRingScaleAmplitude
+   0.07, idleRingOpacityLow 0.62, idleCore 0.88 to 1.12 at 0.7), the core while
+   not idle (0.88 to 1.06 at 0.55), inward (1.14 to 0.74, peak at 55%) and
+   outward (0.78 to 1.2, peak at 45%). */
+@keyframes ph-orb-breathe {
+  0%, 100% { transform: scale(1); opacity: calc(var(--o) * 0.62); }
+  50% { transform: scale(1.07); opacity: var(--o); }
+}
+@keyframes ph-orb-core-idle {
+  0%, 100% { transform: scale(0.88); opacity: 0.7; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+@keyframes ph-orb-core {
+  0%, 100% { transform: scale(0.88); opacity: 0.55; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+@keyframes ph-orb-in {
+  0% { transform: scale(1.14); opacity: 0; }
+  55% { opacity: var(--o); }
+  100% { transform: scale(0.74); opacity: 0; }
+}
+@keyframes ph-orb-out {
+  0% { transform: scale(0.78); opacity: 0; }
+  45% { opacity: var(--o); }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+@keyframes ph-orb-spin { to { transform: rotate(1turn); } }
+
+/* ── Stage (ConversationStage, AssistantHeadlineView) ──────────── */
+.ph-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--fathom-layout-gutter);
+  text-align: center;
+}
+/* An activity's stage: the headline at the top, s6 down, the card below it. */
+.ph-stage-top { flex: none; padding-top: var(--fathom-space-6); }
+.ph-stage-group { position: relative; align-self: stretch; display: flex; flex-direction: column; align-items: center; gap: var(--fathom-space-3); }
+.ph-glow {
+  --ph-glow-tint: var(--fathom-color-accent-fg);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--ph-glow-reach) * 2);
+  height: calc(var(--ph-glow-reach) * 2);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--ph-glow-tint) var(--ph-glow-center), transparent) 0%,
+    color-mix(in oklab, var(--ph-glow-tint) var(--ph-glow-mid), transparent) 40%,
+    transparent 100%
+  );
+  transition: opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing);
+}
+.ph-glow[data-glow="speaking"], .ph-screen[data-glow="speaking"] .ph-glow { --ph-glow-tint: var(--fathom-color-accent-fill); }
+.ph-glow:is([data-glow="listening"], [data-glow="speaking"]),
+.ph-screen:is([data-glow="listening"], [data-glow="speaking"]) .ph-glow { opacity: 1; animation: ph-glow-breathe var(--ph-glow-breathe) var(--ph-breathe-easing) infinite alternate; }
+.ph-screen[data-glow="none"] .ph-glow { opacity: 0; animation: none; }
+/* The app breathes the glow's scale, not its strength (scaleEffect to glowFloor). */
+@keyframes ph-glow-breathe {
+  from { transform: translate(-50%, -50%); }
+  to { transform: translate(-50%, -50%) scale(var(--ph-glow-floor)); }
+}
+
+.ph-headline { display: flex; flex-direction: column; align-items: center; gap: var(--fathom-space-3); width: 100%; }
+.ph-eyebrow {
+  font-size: var(--fathom-type-eyebrow-size);
+  line-height: var(--fathom-type-eyebrow-line-height);
+  font-weight: var(--fathom-type-eyebrow-weight);
+  letter-spacing: var(--fathom-type-eyebrow-tracking);
+  text-transform: var(--fathom-type-eyebrow-transform);
+  color: var(--fathom-color-accent-fg);
+}
+.ph-eyebrow[data-tone="hazard"] { color: var(--fathom-color-hazard-fg); }
+.ph-eyebrow[data-tone="muted"] { color: var(--fathom-color-text-tertiary); }
+.ph-hl { color: var(--fathom-color-text-primary); text-wrap: balance; }
+.ph-hl-lg { font-size: var(--fathom-type-title-lg-size); line-height: var(--fathom-type-title-lg-line-height); font-weight: var(--fathom-type-title-lg-weight); letter-spacing: var(--fathom-type-title-lg-tracking); }
+.ph-hl-md { font-size: var(--fathom-type-title-md-size); line-height: var(--fathom-type-title-md-line-height); font-weight: var(--fathom-type-title-md-weight); letter-spacing: var(--fathom-type-title-md-tracking); }
+.ph-hl-sm { font-size: var(--fathom-type-title-sm-size); line-height: var(--fathom-type-title-sm-line-height); font-weight: var(--fathom-type-title-sm-weight); letter-spacing: var(--fathom-type-title-sm-tracking); }
+.ph-subline { font-size: var(--fathom-type-body-size); line-height: var(--fathom-type-body-line-height); color: var(--fathom-color-text-secondary); }
+.ph-stop {
+  position: absolute;
+  top: 0;
+  right: calc(var(--fathom-space-2) - var(--fathom-layout-gutter));
+  width: var(--fathom-size-touch-comfort);
+  height: var(--fathom-size-touch-comfort);
+  display: grid;
+  place-items: center;
+  color: var(--fathom-color-accent-fg);
+}
+.ph-stop .ph-glyph { width: calc(var(--fathom-size-icon-lg) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-lg) * var(--ph-glyph-scale)); }
+
+/* ── Words, revealed one by one (Words.tsx) ────────────────────── */
+.ph-words[data-show] .ph-w { opacity: 0; transition: opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing); }
+.ph-words[data-show][data-on] .ph-w { opacity: 1; transition-delay: calc(var(--ph-words-delay, 0ms) + var(--i) * var(--ph-word-pace)); }
+
+/* ── A finger tap (TouchIndicator.tsx) ─────────────────────────── */
+.ph-touch {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: var(--fathom-size-touch-min);
+  height: var(--fathom-size-touch-min);
+  margin: calc(var(--fathom-size-touch-min) / -2) 0 0 calc(var(--fathom-size-touch-min) / -2);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--ph-touch-fill);
+  box-shadow: 0 0 0 var(--fathom-border-emphasis) var(--ph-touch-edge);
+}
+.ph-touch[data-on] { animation: ph-tap var(--ph-tap) var(--fathom-motion-settle-easing) both; }
+@keyframes ph-tap {
+  0% { opacity: 0; transform: scale(0.6); }
+  25% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+
+/* ── Suggestions (SuggestionRow) ───────────────────────────────── */
+.ph-suggest {
+  flex: none;
+  display: grid;
+  grid-template-rows: 1fr;
+  padding: var(--fathom-space-3) var(--fathom-layout-gutter) 0;
+  background: var(--ph-chrome);
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+}
+.ph-suggest-rows { min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: var(--fathom-space-2); }
+/* A strip that goes away takes its room with it (the app draws no strip
+   while the mic is open, and a new turn clears it): it folds to nothing on
+   the settle curve as it fades, so the stage re-centers and a transcript
+   comes down onto the composer. It unfolds the same way. The one layout
+   animation in the kit; everything else is transform and opacity. */
+.ph-suggest.ph-layer {
+  transition:
+    grid-template-rows var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    padding-top var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear 0s;
+}
+.ph-suggest.ph-layer:not([data-on]) {
+  grid-template-rows: 0fr;
+  padding-top: 0;
+  border-top-color: transparent;
+  transition:
+    grid-template-rows var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    padding-top var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    visibility 0s linear var(--fathom-motion-settle-duration);
+}
+.ph-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--fathom-space-3);
+  min-height: var(--fathom-size-control-md);
+  padding: var(--fathom-space-3) var(--fathom-space-4);
+  border-radius: var(--fathom-radius-lg);
+  background: var(--fathom-chip-bg);
+  border: var(--fathom-border-hairline) solid var(--fathom-chip-border);
+  color: var(--fathom-chip-fg);
+  font-size: var(--fathom-type-callout-size);
+  line-height: var(--fathom-type-callout-line-height);
+}
+.ph-chip-label { flex: 1; min-width: 0; }
+.ph-chip-plus {
+  font-size: var(--fathom-type-overline-size);
+  line-height: var(--fathom-type-overline-line-height);
+  font-weight: var(--fathom-type-overline-weight);
+  letter-spacing: var(--fathom-type-overline-tracking);
+  text-transform: var(--fathom-type-overline-transform);
+  color: var(--fathom-color-accent-fg);
+}
+.ph-chip-arrow { width: calc(var(--fathom-size-icon-xs) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-xs) * var(--ph-glyph-scale)); color: var(--fathom-color-accent-fg); }
+
+/* ── Composer (AssistantFooterControls) ────────────────────────── */
+.ph-footer { position: relative; z-index: 1; flex: none; display: flex; flex-direction: column; }
+.ph-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--fathom-space-3) 0 var(--fathom-space-5);
+  background: var(--ph-chrome);
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+  transition: border-color var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing);
+}
+/* One ground with the strip above it while the strip is up. */
+.ph-suggest + .ph-controls { border-top-color: transparent; }
+.ph-suggest[data-show]:not([data-on]) + .ph-controls { border-top-color: var(--fathom-color-border-divider); }
+.ph-cluster { width: var(--fathom-layout-control-cluster); display: flex; align-items: center; justify-content: space-between; }
+.ph-ctl { display: flex; flex-direction: column; align-items: center; gap: var(--fathom-space-1); width: var(--fathom-size-control-lg); }
+.ph-ctl-disc {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--fathom-size-control-lg);
+  height: var(--fathom-size-control-lg);
+  border-radius: 50%;
+  background: var(--fathom-control-secondary-bg);
+  border: var(--fathom-border-default) solid var(--fathom-control-secondary-border);
+  color: var(--fathom-control-secondary-fg);
+}
+.ph-ctl-disc .ph-glyph { width: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); }
+.ph-ctl-label {
+  font-size: var(--fathom-type-control-label-size);
+  line-height: var(--fathom-type-control-label-line-height);
+  font-weight: var(--fathom-type-control-label-weight);
+  color: var(--fathom-control-secondary-fg);
+  white-space: nowrap;
+}
+.ph-mic {
+  position: relative;
+  flex: none;
+  width: var(--fathom-size-mic);
+  height: var(--fathom-size-mic);
+  border-radius: 50%;
+  background: var(--fathom-mic-bg);
+  box-shadow: inset 0 0 0 calc(var(--fathom-border-default) * 2) var(--fathom-mic-border), var(--fathom-shadow-lg);
+  color: var(--ph-on-accent);
+  transition:
+    background-color var(--fathom-motion-color-duration) var(--fathom-motion-color-easing),
+    color var(--fathom-motion-color-duration) var(--fathom-motion-color-easing),
+    border-radius var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing);
+}
+.ph-mic-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--fathom-shadow-glow);
+  opacity: 0;
+  transition: opacity var(--fathom-motion-color-duration) var(--fathom-motion-color-easing);
+}
+.ph-mic-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fathom-space-2);
+  transition: opacity var(--fathom-motion-color-duration) var(--fathom-motion-color-easing);
+}
+.ph-mic-face .ph-glyph { width: calc(var(--fathom-size-icon-xl) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-xl) * var(--ph-glyph-scale)); }
+.ph-mic-send, .ph-mic-end { opacity: 0; }
+.ph-mic-end {
+  font-size: var(--fathom-type-body-strong-size);
+  line-height: var(--fathom-type-body-strong-line-height);
+  font-weight: var(--fathom-type-body-strong-weight);
+}
+/* A 14pt stop square with 3pt corners: the icon step below size-icon-sm, less the border step. */
+.ph-mic-stop { width: calc(var(--fathom-size-icon-sm) - var(--fathom-border-default) * 2); height: calc(var(--fathom-size-icon-sm) - var(--fathom-border-default) * 2); border-radius: var(--fathom-border-emphasis); background: currentColor; }
+
+/* Listening: the fill goes to the accent foreground, the glyph to an up-arrow, and a glow pulses. */
+.ph-mic[data-mic="listening"],
+.ph-screen[data-mic="listening"] .ph-mic {
+  background: var(--fathom-mic-bg-listening);
+  box-shadow: inset 0 0 0 calc(var(--fathom-border-default) * 2) var(--fathom-mic-border-listening);
+  color: var(--ph-mic-fg-listening);
+}
+.ph-mic[data-mic="listening"] .ph-mic-glow,
+.ph-screen[data-mic="listening"] .ph-mic-glow { opacity: 1; animation: ph-mic-pulse var(--fathom-motion-pulse-duration) var(--fathom-motion-pulse-easing) infinite alternate; }
+.ph-mic[data-mic="listening"] .ph-mic-speak, .ph-screen[data-mic="listening"] .ph-mic-speak { opacity: 0; }
+.ph-mic[data-mic="listening"] .ph-mic-send, .ph-screen[data-mic="listening"] .ph-mic-send { opacity: 1; }
+@keyframes ph-mic-pulse { from { opacity: 0.45; } to { opacity: 1; } }
+/* Paused: the one state where the mic reads End. A rounded square in rust, no blue edge. */
+.ph-mic[data-mic="end"],
+.ph-screen[data-mic="end"] .ph-mic {
+  border-radius: var(--fathom-radius-3xl);
+  background: var(--fathom-mic-bg-end);
+  box-shadow: var(--fathom-shadow-lg);
+  color: var(--ph-on-accent);
+}
+.ph-mic[data-mic="end"] .ph-mic-speak, .ph-screen[data-mic="end"] .ph-mic-speak { opacity: 0; }
+.ph-mic[data-mic="end"] .ph-mic-end, .ph-screen[data-mic="end"] .ph-mic-end { opacity: 1; }
+/* A channel set back to idle wins over a still's own state. */
+.ph-screen[data-mic="idle"] .ph-mic { border-radius: 50%; background: var(--fathom-mic-bg); box-shadow: inset 0 0 0 calc(var(--fathom-border-default) * 2) var(--fathom-mic-border), var(--fathom-shadow-lg); color: var(--ph-on-accent); }
+.ph-screen[data-mic="idle"] .ph-mic-glow { opacity: 0; animation: none; }
+.ph-screen[data-mic="idle"] .ph-mic-speak { opacity: 1; }
+.ph-screen[data-mic="idle"] :is(.ph-mic-send, .ph-mic-end) { opacity: 0; }
+
+.ph-session {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fathom-space-10);
+  height: var(--fathom-size-control-md);
+  margin-top: var(--fathom-space-3);
+  color: var(--fathom-color-accent-fg);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  font-weight: var(--ph-weight-medium);
+}
+.ph-session-button { position: relative; display: inline-flex; align-items: center; gap: var(--fathom-space-2); }
+.ph-session .ph-glyph { width: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); }
+.ph-session-icon { position: relative; display: grid; place-items: center; }
+
+/* ── Sheets (FathomSheetChrome, AddSheetRow) ───────────────────── */
+.ph-scrim { position: absolute; inset: 0; z-index: 4; background: var(--fathom-color-scrim); }
+.ph-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(var(--ph-status-h) + var(--fathom-space-3));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  background: var(--fathom-sheet-bg);
+  border-radius: var(--fathom-radius-3xl) var(--fathom-radius-3xl) 0 0;
+  --ph-glyph-ground: var(--fathom-sheet-bg);
+}
+/* A sheet covers the screen it rises over: the captures show only the
+   dimmed backdrop above it, never the header. So the header recedes while
+   a sheet is up, and nothing under the sheet keeps animating. */
+.ph-screen > .ph-header { transition: opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing); }
+.ph-screen:has(> .ph-sheet:is([data-on], :not([data-show]))) > .ph-header { opacity: 0; }
+.ph-screen:has(> .ph-sheet:is([data-on], :not([data-show]))) > .ph-body * { animation-play-state: paused; }
+.ph-sheet.ph-layer { transition: transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing), visibility 0s linear 0s; }
+.ph-sheet.ph-layer:not([data-on]) {
+  opacity: 1;
+  transform: translateY(105%);
+  transition: transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing), visibility 0s linear var(--fathom-motion-settle-duration);
+}
+.ph-sheet-grabber {
+  align-self: center;
+  flex: none;
+  width: calc(var(--fathom-space-8) + var(--fathom-space-1));
+  height: var(--fathom-space-1);
+  margin-top: var(--fathom-space-2);
+  border-radius: var(--fathom-radius-full);
+  background: var(--fathom-color-border-control);
+}
+.ph-sheet-bar {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--fathom-space-2);
+  min-height: var(--fathom-size-touch-comfort);
+  padding: 0 var(--fathom-space-4);
+}
+.ph-sheet-title {
+  font-size: var(--fathom-type-body-strong-size);
+  line-height: var(--fathom-type-body-strong-line-height);
+  font-weight: var(--fathom-type-body-strong-weight);
+  color: var(--fathom-color-text-primary);
+  white-space: nowrap;
+}
+.ph-sheet-close {
+  position: relative;
+  justify-self: end;
+  padding: var(--fathom-space-2) var(--fathom-space-3);
+  border-radius: var(--fathom-radius-full);
+  background: var(--ph-raised);
+  border: var(--fathom-border-default) solid var(--fathom-color-border-control);
+  font-weight: var(--ph-weight-medium);
+  color: var(--fathom-color-accent-fg);
+  white-space: nowrap;
+}
+.ph-sheet-body { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: var(--fathom-space-5); padding: var(--fathom-space-3) var(--fathom-layout-gutter) var(--fathom-space-5); }
+.ph-sheet-group { display: flex; flex-direction: column; gap: var(--fathom-space-2); }
+.ph-sheet-label {
+  padding: 0 var(--fathom-space-3);
+  font-size: var(--fathom-type-overline-size);
+  line-height: var(--fathom-type-overline-line-height);
+  font-weight: var(--fathom-type-overline-weight);
+  letter-spacing: var(--fathom-type-overline-tracking);
+  text-transform: var(--fathom-type-overline-transform);
+  color: var(--fathom-color-text-secondary);
+}
+.ph-sheet-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--fathom-space-1);
+  border-radius: var(--fathom-radius-xl);
+  background: var(--fathom-sheet-row-bg);
+  border: var(--fathom-border-default) solid var(--fathom-color-border-control);
+  --ph-glyph-ground: var(--fathom-sheet-row-bg);
+}
+/* Light: the row color already differs from the sheet, so the card needs no edge. */
+[data-theme="light"] .ph-sheet-card { border-color: transparent; }
+.ph-sheet-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--fathom-space-4);
+  min-height: var(--ph-sheet-row-min);
+  padding: var(--fathom-space-2) var(--fathom-space-3);
+  border-radius: var(--fathom-radius-xl);
+}
+.ph-row-glyph { flex: none; display: grid; place-items: center; width: var(--ph-row-glyph); color: var(--fathom-color-accent-fg); }
+.ph-row-glyph .ph-glyph { width: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale)); }
+.ph-row-text { display: flex; flex-direction: column; gap: calc(var(--fathom-space-1) / 2); min-width: 0; }
+.ph-row-title { font-size: var(--fathom-type-body-size); line-height: var(--fathom-type-body-line-height); font-weight: var(--ph-weight-medium); color: var(--fathom-color-text-primary); }
+.ph-row-detail { font-size: var(--fathom-type-footnote-size); line-height: var(--fathom-type-footnote-line-height); color: var(--fathom-color-text-secondary); }
+/* Pressed while a finger is on it: opacity-pressed over bg-pressed. */
+.ph-sheet-row:has(> .ph-touch[data-on]) { background: var(--fathom-color-bg-pressed); }
+
+/* ── A list that arrives row by row (.ph-stagger: a sheet's card, a plan's
+   steps). Rows given beats fade in and settle up a little, in turn. ──── */
+.ph-stagger > :nth-child(2) { --ph-i: 1; }
+.ph-stagger > :nth-child(3) { --ph-i: 2; }
+.ph-stagger > :nth-child(4) { --ph-i: 3; }
+.ph-stagger > :nth-child(5) { --ph-i: 4; }
+.ph-stagger > :nth-child(6) { --ph-i: 5; }
+.ph-stagger > :nth-child(7) { --ph-i: 6; }
+.ph-stagger > :nth-child(8) { --ph-i: 7; }
+.ph-stagger > .ph-layer {
+  --ph-at: calc(var(--ph-stagger-lead) + var(--ph-i, 0) * var(--ph-stagger));
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing) var(--ph-at),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing) var(--ph-at),
+    visibility 0s linear var(--ph-at);
+}
+.ph-stagger > .ph-layer:not([data-on]) {
+  transform: translateY(var(--fathom-space-2));
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    visibility 0s linear var(--fathom-motion-crossfade-duration);
+}
+
+/* ── Buttons (FathomButton) ────────────────────────────────────── */
+.ph-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fathom-space-2);
+  width: 100%;
+  min-height: var(--fathom-size-control-md);
+  padding: 0 var(--fathom-space-5);
+  border-radius: var(--fathom-radius-md);
+  font-size: var(--fathom-type-body-strong-size);
+  line-height: var(--fathom-type-body-strong-line-height);
+  font-weight: var(--fathom-type-body-strong-weight);
+  text-align: center;
+}
+.ph-btn .ph-glyph { width: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale)); }
+.ph-btn-primary { background: var(--fathom-button-primary-bg); color: var(--ph-on-accent); box-shadow: var(--fathom-shadow-sm); }
+.ph-btn-secondary { background: var(--ph-raised); color: var(--fathom-button-secondary-fg); border: var(--fathom-border-default) solid var(--fathom-button-secondary-border); font-weight: var(--ph-weight-medium); box-shadow: var(--fathom-shadow-sm); }
+.ph-btn-tinted { background: var(--fathom-button-tinted-bg); color: var(--fathom-button-tinted-fg); }
+.ph-btn-text { min-height: var(--fathom-size-touch-comfort); background: none; color: var(--fathom-button-text-fg); font-weight: var(--fathom-type-body-weight); }
+.ph-btn { transition: transform var(--fathom-motion-color-duration) var(--fathom-motion-color-easing); }
+.ph-btn:has(> .ph-touch[data-on]) {
+  transform: scale(var(--ph-press-scale));
+  transition: transform var(--fathom-motion-press-duration) var(--fathom-motion-press-easing);
+}
+
+/* A finger on a button, a row or the transport: its content takes
+   opacity-pressed at press speed and lets go at color speed, so it reads
+   as a press, not a flash. */
+:is(.ph-btn, .ph-sheet-row) > :not(.ph-touch),
+.ph-session-icon > .ph-glyph {
+  transition: opacity var(--fathom-motion-color-duration) var(--fathom-motion-color-easing);
+}
+:is(.ph-btn, .ph-sheet-row):has(> .ph-touch[data-on]) > :not(.ph-touch),
+.ph-session-icon:has(> .ph-touch[data-on]) > .ph-glyph {
+  opacity: var(--fathom-opacity-pressed);
+  transition: opacity var(--fathom-motion-press-duration) var(--fathom-motion-press-easing);
+}
+
+/* ── Transcript (TranscriptView) ───────────────────────────────── */
+.ph-transcript {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--fathom-space-4);
+  padding: var(--fathom-space-4) var(--fathom-layout-gutter);
+  overflow: hidden;
+}
+.ph-turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fathom-space-1);
+  transition: transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing);
+}
+/* A turn settles up a little as it arrives: on its own beat, or with the
+   whole transcript when it comes in as a view. */
+.ph-turn.ph-layer {
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    visibility 0s linear 0s;
+}
+.ph-turn.ph-layer:not([data-on]) {
+  transform: translateY(var(--fathom-space-3));
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing),
+    visibility 0s linear var(--fathom-motion-crossfade-duration);
+}
+.ph-layer:not([data-on]) > .ph-transcript > .ph-turn { transform: translateY(var(--fathom-space-3)); }
+.ph-turn-meta {
+  display: flex;
+  gap: var(--fathom-space-3);
+  font-size: var(--fathom-type-overline-size);
+  line-height: var(--fathom-type-overline-line-height);
+  font-weight: var(--fathom-type-overline-weight);
+  letter-spacing: var(--fathom-type-overline-tracking);
+  text-transform: var(--fathom-type-overline-transform);
+  font-variant-numeric: tabular-nums;
+  color: var(--fathom-color-text-secondary);
+}
+.ph-turn-label { color: var(--fathom-color-accent-fg); }
+.ph-turn-text { font-size: var(--fathom-type-body-reading-size); line-height: var(--fathom-type-body-reading-line-height); }
+.ph-turn-user { align-items: flex-end; text-align: right; }
+.ph-turn-user .ph-turn-text { color: var(--fathom-color-text-secondary); }
+.ph-turn-fathom { padding-left: var(--fathom-space-3); border-left: calc(var(--fathom-border-default) * 2) solid var(--fathom-color-accent-fg); }
+.ph-turn-fathom .ph-turn-text { color: var(--fathom-color-text-primary); }
+
+/* ── Readout bar (ReadoutPlaybackBar) ──────────────────────────── */
+.ph-readout {
+  display: flex;
+  align-items: center;
+  gap: var(--fathom-space-2);
+  margin: 0 var(--fathom-layout-gutter);
+  padding: var(--fathom-space-1) var(--fathom-space-3);
+  border-radius: var(--fathom-radius-lg);
+  background: var(--ph-raised);
+  border: var(--fathom-border-default) solid var(--fathom-color-border-divider);
+  box-shadow: var(--fathom-shadow-sm);
+  --ph-glyph-ground: var(--ph-raised);
+}
+.ph-readout-button { display: grid; place-items: center; width: var(--fathom-size-touch-comfort); height: var(--fathom-size-touch-comfort); color: var(--fathom-color-text-primary); }
+.ph-readout-button .ph-glyph { width: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); }
+.ph-readout-stop { margin-left: auto; }
+.ph-readout-position { display: flex; flex-direction: column; align-items: center; width: var(--ph-readout-position); }
+.ph-readout-counter { font-size: var(--fathom-type-callout-size); line-height: var(--fathom-type-callout-line-height); font-weight: var(--ph-weight-semibold); font-variant-numeric: tabular-nums; color: var(--fathom-color-text-primary); }
+/* A count that moves on beats (ReadoutBar with counts): one at a time, each
+   centered in the fixed-width label, crossfading at color speed. */
+.ph-readout-counts { justify-items: center; }
+.ph-readout-counts > .ph-readout-counter {
+  transition:
+    opacity var(--fathom-motion-color-duration) var(--fathom-motion-color-easing),
+    visibility 0s linear 0s;
+}
+.ph-readout-counts > .ph-readout-counter:not([data-on]) {
+  transition:
+    opacity var(--fathom-motion-color-duration) var(--fathom-motion-color-easing),
+    visibility 0s linear var(--fathom-motion-color-duration);
+}
+.ph-readout-paused { font-size: var(--fathom-type-footnote-size); line-height: var(--fathom-type-footnote-line-height); color: var(--fathom-color-text-secondary); }
+
+/* ── Plan steps (AssistantPlanCard) ────────────────────────────── */
+.ph-plan {
+  counter-reset: ph-step;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--fathom-radius-lg);
+  background: var(--fathom-card-bg);
+  box-shadow: inset 0 0 0 var(--fathom-border-default) var(--fathom-card-border);
+  overflow: hidden;
+  --ph-glyph-ground: var(--fathom-card-bg);
+}
+.ph-planstep {
+  display: grid;
+  grid-template-columns: var(--fathom-space-6) var(--fathom-size-icon-column) 1fr;
+  align-items: center;
+  gap: var(--fathom-space-3);
+  min-height: var(--fathom-size-touch-comfort);
+  padding: var(--fathom-space-2) var(--fathom-space-3);
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+}
+.ph-planstep:first-child { border-top: 0; }
+.ph-plan-n { text-align: center; font-family: var(--fathom-font-mono); font-size: var(--fathom-type-mono-sm-size); font-weight: var(--fathom-type-mono-sm-weight); font-variant-numeric: tabular-nums; color: var(--fathom-color-accent-fg); }
+.ph-plan-n::before { counter-increment: ph-step; content: counter(ph-step); }
+.ph-plan-glyph { display: grid; place-items: center; color: var(--fathom-color-accent-fg); }
+.ph-plan-glyph .ph-glyph { width: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); height: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale)); }
+.ph-plan-text { display: flex; flex-direction: column; min-width: 0; font-size: var(--fathom-type-footnote-size); line-height: var(--fathom-type-footnote-line-height); }
+.ph-plan-desc { color: var(--fathom-color-text-primary); }
+.ph-plan-mode { color: var(--fathom-color-text-secondary); }
+
+/* ── Activity card (ActivityCard) ──────────────────────────────────
+   The room under an activity's stage: stack(2) top and bottom, centered.
+   No surface in Dark and Light. */
+.ph-activity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: calc(var(--fathom-space-2) * 2);
+  text-align: center;
+}
+
+/* ── Contrast Boost (prefers-contrast: more) ───────────────────────
+   The DS drops every glow and shadow and draws flat, heavier edges. */
+@media (prefers-contrast: more) {
+  /* ActivityCard's one concession to a box: a hairline in text-tertiary on
+     the raised ground with radius-lg, the content s4 inside it. */
+  .ph-activity {
+    padding-inline: var(--fathom-space-4);
+    border-radius: var(--fathom-radius-lg);
+    background: var(--ph-raised);
+    box-shadow: inset 0 0 0 var(--fathom-border-hairline) var(--fathom-color-text-tertiary);
+  }
+  .ph-orb-halo, .ph-glow { display: none; }
+  .ph-orb-ring { stroke-width: var(--ph-orb-ring-boost); }
+  .ph-mic-glow { box-shadow: none; outline: var(--fathom-border-emphasis) solid var(--fathom-color-accent-fg); outline-offset: calc(var(--fathom-space-2) - var(--fathom-border-default)); }
+  .ph-chip { border-width: var(--fathom-border-default); min-height: var(--fathom-size-control-lg); }
+}
+
+/* ── No motion ─────────────────────────────────────────────────────
+   One rule for every phone, for both paths: the OS setting and the
+   header's Pause motion (html[data-motion="reduce"]). The engine shows
+   each scene's resting frame and starts no timers; this stops every
+   continuous animation (the orb, the glow, the mic pulse) on its still
+   frame, which is the app's own Reduce Motion frame. */
+@media (prefers-reduced-motion: reduce) {
+  .phone-screen :is(*, *::before, *::after) { animation: none !important; transition: none !important; }
+}
+[data-motion="reduce"] .phone-screen :is(*, *::before, *::after) { animation: none !important; transition: none !important; }

@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { BrandMark } from "@/components/BrandMark";
+import { Lockup } from "@/components/brand/Lockup";
+import { COPY_13 } from "@/lib/copy-13";
 
 export function Footer() {
   return (
     <footer className="site-footer" role="contentinfo">
       <div className="footer-inner">
         <div className="footer-brand">
-          <BrandMark className="brand-mark brand-mark-lg" />
-          <p className="footer-tag">Walk in. Know the room. Do what you came for.</p>
+          <Lockup height={32} label="fathom" className="brand-lockup brand-lockup-lg" markClassName="lockup-mark" />
+          <p className="footer-tag">{COPY_13.tagline}</p>
         </div>
         <nav className="footer-cols" aria-label="Footer">
           <div>

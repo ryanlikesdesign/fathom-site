@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { BrandMark } from "@/components/BrandMark";
+import { Lockup } from "@/components/brand/Lockup";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AppleMark } from "@/components/AppleMark";
 import { MotionToggle } from "@/components/MotionToggle";
@@ -78,9 +78,9 @@ export function Header() {
   return (
     <>
       <header className="site-header" role="banner" ref={headerRef}>
-        <Link href="/" className="brand" aria-label="Fathom, home">
-          <BrandMark />
-          <span className="brand-word">fathom</span>
+        {/* The link names the lockup, so the drawing itself stays decorative. */}
+        <Link href="/" className="brand" aria-label="fathom, home">
+          <Lockup height={26} className="brand-lockup" markClassName="lockup-mark" />
         </Link>
         <nav className="site-nav" aria-label="Primary">
           {NAV.map((n) => (

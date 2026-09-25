@@ -29,13 +29,14 @@
   --reed-500: #6b7f4a;
   --fog-400: #8a95a2;
 
-  /* Display font alias → Inter/Source Serif 4 loaded via next/font.
-     (Body --font-sans is provided by next/font on <html>.) */
-  --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
-  /* Offer codes are read aloud, dictated and typed. The display serif
-     collides 0/O and 1/l/I, so codes get a face with disambiguated
-     glyphs; legibility beats voice for machine-readable strings. */
-  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+  /* Faces (lib/fonts.ts): next/font sets --font-atkinson-next and
+     --font-atkinson-mono on <html>; these name the roles. One face for all
+     text, headlines included: no display serif. */
+  --font-sans: var(--font-atkinson-next), -apple-system, system-ui, sans-serif;
+  --font-display: var(--font-sans);
+  /* Distances, counters and offer codes, which are read aloud, dictated and
+     typed: Atkinson Hyperlegible Mono keeps 0/O and 1/l/I apart. */
+  --font-mono: var(--font-atkinson-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
 
   /* QR colors are functional, not thematic: they must stay dark-on-light in
@@ -382,36 +383,39 @@ p a, .eyebrow, .step-whisper, .press-line, .download-note, .hero-eyebrow {
 
 html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
 
+/* 16px, 6% up for the face (app/site-tokens.css): 17px. */
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: var(--font-sans), -apple-system, system-ui, sans-serif;
-  font-size: 16px;
+  font-family: var(--font-sans);
+  font-size: calc(1rem * var(--site-type-optical-scale));
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Headlines in the body face at the DS display weight, tracked in a little. */
 h1, h2, .font-display {
   font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-weight: 360;
+  font-weight: var(--site-type-display-weight);
   line-height: 1.15;
+  letter-spacing: var(--site-type-section-tracking);
 }
 
 /* Shared helpers used by the ported landing markup */
 .eyebrow {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-family: var(--font-sans);
+  font-size: var(--site-type-footnote-size);
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-signal);
 }
 .muted { color: var(--fg-tertiary); font-weight: 400; }
-.footnote { font-size: 13px; color: var(--fg-secondary); }
+.footnote { font-size: var(--site-type-footnote-size); color: var(--fg-secondary); }
 /* Small caps label shared by release-notes group headings and the footer
-   column headings: one size, one tracking, one color. */
-.label-caps { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-secondary); }
+   column headings: one size, one tracking, one color. 13.8px: no page text
+   under 13px. */
+.label-caps { font-size: var(--site-type-footnote-size); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-secondary); }
 
 /* Subpage sections (components/Section.tsx). The first section on a page
    also clears the fixed header so the eyebrow and h1 start below it.
@@ -496,14 +500,15 @@ main > .page-section:first-of-type { padding-top: calc(var(--section-y) + var(--
   .site-header, .site-header.is-scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); }
 }
 
-.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; letter-spacing: -0.02em; }
-.brand-mark { width: 28px; height: 28px; flex: none; }
-.brand-mark .ring-center { fill: var(--fg); }
-.brand-mark .ring { fill: none; stroke: var(--fg); stroke-width: 2.2; }
-.brand-mark .ring-1 { opacity: .85; }
-.brand-mark .ring-2 { opacity: .55; stroke-width: 1.8; }
-.brand-mark .ring-3 { opacity: .3; stroke-width: 1.4; }
-.brand-word { font-size: 20px; font-weight: 500; }
+/* The lockup (components/brand/Lockup): the mark in the accent, the word in
+   primary text, as the app's FathomWordmarkView draws it. Sized by the
+   mark's height; the width follows the drawing. 26px is the DS lockup at its
+   21pt letter height (the menu sheet's header); 22px on phones; 32px in the
+   footer. */
+.brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--site-text-primary); }
+.brand-lockup { display: block; height: 26px; width: auto; flex: none; }
+.brand-lockup .lockup-mark { color: var(--site-accent-fg); }
+.brand-lockup-lg { height: 32px; }
 
 .brand, .site-nav a, .footer-cols a, .footer-brand, .mobile-nav-overlay a { text-decoration: none; }
 .site-nav { display: flex; gap: 28px; align-items: center; }
@@ -592,8 +597,7 @@ main > .page-section:first-of-type { padding-top: calc(var(--section-y) + var(--
 .site-footer { padding: 72px clamp(20px, 5vw, 80px) 32px; border-top: 1px solid var(--divider); }
 .footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; padding-bottom: 48px; }
 .footer-brand { display: flex; flex-direction: column; gap: 20px; max-width: 320px; }
-.brand-mark-lg { width: 48px; height: 48px; }
-.footer-tag { margin: 0; font-size: 15px; color: var(--fg-secondary); line-height: 1.5; }
+.footer-tag { margin: 0; font-size: var(--site-type-subhead-size); color: var(--fg-secondary); line-height: 1.5; }
 .footer-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .footer-cols .footer-heading { margin: 0 0 14px; } /* type comes from .label-caps */
 .footer-cols a { display: flex; align-items: center; min-height: 44px; font-size: 15px; color: var(--fg-secondary); padding: 9px 0; transition: color 160ms; }
@@ -608,8 +612,7 @@ main > .page-section:first-of-type { padding-top: calc(var(--section-y) + var(--
 
 @media (max-width: 480px) {
   .site-header { padding: 14px 16px; gap: 12px; }
-  .brand-word { font-size: 17px; }
-  .site-header .brand-mark { width: 24px; height: 24px; }
+  .site-header .brand-lockup { height: 22px; }
   .theme-toggle, .motion-toggle { padding: 6px 10px; min-width: 44px; min-height: 44px; justify-content: center; }
   .header-controls { gap: 6px; }
   .site-footer { padding: 48px 20px 24px; }

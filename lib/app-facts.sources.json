@@ -302,10 +302,64 @@
       "line": 252
     },
     {
+      "key": "LOOK_NOW.saved.section",
+      "value": "Saved",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 120
+    },
+    {
+      "key": "LOOK_NOW.saved.rows.0.title",
+      "value": "Saved tasks",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 110
+    },
+    {
+      "key": "LOOK_NOW.saved.rows.0.detail",
+      "value": "Pick a task you’ve saved before",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 111
+    },
+    {
+      "key": "LOOK_NOW.saved.rows.1.title",
+      "value": "Saved places",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 112
+    },
+    {
+      "key": "LOOK_NOW.saved.rows.1.detail",
+      "value": "Go to a place you’ve named",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 113
+    },
+    {
+      "key": "LOOK_NOW.saved.rows.2.title",
+      "value": "Run a past session again",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 115
+    },
+    {
+      "key": "LOOK_NOW.saved.rows.2.detail",
+      "value": "Repeat something you did before",
+      "path": "Fathom/Fathom/UI/Components/AssistantAddSheet.swift",
+      "line": 116
+    },
+    {
       "key": "READOUT.overline",
       "value": "Look Now",
       "path": "Fathom/Fathom/UI/Components/TranscriptView.swift",
       "line": 181
+    },
+    {
+      "key": "READOUT.summary",
+      "value": "{type}. {n} item{plural}.",
+      "path": "Fathom/Fathom/Features/Snapshot/ReadoutDocument.swift",
+      "line": 71
+    },
+    {
+      "key": "READOUT.documentType",
+      "value": "Document",
+      "path": "Fathom/Fathom/Features/Snapshot/ReadoutDocument.swift",
+      "line": 32
     },
     {
       "key": "READOUT.counter",
@@ -504,6 +558,12 @@
       "value": "Not yet",
       "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
       "line": 71
+    },
+    {
+      "key": "GO.cancel",
+      "value": "Cancel",
+      "path": "Fathom/Fathom/UI/Screens/GoActiveView.swift",
+      "line": 75
     },
     {
       "key": "GO.arrived",
@@ -710,6 +770,13 @@
       "line": 50
     },
     {
+      "key": "SKILLS.offerAsk",
+      "value": "Say save this as a skill and I’ll keep it.",
+      "path": "Fathom/Fathom/Features/Assistant/AssistantOrchestrator.swift",
+      "line": 1264,
+      "source": "Say save this as a skill and I'll keep it."
+    },
+    {
       "key": "SKILLS.repeatsBeforeOffer",
       "value": "3",
       "path": "Fathom/Fathom/Features/Skills/RoutineDetector.swift",
@@ -745,6 +812,12 @@
       "value": "Run {skill}",
       "path": "Fathom/Fathom/Features/Conversation/ConversationController.swift",
       "line": 1345
+    },
+    {
+      "key": "SKILLS.saved",
+      "value": "Saved {skill}, {n} step{plural}. Say run {skill} any time.",
+      "path": "Fathom/Fathom/Features/Skills/DirectSkillCommands.swift",
+      "line": 165
     },
     {
       "key": "CONSENT.title",
@@ -1215,6 +1288,66 @@
       "path": "Fathom/Fathom.xcodeproj/project.pbxproj",
       "line": 389,
       "source": "CURRENT_PROJECT_VERSION = 17"
+    },
+    {
+      "key": "REMEMBER.echoLead",
+      "value": "Remembered: ",
+      "path": "Fathom/Fathom/Features/Memory/DirectMemoryCommands.swift",
+      "line": 439
+    },
+    {
+      "key": "MEMORY_SCREEN.title",
+      "value": "Memory",
+      "path": "Fathom/Fathom/UI/Screens/MemorySettingsView.swift",
+      "line": 64
+    },
+    {
+      "key": "MEMORY_SCREEN.back",
+      "value": "Back",
+      "path": "Fathom/Fathom/FathomUI/Components/FathomSheetChrome.swift",
+      "line": 264
+    },
+    {
+      "key": "MEMORY_SCREEN.tabs.0",
+      "value": "About you",
+      "path": "Fathom/Fathom/UI/Screens/MemorySettingsView.swift",
+      "line": 34
+    },
+    {
+      "key": "MEMORY_SCREEN.tabs.1",
+      "value": "Places",
+      "path": "Fathom/Fathom/UI/Screens/MemorySettingsView.swift",
+      "line": 35
+    },
+    {
+      "key": "MEMORY_SCREEN.tabs.2",
+      "value": "Memories",
+      "path": "Fathom/Fathom/UI/Screens/MemorySettingsView.swift",
+      "line": 36
+    },
+    {
+      "key": "MEMORY_SCREEN.whereThingsAre",
+      "value": "Where things are",
+      "path": "Fathom/Fathom/Models/MemoryItem.swift",
+      "line": 52
+    },
+    {
+      "key": "MEMORY_SCREEN.confirmedLead",
+      "value": "Confirmed ",
+      "path": "Fathom/Fathom/UI/Screens/MemoryReviewList.swift",
+      "line": 290
+    },
+    {
+      "key": "MEMORY_SCREEN.forgetEverything",
+      "value": "Forget everything",
+      "path": "Fathom/Fathom/UI/Screens/MemoryReviewList.swift",
+      "line": 134
+    },
+    {
+      "key": "PLAN_RUNNING.next",
+      "value": "Next step",
+      "path": "Fathom/Fathom/UI/Screens/ConversationScreen.swift",
+      "line": 2550
     }
   ]
 }

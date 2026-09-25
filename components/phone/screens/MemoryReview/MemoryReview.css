@@ -1,0 +1,183 @@
+/* ================================================================
+   Step 5, Memory (MemoryReviewScreen.tsx). The kit draws the transcript,
+   the composer and the sheet's rise; this file draws the Memory screen
+   inside the sheet and choreographs the scene; the kit settles new turns
+   up and takes the header away while the sheet is up. Every rule is
+   scoped under .memory-review.
+
+   Metrics from components.md with no token of their own, named once:
+   ================================================================ */
+.memory-review {
+  /* FathomSegmentedControl: size-control-sm segments sit 3pt inside the group. */
+  --mr-segment-inset: 3px;
+}
+
+/* ── The Memory screen: a pushed screen in the Settings sheet ─────
+   MemorySettingsView sets the page ground, not the sheet's. */
+.memory-review .mr-sheet {
+  background: var(--fathom-color-bg-default);
+  --ph-glyph-ground: var(--fathom-color-bg-default);
+}
+
+/* FathomBackButton: the chevron and "Back" as one label, on the bar's leading edge. */
+.memory-review .mr-back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fathom-space-1);
+}
+.memory-review .mr-back-chevron {
+  width: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale));
+  height: calc(var(--fathom-size-icon-sm) * var(--ph-glyph-scale));
+}
+
+/* FathomSegmentedControl: a round segment-bg group with a control edge;
+   the selected segment filled, semibold, with shadow-sm. */
+.memory-review .mr-tabs {
+  flex: none;
+  display: flex;
+  gap: var(--fathom-space-1);
+  margin: var(--fathom-space-3) var(--fathom-layout-gutter);
+  padding: var(--mr-segment-inset);
+  border-radius: var(--fathom-radius-full);
+  background: var(--fathom-segment-bg);
+  box-shadow: inset 0 0 0 var(--fathom-border-default) var(--fathom-color-border-control);
+}
+.memory-review .mr-tab {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  height: var(--fathom-size-control-sm);
+  border-radius: var(--fathom-radius-full);
+  font-size: var(--fathom-type-subhead-size);
+  line-height: var(--fathom-type-subhead-line-height);
+  font-weight: var(--ph-weight-medium);
+  color: var(--fathom-color-text-secondary);
+  white-space: nowrap;
+}
+.memory-review .mr-tab.is-selected {
+  background: var(--fathom-segment-selected-bg);
+  color: var(--ph-on-accent);
+  font-weight: var(--ph-weight-semibold);
+  box-shadow: var(--fathom-shadow-sm);
+}
+
+/* The Memories tab (MemoryReviewList): section headers in overline, rows
+   on bg-subtle, each with its Confirmed footnote and a trash button. */
+.memory-review .mr-list {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--fathom-space-2) var(--fathom-layout-gutter) var(--fathom-space-5);
+}
+.memory-review .mr-section {
+  padding: 0 var(--fathom-space-4);
+  margin-bottom: var(--fathom-space-2);
+  font-size: var(--fathom-type-overline-size);
+  line-height: var(--fathom-type-overline-line-height);
+  font-weight: var(--fathom-type-overline-weight);
+  letter-spacing: var(--fathom-type-overline-tracking);
+  text-transform: var(--fathom-type-overline-transform);
+  color: var(--fathom-color-text-secondary);
+}
+.memory-review .mr-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--fathom-radius-xl);
+  background: var(--fathom-color-bg-subtle);
+  overflow: hidden;
+  --ph-glyph-ground: var(--fathom-color-bg-subtle);
+}
+.memory-review .mr-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fathom-space-2);
+  padding: var(--fathom-space-3) var(--fathom-space-2) var(--fathom-space-3) var(--fathom-space-4);
+}
+/* The list's separators: a hairline from the text's edge to the trailing edge. */
+.memory-review .mr-row + .mr-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--fathom-space-4);
+  right: 0;
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+}
+.memory-review .mr-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--fathom-space-1); }
+.memory-review .mr-row-memory {
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  color: var(--fathom-color-text-primary);
+}
+.memory-review .mr-row-note {
+  font-size: var(--fathom-type-footnote-size);
+  line-height: var(--fathom-type-footnote-line-height);
+  color: var(--fathom-color-text-secondary);
+}
+.memory-review .mr-trash {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--fathom-size-touch-min);
+  height: var(--fathom-size-touch-min);
+  margin-top: calc(var(--fathom-space-2) * -1);
+  color: var(--fathom-color-hazard-fg);
+}
+.memory-review .mr-trash .ph-glyph {
+  width: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale));
+  height: calc(var(--fathom-size-icon-md) * var(--ph-glyph-scale));
+}
+/* "Forget everything": its own section, a destructive row in hazard-fg. */
+.memory-review .mr-forget {
+  margin-top: var(--fathom-space-6);
+  padding: var(--fathom-space-3) var(--fathom-space-4);
+  font-size: var(--fathom-type-body-size);
+  line-height: var(--fathom-type-body-line-height);
+  color: var(--fathom-color-hazard-fg);
+}
+
+/* ── The new memory arrives ────────────────────────────────────────
+   Its row is laid out from the start, so nothing below it moves: the
+   words settle in, and an accent wash behind them breathes once and
+   fades, the way a list marks the row it just added. */
+.memory-review .mr-row-new { isolation: isolate; }
+.memory-review .mr-row-new > * {
+  transition:
+    opacity var(--fathom-motion-crossfade-duration) var(--fathom-motion-crossfade-easing),
+    transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing);
+}
+.memory-review .mr-row-new:not([data-on]) > * { opacity: 0; transform: translateY(var(--fathom-space-2)); }
+.memory-review .mr-row-new::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--fathom-color-accent-wash);
+  opacity: 0;
+  pointer-events: none;
+}
+.memory-review .mr-row-new[data-on]::before {
+  animation: mr-new-wash var(--fathom-motion-pulse-duration) var(--fathom-motion-pulse-easing) both;
+}
+@keyframes mr-new-wash {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Contrast Boost: every row is its own card with a control edge,
+   and the separators go (FathomFormRowBackground). ─────────────── */
+@media (prefers-contrast: more) {
+  .memory-review .mr-card { gap: var(--fathom-space-2); background: none; overflow: visible; }
+  .memory-review .mr-row,
+  .memory-review .mr-forget {
+    border-radius: var(--fathom-radius-xl);
+    background: var(--fathom-color-bg-subtle);
+    box-shadow: inset 0 0 0 var(--fathom-border-default) var(--fathom-color-border-control);
+  }
+  .memory-review .mr-row + .mr-row::before { display: none; }
+}

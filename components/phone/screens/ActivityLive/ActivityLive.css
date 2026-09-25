@@ -1,0 +1,75 @@
+/* ================================================================
+   Step 8, Task and Live mode (ActivityLiveScreen.tsx). The kit draws the
+   chrome, the transcript and the turn; this file draws the transcript's
+   activity row and LiveTaskActiveView's card from --fathom-* tokens.
+   Every rule sits under .activity-live.
+   ================================================================ */
+
+/* TranscriptView's activity row: the kind's title in the overline, in the accent. */
+.activity-live .lt-activity {
+  font-size: var(--fathom-type-overline-size);
+  line-height: var(--fathom-type-overline-line-height);
+  font-weight: var(--fathom-type-overline-weight);
+  letter-spacing: var(--fathom-type-overline-tracking);
+  text-transform: var(--fathom-type-overline-transform);
+  color: var(--fathom-color-accent-fg);
+}
+
+/* The turns before the reply, s4 apart like every transcript row. The
+   transcript is anchored to the bottom, so a new turn above the card
+   pushes what came before it up. The reply's room is held from the start
+   (its layer only fades), so until it lands these are drawn down in that
+   room, on the card, and rise by one turn when it does: the overline,
+   s1, two lines of body-reading, and the transcript's s4 gap. */
+.activity-live .lt-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fathom-space-4);
+  transition: transform var(--fathom-motion-settle-duration) var(--fathom-motion-settle-easing);
+}
+.activity-live .lt-history:not([data-on]) {
+  transform: translateY(
+    calc(
+      var(--fathom-type-overline-size) * var(--fathom-type-overline-line-height) + var(--fathom-space-1) +
+        var(--fathom-type-body-reading-size) * var(--fathom-type-body-reading-line-height) * 2 + var(--fathom-space-4)
+    )
+  );
+}
+/* The request rides up with the row and fades as it leaves the room, so
+   it is never cut in half at the top edge; it does not settle down as a
+   leaving turn would. */
+.activity-live .lt-history > .ph-turn.ph-layer:not([data-on]) { transform: none; }
+/* The reply fades in (and settles up, as every new turn does) a beat
+   after the row starts up, so the two never cross. */
+.activity-live .ph-turn-fathom.ph-layer[data-on] { transition-delay: var(--fathom-motion-color-duration); }
+
+/* ActivityCard (the kit: stack(2) top and bottom, centered, and its
+   Contrast Boost edge) around LiveTaskActiveView's center: the goal in
+   title-sm (s6 in, s2 below), "Step N" in footnote in the accent (s4
+   below), the 120 orb, s6, one state line in callout. */
+.activity-live .lt-card { flex: none; }
+.activity-live .lt-goal {
+  padding: 0 var(--fathom-space-6) var(--fathom-space-2);
+  font-size: var(--fathom-type-title-sm-size);
+  line-height: var(--fathom-type-title-sm-line-height);
+  font-weight: var(--fathom-type-title-sm-weight);
+  letter-spacing: var(--fathom-type-title-sm-tracking);
+  color: var(--fathom-color-text-primary);
+  text-wrap: balance;
+}
+.activity-live .lt-step {
+  padding-bottom: var(--fathom-space-4);
+  font-size: var(--fathom-type-footnote-size);
+  line-height: var(--fathom-type-footnote-line-height);
+  font-variant-numeric: tabular-nums;
+  color: var(--fathom-color-accent-fg);
+}
+.activity-live .lt-orb { position: relative; display: block; }
+.activity-live .lt-status {
+  justify-items: center;
+  margin-top: var(--fathom-space-6);
+  padding: 0 var(--fathom-space-6);
+  font-size: var(--fathom-type-callout-size);
+  line-height: var(--fathom-type-callout-line-height);
+  color: var(--fathom-color-text-secondary);
+}

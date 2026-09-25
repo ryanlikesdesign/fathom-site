@@ -99,6 +99,8 @@ const AUDIO_SERVICE = `${F}/Services/Audio/AudioService.swift`;
 const TERMS_VIEW = `${F}/UI/Screens/TermsOfServiceView.swift`;
 const SPLASH = `${F}/UI/Screens/SplashView.swift`;
 const ORCHESTRATOR = `${F}/Features/Assistant/AssistantOrchestrator.swift`;
+const READOUT_DOC = `${F}/Features/Snapshot/ReadoutDocument.swift`;
+const DIRECT_SKILL = `${F}/Features/Skills/DirectSkillCommands.swift`;
 
 /* ---------------------------------------------------------------- *
  * The conversation screen
@@ -218,12 +220,39 @@ export const LOOK_NOW = {
       detail: fact("A fresh picture and a more careful look", ADD_SHEET, 252),
     },
   ],
+  /** The Saved section under it, shown while nothing runs (AssistantAddSheet.swift:107-121). */
+  saved: {
+    section: fact("Saved", ADD_SHEET, 120),
+    rows: [
+      {
+        title: fact("Saved tasks", ADD_SHEET, 110),
+        detail: fact("Pick a task you’ve saved before", ADD_SHEET, 111),
+      },
+      {
+        title: fact("Saved places", ADD_SHEET, 112),
+        detail: fact("Go to a place you’ve named", ADD_SHEET, 113),
+      },
+      {
+        title: fact("Run a past session again", ADD_SHEET, 115),
+        detail: fact("Repeat something you did before", ADD_SHEET, 116),
+      },
+    ],
+  },
 } as const;
 
 /** A long answer read as a document, and the transcript line above it. */
 export const READOUT = {
   /** The overline on a Look Now answer in the transcript. */
   overline: fact("Look Now", TRANSCRIPT, 181),
+  /**
+   * The Look Now turn's one line for a readout, spoken and written to the
+   * transcript; the text itself is not (ConversationScreen.swift:2019-2027).
+   * `{plural}` is "s" unless there is one item. Mockups show
+   * EXAMPLES.libraryLetter.summary.
+   */
+  summary: fact("{type}. {n} item{plural}.", READOUT_DOC, 71),
+  /** The summary's `{type}` for a letter (ReadoutContentType.document). */
+  documentType: fact("Document", READOUT_DOC, 32),
   counter: fact("{n} of {total}", READOUT_BAR, 107),
   paused: fact("Paused", READOUT_BAR, 114),
   previous: fact("Previous item", FOOTER, 494),
@@ -298,6 +327,8 @@ export const GO = {
   arrivalQuestion: fact("Did you arrive at {destination}?", GO_VIEW, 57),
   yes: fact("Yes, finished", GO_VIEW, 67),
   notYet: fact("Not yet", GO_VIEW, 71),
+  /** The dialog's own Cancel, which decides nothing (GoActiveView.swift:72-75). */
+  cancel: fact("Cancel", GO_VIEW, 75),
   arrived: fact("You’re here.", GO_VIEW, 392),
   backToConversation: fact("Back to the conversation…", GO_VIEW, 401),
   savedPlaces: {
@@ -385,6 +416,17 @@ export const SKILLS = {
     39,
   ),
   third: fact("the third time", ROUTINE_OFFER, 50),
+  /**
+   * Said right after the offer, in the same utterance
+   * (AssistantOrchestrator.swift:1264): `RoutineOffer.line(...) + " Say save…"`.
+   * Part of a concatenation, so the checker looks for `source`.
+   */
+  offerAsk: fact(
+    "Say save this as a skill and I’ll keep it.",
+    ORCHESTRATOR,
+    1264,
+    "Say save this as a skill and I'll keep it.",
+  ),
   /** How many repeats before the offer. */
   repeatsBeforeOffer: fact("3", ROUTINE_DETECTOR, 92, "static let repeatsBeforeOffering = 3"),
   listTitle: fact("Skills", SKILLS_LIST, 60),
@@ -393,6 +435,12 @@ export const SKILLS = {
   run: fact("Run", SKILLS_LIST, 147),
   /** The suggestion row for a saved skill (same fact as STARTERS.runSkill). */
   row: fact("Run {skill}", CONTROLLER, 1345),
+  /**
+   * The answer to "save this as a skill", written to the transcript
+   * (ConversationController.swift:815-829). `{plural}` is "s" unless there
+   * is one step. Mockups show EXAMPLES.laundry.skill.saved.
+   */
+  saved: fact("Saved {skill}, {n} step{plural}. Say run {skill} any time.", DIRECT_SKILL, 165),
 } as const;
 
 /* ---------------------------------------------------------------- *
@@ -623,6 +671,42 @@ export const APP_VERSION = fact("1.3.0", PBXPROJ, 410, "MARKETING_VERSION = 1.3.
 export const APP_BUILD = fact("17", PBXPROJ, 389, "CURRENT_PROJECT_VERSION = 17");
 
 /* ---------------------------------------------------------------- *
+ * Added for the memory, plan and consent screens (steps 5, 7, 10)
+ * ---------------------------------------------------------------- */
+
+const DIRECT_MEMORY = `${F}/Features/Memory/DirectMemoryCommands.swift`;
+const MEMORY_SETTINGS = `${F}/UI/Screens/MemorySettingsView.swift`;
+const MEMORY_ITEM = `${F}/Models/MemoryItem.swift`;
+
+/**
+ * Memory the free way: "remember …" (DirectMemoryCommands.remember). The
+ * request is the consent, so fathom asks nothing back; it says what it
+ * stored, quoted: "Remembered: " + the stored sentence (:439). The lead
+ * is a whole literal with its space; mockups show EXAMPLES.remember.echo.
+ */
+export const REMEMBER = {
+  echoLead: fact("Remembered: ", DIRECT_MEMORY, 439),
+} as const;
+
+/** Settings, More options, Memory (MemorySettingsView, MemoryReviewList). */
+export const MEMORY_SCREEN = {
+  title: fact("Memory", MEMORY_SETTINGS, 64),
+  /** FathomBackButton's word on a pushed screen. */
+  back: fact("Back", SHEET_CHROME, 264),
+  tabs: [fact("About you", MEMORY_SETTINGS, 34), fact("Places", MEMORY_SETTINGS, 35), fact("Memories", MEMORY_SETTINGS, 36)],
+  /** The section a "where things are" memory sits under (MemoryKind.objectLocation). */
+  whereThingsAre: fact("Where things are", MEMORY_ITEM, 52),
+  /** A row's footnote: this lead, then the date it was agreed to. Mockups show EXAMPLES.remember.confirmed. */
+  confirmedLead: fact("Confirmed ", MEMORY_LIST, 290),
+  forgetEverything: fact("Forget everything", MEMORY_LIST, 134),
+} as const;
+
+/** A running plan's card: the control that moves it on (ConversationScreen.swift:2549). */
+export const PLAN_RUNNING = {
+  next: fact("Next step", CONVERSATION_SCREEN, 2550),
+} as const;
+
+/* ---------------------------------------------------------------- *
  * Helpers
  * ---------------------------------------------------------------- */
 
@@ -662,6 +746,9 @@ export const APP_FACTS = {
   MIN_IOS,
   APP_VERSION,
   APP_BUILD,
+  REMEMBER,
+  MEMORY_SCREEN,
+  PLAN_RUNNING,
 } as const;
 
 export function isAppFact(x: unknown): x is AppFact<string | number> {
@@ -720,29 +807,28 @@ export function fill(f: AppFact | string, values: Record<string, string | number
    The site's own sample content for the phone mockups, where the app
    would show the user's own places, memories and text. One household
    thread (laundry) runs through memory, Go, the plan, Task and skills.
-   Every string here still follows the copy rules.
+   Every string here still follows the copy rules, and every entry's note
+   starts "Illustrative" and names the step that shows it.
    ================================================================ */
 
 const LAUNDRY_ROOM = "the laundry room";
 const LAUNDRY_SKILL = "the laundry";
+/** The memory step 5 saves; the Memory list keeps it with the others (EXAMPLES.laundry.memories). */
+const KEYS_MEMORY = "My keys hang on the hook by the door.";
 
 export const EXAMPLES = {
+  /** Illustrative, steps 5 to 9: the laundry thread. */
   laundry: {
-    /** What you say to teach it. */
-    teach: "Remember this is the laundry room.",
-    /** What you ask later (also an app starter, STARTERS.pool). */
-    recall: "Where did I leave my keys?",
-    /** Proposed memories, in the "Remember these?" checklist. */
-    memories: [
-      "The laundry room is off the kitchen.",
-      "My keys hang on the hook by the door.",
-      "The detergent is on the shelf above the washer.",
-    ],
+    /** Memories fathom keeps about the house, as step 5's Memory list shows them. */
+    memories: ["The laundry room is off the kitchen.", KEYS_MEMORY, "The detergent is on the shelf above the washer."],
     /** Go's destination, as the app says it after "reached". */
     destination: LAUNDRY_ROOM,
+    /** Step 6's quote: the starter that starts Go. */
     goRow: fill(STARTERS.goToPlace, { place: LAUNDRY_ROOM }),
+    /** Go's instruction while it guides. */
     goInstruction: "The laundry room door is ahead, a little to your left.",
     arrival: fill(GO.arrival, { destination: LAUNDRY_ROOM }),
+    /** Step 7: the plan fathom lays out. */
     plan: {
       goal: "Do a load of laundry",
       steps: [
@@ -752,19 +838,36 @@ export const EXAMPLES = {
         { text: "Start the wash", mode: PLAN.stepModes.task.value },
       ],
     },
-    /** The Task step running in Live mode. */
+    /** Step 8: the Task step running in Live mode. */
     task: {
       goal: "Sort the darks from the lights",
       step: fill(LIVE.step, { n: 2 }),
     },
+    /** Step 9: the routine fathom offers to keep. */
     skill: {
       name: LAUNDRY_SKILL,
       row: fill(STARTERS.runSkill, { skill: LAUNDRY_SKILL }),
-      offer: fill(SKILLS.offer, { times: SKILLS.third.value, subject: LAUNDRY_SKILL }),
+      /**
+       * The whole line the app speaks: the offer, then how to say yes. Spoken
+       * only, never written to the transcript (AssistantOrchestrator.swift:1262).
+       */
+      offer: `${fill(SKILLS.offer, { times: SKILLS.third.value, subject: LAUNDRY_SKILL })} ${SKILLS.offerAsk.value}`,
+      /** What you say to keep it: the app's own phrase (SKILLS.howTo, SKILLS.offerAsk), as your turn. */
+      save: "Save this as a skill.",
+      /** fathom's answer: the four steps of the laundry plan, kept under its name. */
+      saved: fill(SKILLS.saved, { skill: LAUNDRY_SKILL, n: 4, plural: "s" }),
       siri: fill(SHORTCUT_PHRASES.runSkill, { skill: LAUNDRY_SKILL }),
     },
   },
-  /** A letter read as a document: "2 of 5". */
+  /** Illustrative, step 1: a question said aloud and fathom's answer, as the transcript shows them. */
+  justAsk: {
+    request: "What’s on the table in front of me?",
+    answer: "A white mug about a foot to your left, a set of keys beside it, and a folded letter closer to you.",
+  },
+  /** Illustrative, every phone: the status bar clock, and the time over a transcript turn. */
+  clock: "9:41",
+  time: "9:41 AM",
+  /** Illustrative, step 3: a letter read as a document, resting on "2 of 5". */
   libraryLetter: {
     request: STARTERS.firstRun[2].value,
     items: [
@@ -775,11 +878,42 @@ export const EXAMPLES = {
       "Questions? Call us at 555-0142.",
     ],
     current: 2,
+    /** The Look Now turn's line for it: "Document. 5 items." */
+    summary: fill(READOUT.summary, { type: READOUT.documentType.value, n: 5, plural: "s" }),
   },
-  /** Point to Ask: the thing first, then the words on it. */
+  /** Illustrative, step 4's quote: Point to Ask names the thing first, then the words on it. */
   oatMilk: {
     answer: "Oat milk. The label says Barista Edition.",
   },
+  /**
+   * Illustrative, steps 6 and 8: lines drawn only where the app itself
+   * draws a line: Go's instruction (GoActiveView draws the current
+   * instruction), and in the transcript the spoken request
+   * (ConversationController.submit) and a Live mode reply
+   * (ConversationController.appendModeNarration).
+   */
+  activityLines: {
+    /** Go's instruction on the final approach, after EXAMPLES.laundry.goInstruction. */
+    goFinalApproach: "The door is about 4 feet ahead, handle on the right.",
+    /** What you asked, by voice, that started the task (a conversation turn, so the transcript keeps it). */
+    liveAsk: "Help me sort the darks from the lights.",
+    /** fathom's coaching reply in Live mode, for the task EXAMPLES.laundry.task. */
+    liveReply: "That one looks dark blue. It goes with the darks, on your left.",
+  },
+  /**
+   * Illustrative, step 5: memory the free way, as the transcript and the
+   * Memory list show it. The request is also the step's quote. The echo is
+   * the app's lead and the stored sentence; the dates are the list's
+   * abbreviated format.
+   */
+  remember: {
+    request: "Remember my keys hang on the hook by the door.",
+    echo: `${REMEMBER.echoLead.value}${KEYS_MEMORY}`,
+    confirmed: `${MEMORY_SCREEN.confirmedLead.value}Oct 2, 2026`,
+    confirmedEarlier: `${MEMORY_SCREEN.confirmedLead.value}Sep 24, 2026`,
+  },
+  /** Illustrative, step 7: the request the laundry plan answers. */
+  planRequest: "Help me do a load of laundry.",
 } as const;
 
 /**

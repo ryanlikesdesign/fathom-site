@@ -1,0 +1,17 @@
+/* ================================================================
+   Step 3, Read (ReadoutScreen.tsx). The kit draws the header, the stage,
+   the transcript, the readout bar with its moving count, and the
+   composer with the transport and its backward tap; this file lays the
+   bar on the footer's ground.
+   ================================================================ */
+
+/* ── The readout bar (ReadoutPlaybackBar) ─────────────────────────
+   It sits in the footer's stack above the composer, on the composer's
+   ground (ConversationScreen.swift:824), so the ground and its hairline
+   start above the bar and the controls below it draw no second edge. */
+.readout .rd-bar-ground {
+  padding-top: var(--fathom-space-1);
+  background: var(--ph-chrome);
+  border-top: var(--fathom-border-hairline) solid var(--fathom-color-border-divider);
+}
+.readout .rd-bar-ground + .ph-controls { border-top-color: transparent; }

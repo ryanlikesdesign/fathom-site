@@ -1,0 +1,12 @@
+/* ================================================================
+   Step 2, Look Now (LookNowScreen.tsx). The kit draws the stage, the
+   composer and the sheet, brings the rows in one after another as the
+   sheet settles, and presses the row the finger taps; this file only
+   holds "Read text" highlighted at rest.
+   ================================================================ */
+
+/* At rest the picked row (the one the finger touched) stays highlighted:
+   the pressed ground, its words back to full strength. */
+.look-now[data-beat="read"] .ph-sheet-row:has(> .ph-touch) {
+  background: var(--fathom-color-bg-pressed);
+}

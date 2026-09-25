@@ -1,0 +1,32 @@
+/* ================================================================
+   Step 4, Lookout and Point to Ask (ActivityLookoutScreen.tsx). The kit
+   draws every app part; this file lays them out the way the app's
+   stage content does and choreographs the scene. Every rule sits under
+   .activity-lookout.
+   ================================================================ */
+
+/* ConversationScreen.stageContent: the stage on top (the kit's Stage
+   top), then the activity card, stack(3) apart, inside the stage's s6
+   padding. LookoutActiveView fills the card (maxHeight .infinity), so the
+   orb and its line center in the room below the headline. */
+
+/* ActivityCard (the kit: stack(2) top and bottom, and its Contrast Boost
+   edge) around LookoutCenterArea (s4 top and bottom): the orb, s6, one
+   state line in callout. */
+.activity-lookout .lo-card {
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+  gap: var(--fathom-space-6);
+  margin: calc(var(--fathom-space-2) * 3) var(--fathom-layout-gutter) var(--fathom-space-6);
+  padding-block: calc(var(--fathom-space-2) * 2 + var(--fathom-space-4));
+}
+/* The orb is the center a finger holds for Point to Ask (the kit's ring sits in it). */
+.activity-lookout .lo-orb { position: relative; display: block; }
+.activity-lookout .lo-status {
+  padding: 0 var(--fathom-space-8);
+  font-size: var(--fathom-type-callout-size);
+  line-height: var(--fathom-type-callout-line-height);
+  color: var(--fathom-color-text-secondary);
+  text-align: center;
+}
