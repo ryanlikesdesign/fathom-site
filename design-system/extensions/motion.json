@@ -1,0 +1,18 @@
+{
+  "$comment": "Hand-authored. The design system names its motion tokens in the README (Motion) and in FathomMotion, but tokens.json has no motion family, so they are kept here as data. Durations and curves are copied from the README; only the CSS spelling is ours. SwiftUI's easeIn, easeOut and easeInOut are the same cubic-beziers as CSS ease-in, ease-out and ease-in-out. Log any change back to the design system.",
+  "source": "design system README, Motion: motion-press 80ms ease-in, motion-hover 150ms ease-out, motion-color 200ms ease-out, motion-crossfade 280ms ease-out, motion-settle spring (response 0.34, damping 0.86), motion-pulse 1.6s ease-in-out, autoreversing, for the listening glow only. No bounce, no overshoot.",
+  "tokens": [
+    { "name": "motion-press", "duration": "80ms", "easing": "ease-in", "usage": "Pressed feedback." },
+    { "name": "motion-hover", "duration": "150ms", "easing": "ease-out", "usage": "Hover feedback." },
+    { "name": "motion-color", "duration": "200ms", "easing": "ease-out", "usage": "Color changes." },
+    { "name": "motion-crossfade", "duration": "280ms", "easing": "ease-out", "usage": "Crossfades between states." },
+    {
+      "name": "motion-settle",
+      "spring": { "response": 0.34, "dampingFraction": 0.86 },
+      "settleTolerance": 0.001,
+      "fallbackEasing": "ease-out",
+      "usage": "Things settling into place. The spring is sampled into a CSS linear() curve; the duration is when it stays within 0.1% of rest. Browsers without linear() get ease-out."
+    },
+    { "name": "motion-pulse", "duration": "1.6s", "easing": "ease-in-out", "usage": "The listening glow only. Autoreversing: animation-direction alternate, infinite." }
+  ]
+}

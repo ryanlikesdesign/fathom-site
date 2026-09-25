@@ -1,0 +1,148 @@
+{
+  "$comment": "Hand-authored. The site's AAA role layer (--site-*). Every value is a design-system token reference ({name}), so the generated CSS is var(--fathom-<name>) with no hex. A role equals the DS role unless AAA or the no-pure-white rule needs a stronger DS primitive; each such case says why. lightMore applies under @media (prefers-contrast: more) in the light theme; the dark theme gets the DS Contrast Boost values through the var() chains. The generator measures every rule below and fails the build if one breaks. Log every deviation back to the design system.",
+  "roles": {
+    "bg-default": { "dark": "{color-bg-default}", "light": "{color-bg-default}", "kind": "surface" },
+    "bg-subtle": { "dark": "{color-bg-subtle}", "light": "{color-bg-subtle}", "kind": "surface" },
+    "bg-raised": {
+      "dark": "{color-bg-raised}",
+      "light": "{bone-25}",
+      "kind": "surface",
+      "why": "No pure white on the web: the DS light value is bone-0 (#ffffff), rendered as bone-25."
+    },
+    "bg-chrome": {
+      "dark": "{color-bg-chrome}",
+      "light": "{bone-25}",
+      "kind": "surface",
+      "why": "No pure white on the web: the DS light value is bone-0 (#ffffff), rendered as bone-25."
+    },
+    "bg-sheet": { "dark": "{color-bg-sheet}", "light": "{color-bg-sheet}", "kind": "surface" },
+    "bg-pressed": { "dark": "{color-bg-pressed}", "light": "{color-bg-pressed}", "kind": "surface" },
+
+    "text-primary": {
+      "dark": "{color-text-primary}",
+      "light": "{color-text-primary}",
+      "kind": "text",
+      "min": 11.2,
+      "on": ["bg-default", "bg-subtle", "bg-raised"]
+    },
+    "text-secondary": {
+      "dark": "{color-text-secondary}",
+      "light": "{fog-800}",
+      "lightMore": "{ink-600}",
+      "kind": "text",
+      "min": 7,
+      "on": ["bg-default", "bg-subtle", "bg-raised"],
+      "why": "AAA: the DS light value fog-700 is 5.16:1 on bone-100; fog-800 is 8.73:1. Under prefers-contrast, ink-600."
+    },
+    "text-tertiary": {
+      "dark": "{color-text-tertiary}",
+      "light": "{color-text-tertiary}",
+      "lightMore": "{fog-800}",
+      "kind": "metadata",
+      "min": 4.5,
+      "on": ["bg-default", "bg-subtle", "bg-raised"],
+      "why": "Metadata only (dates, counts, chevrons), never page copy: 6.27:1 dark and 4.64:1 light on the ground is under AAA."
+    },
+    "text-on-accent": {
+      "dark": "{bone-25}",
+      "light": "{bone-25}",
+      "kind": "text",
+      "min": 7,
+      "on": ["accent-fill"],
+      "why": "No pure white on the web: the DS value is bone-0 (#ffffff), rendered as bone-25."
+    },
+
+    "accent-fg": {
+      "dark": "{color-accent-fg}",
+      "light": "{fathom-900}",
+      "kind": "text",
+      "min": 7,
+      "on": ["bg-default"],
+      "why": "AAA: the DS light value fathom-700 is 5.97:1 on bone-100; fathom-900 is 10.05:1. Accent text sits on the page ground only: in dark, fathom-300 is 7.37:1 on bg-default but 6.76:1 on bg-subtle and 5.97:1 on bg-raised."
+    },
+    "accent-fill": {
+      "dark": "{fathom-900}",
+      "light": "{fathom-900}",
+      "kind": "fill",
+      "why": "AAA: the DS dark fill fathom-700 holds bone-0 at 6.96:1, under 7; fathom-900 holds bone-25 at 11.54:1."
+    },
+    "accent-wash": { "dark": "{color-accent-wash}", "light": "{color-accent-wash}", "kind": "fill" },
+
+    "cta-bg": {
+      "dark": "{fathom-900}",
+      "light": "{fathom-900}",
+      "kind": "fill",
+      "why": "The primary call to action is fathom-900 in both themes, so its label clears AAA."
+    },
+    "cta-fg": {
+      "dark": "{bone-100}",
+      "light": "{bone-100}",
+      "kind": "text",
+      "min": 7,
+      "on": ["cta-bg"],
+      "why": "Bone text on the CTA in both themes (10.05:1)."
+    },
+    "cta-border": {
+      "dark": "{color-accent-fg}",
+      "light": "{fathom-900}",
+      "kind": "edge",
+      "min": 3,
+      "on": ["bg-default"],
+      "why": "The fill is 1.63:1 on the dark ground, so the edge carries the boundary. Open for Ryan: the DS rule is one surface per button."
+    },
+
+    "border-control": {
+      "dark": "{color-border-control}",
+      "light": "{color-border-control}",
+      "lightMore": "{fog-800}",
+      "kind": "edge",
+      "min": 3,
+      "on": ["bg-default", "bg-subtle", "bg-raised"]
+    },
+    "border-divider": {
+      "dark": "{color-border-divider}",
+      "light": "{color-border-divider}",
+      "lightMore": "{fog-500}",
+      "kind": "divider",
+      "why": "Passive dividers only; allowed to be faint, never a control's edge."
+    },
+    "focus-ring": {
+      "dark": "{color-focus-ring}",
+      "light": "{color-focus-ring}",
+      "lightMore": "{fathom-900}",
+      "kind": "edge",
+      "min": 3,
+      "on": ["bg-default", "bg-subtle", "bg-raised"]
+    },
+
+    "success-fg": {
+      "dark": "{reed-300}",
+      "light": "{color-success-fg}",
+      "kind": "status",
+      "min": 7,
+      "on": ["bg-default"],
+      "pageText": { "dark": true, "light": false },
+      "why": "AAA in dark: the DS value reed-500 is 5.41:1 on ink-900; reed-300 is 8.82:1. FLAG light: no DS reed reaches 7:1 on bone-100 (reed-700 is 4.84:1), so light success is a glyph or dot only, paired with text-primary words."
+    },
+    "success-wash": { "dark": "{color-success-wash}", "light": "{color-success-wash}", "kind": "fill" },
+    "hazard-fg": {
+      "dark": "{color-hazard-fg}",
+      "light": "{color-hazard-fg}",
+      "kind": "status",
+      "min": 7,
+      "on": ["bg-default"],
+      "pageText": { "dark": true, "light": false },
+      "why": "Light rust-700 is 5.29:1 on bone-100: a glyph or edge only, never page text."
+    },
+    "caution-fg": {
+      "dark": "{color-caution-fg}",
+      "light": "{color-caution-fg}",
+      "kind": "status",
+      "min": 7,
+      "on": ["bg-default"],
+      "pageText": { "dark": true, "light": false },
+      "why": "Light ember-800 is 4.53:1 on bone-100: a glyph or edge only, never page text."
+    },
+    "track": { "dark": "{color-track}", "light": "{color-track}", "kind": "fill" }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$comment": "Hand-authored. Contrast Boost's colors and shadows come from tokens.json; its geometry is prose in the design system, so it is kept here as rules. The site has no Contrast Boost control: the generator applies them inside @media (prefers-contrast: more). The Contrast Boost colors are a dark palette, so they apply to the dark theme only (light colors under prefers-contrast are boosted by site-roles.json). The geometry below and the shadow drop do not depend on the theme, so they apply to both themes: a light-theme reader who asks for more contrast also gets doubled borders, the 3px focus ring and bigger controls. Log any change back to the design system.",
+  "source": "design system README: Contrast Boost doubles every border (hairline 0.5 to 1, default 1 to 2, emphasis 3 to 6, indicator 4 to 8), draws every control 8pt bigger (40 to 48, 48 to 56, 56 to 64), drops every shadow; the focus ring is 3px.",
+  "scale": {
+    "factor": 2,
+    "tokens": ["border-hairline", "border-default", "border-emphasis", "border-indicator"]
+  },
+  "grow": {
+    "px": 8,
+    "tokens": ["size-control-sm", "size-control-md", "size-control-lg"]
+  },
+  "set": {
+    "focus-ring-width": "3px"
+  },
+  "shadows": "none"
+}

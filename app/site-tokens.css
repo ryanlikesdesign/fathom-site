@@ -1,0 +1,36 @@
+/* ================================================================
+   Site-only tokens: values the app's design system does not have,
+   because the app has no marketing pages. Hand-authored (not generated);
+   every value is logged back to the design system as a web addition.
+
+   P1: declared only. Nothing reads these yet; each one mirrors the value
+   the current page uses, named beside it.
+
+   Display sizes sit above the DS display-lg (64px). Every clamp() has a
+   rem term, so the browser's text size still scales the type, and a rem
+   floor and ceiling; the middle term is the closest rem + vw fit to the
+   pure-vw value it mirrors (within 3px at 1000 to 1440px wide at the
+   default text size). Line heights are unitless. Weight comes from the DS
+   display styles (500).
+   ================================================================ */
+
+:root {
+  /* Hero headline. Mirrors .hero-title: clamp(46px, 5.6vw, 84px), line-height 1.02. */
+  --site-type-hero-size: clamp(2.875rem, 0.5rem + 5vw, 5.25rem);
+  --site-type-hero-line-height: 1.02;
+
+  /* Section headline. Mirrors .step h2: clamp(40px, 4.4vw, 64px), line-height 1.04. */
+  --site-type-section-size: clamp(2.5rem, 0.5rem + 3.9vw, 4rem);
+  --site-type-section-line-height: 1.04;
+
+  /* Lede under a headline. Mirrors .hero-lede: clamp(18px, 1.6vw, 22px), line-height 1.5. */
+  --site-type-lede-size: clamp(1.125rem, 0.5rem + 1vw, 1.375rem);
+  --site-type-lede-line-height: 1.5;
+
+  /* Section rhythm. Mirrors --section-y (6rem), the subpage section padding. */
+  --site-section-y: 6rem;
+
+  /* Fixed header height. Mirrors --header-h (80px): 18px padding above and below
+     the 44px controls. The sticky phone and scroll-padding depend on it. */
+  --site-header-h: 80px;
+}

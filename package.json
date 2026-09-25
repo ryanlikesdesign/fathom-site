@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "ds:sync": "node scripts/ds/sync.mjs",
+    "ds:build": "node scripts/ds/build.mjs",
+    "ds:check": "node scripts/ds/build.mjs --check"
   },
   "dependencies": {
     "next": "16.2.6",

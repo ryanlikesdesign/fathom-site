@@ -1,0 +1,26 @@
+{
+  "$comment": "Hand-authored web deltas for the design system's 17 type styles. Sizes and line heights come from tokens.json. Sizes are emitted as calc(<px> * var(--fathom-type-unit)); the unit is 1/16 rem at the root, so site text follows the browser's text size, and 1px inside the pxScopes, so phone mockups stay pixel-true under zoom. Log any change back to the design system.",
+  "unit": {
+    "root": "0.0625rem",
+    "px": "1px",
+    "pxScopes": [".phone-screen"]
+  },
+  "tracking": {
+    "$comment": "DS letter-spacing in px scales with the type unit (calc(<px> * unit)); em values pass through. Styles with no DS letter-spacing get the default. Add a per-style override only after a measured difference against an SF render of more than 3% in line width.",
+    "default": "0",
+    "overrides": {}
+  },
+  "family": {
+    "$comment": "The web layer does not paint with the DS families (SF Pro and SF Mono are Apple-only; --fathom-type-<style>-family keeps the DS value for reference). The --text-* styles in app/globals.css set no family and inherit the site's body face. text-mono and text-mono-sm set font-family: var(--font-mono), the site's mono face (Atkinson Hyperlegible Mono once P2 wires it), because the family is what makes them mono. test/ds-tokens.test.ts checks that pairing."
+  },
+  "defaults": {
+    "transform": "none",
+    "numeric": "normal"
+  },
+  "styles": {
+    "eyebrow": { "transform": "uppercase", "$comment": "Uppercase on screen, sentence case in source." },
+    "overline": { "transform": "uppercase" },
+    "mono": { "numeric": "tabular-nums", "$comment": "Counters and distances line up: 2 of 5, about 7 to 10 feet." },
+    "mono-sm": { "numeric": "tabular-nums" }
+  }
+}

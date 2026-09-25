@@ -1,0 +1,31 @@
+{
+  "$comment": "Written by npm run ds:sync. Pins the vendored design system to a commit; npm run ds:check fails if a vendored file stops matching its hash.",
+  "source": "~/apps/project-homer/.worktrees/device-test/docs/design-system",
+  "repoPath": "docs/design-system",
+  "repoCommit": "6f8574084abec6f1124c3fee14fef34714eccddc",
+  "dsCommit": "daa4612f91688747c80d7aa7e802ddf10a36a77b",
+  "dsCommitDate": "2026-09-25T11:09:30-04:00",
+  "tokensVersion": "2.1 — see the Changelog",
+  "tokensRef": "feat/ui-redesign@9043867 (1.3.0)",
+  "changelogHead": "2.15 (2026-09-25)",
+  "files": {
+    "vendor/tokens.json": "221268b2e644d631d9d76868d5f13003f5b822e4519151ba1f69f25fb7aa57ef",
+    "vendor/logos/fathom-lockup-ink.svg": "68cfd1984131d2a81920b88b2a6c69a3c82c21cb2fb78be5ec253879d5040654",
+    "vendor/logos/fathom-lockup-bone.svg": "df0a11aa0cb131746f6b7e7d88bc17ed3dc8b1e4274944f1597f9526622b95c0",
+    "vendor/logos/fathom-logotype-ink.svg": "888251832cdf7f9227b5bceb163d89d42117e13743405534c484aac268c9116e",
+    "vendor/logos/fathom-logotype-bone.svg": "b6e035ea22b44cc11add9291a4c2398892b7269b1863143cc2fffbbf5f4b69a6",
+    "vendor/logos/fathom-lockup-mark-ink.svg": "b00f6a71aa447366f6706e777c6bf24423b825684a5f5733f7ea3d2c2001a5bf",
+    "vendor/logos/fathom-lockup-mark-bone.svg": "fb70505e2b756825f8070377aa8fbf8c76bba17155706885ad6b43a5b7f54bd7",
+    "vendor/logos/fathom-mark-ink.svg": "66e12086d72d1ccb7c63e1140ec281425e18b80c467d197513b409913dabd98b",
+    "vendor/logos/fathom-mark-bone.svg": "4777105193237811e42e21aed380e796bb3eeccd07ce97175a8905bc50c943eb",
+    "vendor/logos/fathom-mark-32-ink.svg": "4cb20b401ac283bf63edb7cdda3d1545a26834744d395b87eaa0b2016081810d",
+    "vendor/logos/fathom-mark-32-bone.svg": "11a7c5b4a8950089564fa5fdd223f0a9fb6e4fd097cdaccee479ebd1aed50212",
+    "vendor/logos/fathom-mark-24-ink.svg": "7cf77f831becee4e897bf0e8a19d7cac7e1d5ffaed533b42d038641df87a1567",
+    "vendor/logos/fathom-mark-24-bone.svg": "8ad74e8ad9a1f9d25bc77d0370815b50ab40c59966426c3706a91ba938f70aa6",
+    "vendor/logos/fathom-mark-16-ink.svg": "397bb1bb2c1eebbc927404c280f8db9394592075246a630586a0a8a4785054fb",
+    "vendor/logos/fathom-mark-16-bone.svg": "095b7887ddde66d65e6e189468e7986fd449916d47a67ef56825e3d52a9e56c4",
+    "vendor/logos/fathom-app-icon.svg": "deedb9277c6a0fef4cf65adae584cffc51e15d6eadc6a272ce3380b3e6a48d52",
+    "vendor/logos/fathom-app-icon.png": "54def13246aafdde2cc224813499d5d368c9ef3d70618192f50c37d0158a5bc7"
+  },
+  "syncedAt": "2026-09-25T16:50:11.685Z"
+}
