@@ -1,10 +1,10 @@
 import { LEGAL_PROSE, Section } from "@/components/Section";
-import { PLUS, PLUS_TRIAL_LABEL } from "@/lib/landing-content";
+import { PLUS_TRIAL_LABEL } from "@/lib/landing-content";
 import { pageMeta } from "@/lib/pageMeta";
 
 export const metadata = pageMeta(
   "Terms",
-  "The terms for using fathom: what it is for, what it is not, subscriptions and the free trial, acceptable use, and how to reach us.",
+  "The terms for using fathom: what it is for, what it is not, subscriptions and free trials, acceptable use, and how to reach us.",
   "/terms",
 );
 
@@ -13,7 +13,7 @@ export default function TermsPage() {
     <Section labelledBy="tos-h" className={LEGAL_PROSE}>
       <p className="eyebrow">Legal</p>
       <h1 id="tos-h" className="font-display text-5xl">Terms</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: September 24, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: September 26, 2026</p>
 
       <h2>Acceptance</h2>
       <p>fathom is operated by Unruly Vision, LLC (&quot;we&quot;). Using fathom means you agree to these terms. If you don&apos;t, don&apos;t use the app.</p>
@@ -25,7 +25,7 @@ export default function TermsPage() {
       <p>We give you a personal, non-transferable license to use fathom on devices you own or control, for your own use, subject to these terms and the App Store terms.</p>
 
       <h2>Subscriptions and billing</h2>
-      <p>Some features require fathom plus, an auto-renewing monthly subscription. New subscribers get a {PLUS_TRIAL_LABEL} free trial; after the trial it renews at {PLUS.price} a {PLUS.period}, the price shown before you purchase, until you cancel. The on-device safety net, Lookout, and Look Now don&apos;t require a subscription. Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep Plus until the end of the period you paid for.</p>
+      <p>Some features require fathom plus, an auto-renewing monthly subscription. Where the App Store offers it, new subscribers can start with a {PLUS_TRIAL_LABEL} free trial; the App Store shows whether you can before you buy, and fathom only mentions a free week when you can. After any trial, fathom plus renews each month at the price shown in the App Store before you purchase, in your own currency, until you cancel. The on-device safety net, Lookout, and Look Now don&apos;t require a subscription. Subscriptions are managed by Apple. Open Settings, tap your name, then Subscriptions, choose Fathom and tap Cancel. You keep Plus until the end of the period you paid for.</p>
 
       <h2>Acceptable use</h2>
       <ul>

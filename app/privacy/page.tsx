@@ -15,7 +15,7 @@ export default function PrivacyPage() {
     <Section labelledBy="pp-h" className={LEGAL_PROSE}>
       <p className="eyebrow">Legal</p>
       <h1 id="pp-h" className="font-display text-5xl">Privacy Policy</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: September 24, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: September 26, 2026</p>
 
       <p>
         fathom is made by Unruly Vision, LLC. This policy explains what fathom collects, where it
@@ -98,6 +98,15 @@ export default function PrivacyPage() {
         encrypted.
       </p>
 
+      <h3 className="mt-6 font-medium">If you still use fathom 1.2 or earlier</h3>
+      <p>
+        This page describes fathom 1.3. Earlier versions differ in two ways. They can include your
+        own name in what they send to Google with each request. And they carry a Gemini key built
+        into the app, which they can use to send a request straight to Google instead of through
+        fathom&apos;s backend. Update fathom from the App Store to get the behavior described here.
+        Usage data and screen recordings work the same way in every version.
+      </p>
+
       <h3 className="mt-6 font-medium">What stays on your phone</h3>
       <ul>
         <li>
@@ -137,7 +146,8 @@ export default function PrivacyPage() {
       <p>
         fathom uses PostHog to learn how the app is used and to fix problems. This is on when you
         first open fathom, in both AI modes. To turn it off: in Settings, under Subscription &amp;
-        Privacy, turn off the switch called Share anonymous usage data. That stops everything
+        Privacy, turn off the switch called Share usage data (in fathom 1.2, Share anonymous usage
+        data). That stops everything
         described here, including the screen recordings. The Send feedback button works only while
         usage data is on.
       </p>
@@ -155,6 +165,10 @@ export default function PrivacyPage() {
           as why a step can&apos;t go ahead.
         </li>
         <li>
+          Your sight level, such as low vision or totally blind, and how many travel aids you
+          listed, when you finish setting up your profile.
+        </li>
+        <li>
           Text you type. When you finish typing in one of fathom&apos;s text boxes, PostHog can
           receive what you typed, such as your name or notes in About you, a memory you edit, or a
           request you type.
@@ -167,11 +181,14 @@ export default function PrivacyPage() {
         </li>
       </ul>
       <p>
-        PostHog does not receive pictures from your camera, audio, or your GPS location. What it
-        gets is labeled with a random number made on your phone, not with your name, email, or
-        Apple ID. PostHog does store your phone&apos;s internet address with it, and a rough
-        location worked out from that address, such as your city. The screen recordings and the
-        text you type can still show your name if you added it to your profile. fathom does not use
+        PostHog does not receive pictures from your camera, audio, or your GPS location. Everything
+        it gets is linked to a random number made on your phone for this install of fathom, not
+        to your name, email, or Apple ID. Because every event from your phone carries the same
+        number, fathom&apos;s App Store privacy label lists this data as linked to you. PostHog
+        also stores your phone&apos;s internet address with it, and your approximate location
+        worked out from that address, such as your city and country. The screen recordings and
+        the text you type can show your name if you added it to your profile. PostHog keeps this
+        data for seven years (see <a href="#how-long">How long we keep it</a>). fathom does not use
         Apple&apos;s advertising identifier, and it does not track you across other apps or
         websites.
       </p>
@@ -259,7 +276,7 @@ export default function PrivacyPage() {
       <p>
         Google, Supabase, and Resend handle this data for us under data processing terms that are
         part of our agreement with each of them. PostHog and Vercel handle it under their own terms
-        of service. Apple handles purchases and notifications under its own privacy policy.
+        of service; we do not have a data processing agreement with Vercel. Apple handles purchases and notifications under its own privacy policy.
       </p>
       <p>
         Like any internet service, fathom&apos;s backend and PostHog see your phone&apos;s internet
@@ -363,7 +380,7 @@ export default function PrivacyPage() {
         </li>
         <li>
           To stop usage data and screen recordings: in Settings, under Subscription &amp; Privacy,
-          turn off the switch called Share anonymous usage data.
+          turn off the switch called Share usage data (in fathom 1.2, Share anonymous usage data).
         </li>
         <li>
           To stop fathom keeping its answers in History: in Settings, under Subscription &amp;
@@ -393,8 +410,8 @@ export default function PrivacyPage() {
       <p>
         Because fathom has no account, there is no profile on our side for us to look up, correct,
         or delete. What fathom stores on your phone is yours to export or delete. Usage data is
-        labeled with a random number, not your name, email, or Apple ID, so we can&apos;t look it
-        up by your name or email. You are always welcome to email us with a privacy question.
+        linked to a random install number, not your name, email, or Apple ID, so we can&apos;t look
+        it up by your name or email. You are always welcome to email us with a privacy question.
       </p>
 
       <h2>Children</h2>
