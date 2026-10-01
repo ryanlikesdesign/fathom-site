@@ -53,8 +53,8 @@ describe("app facts are pinned to the reference build", () => {
     expect(APP_SOURCE).toEqual({
       repo: "ryanlikesdesign/homer",
       checkout: "device-test",
-      commit: "ba8e462",
-      version: "1.3.0 (17)",
+      commit: "45b1c59",
+      version: "1.3.0 (18)",
     });
     expect(`${APP_VERSION.value} (${APP_BUILD.value})`).toBe(APP_SOURCE.version);
     expect(MIN_IOS.value).toBe("17");
@@ -90,6 +90,7 @@ describe("app facts are pinned to the reference build", () => {
       "SKILLS.offerAsk",
       "SKILLS.repeatsBeforeOffer",
       "SAFETY.caution",
+      "PAYWALL.offer",
       "PAYWALL.price",
       "PAYWALL.trial",
       "PLUS_GATE",

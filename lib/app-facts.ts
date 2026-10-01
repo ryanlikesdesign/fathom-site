@@ -50,8 +50,8 @@ function fact(value: string, path: string, line: number, source?: string): AppFa
 export const APP_SOURCE = {
   repo: "ryanlikesdesign/homer",
   checkout: "device-test",
-  commit: "ba8e462",
-  version: "1.3.0 (17)",
+  commit: "45b1c59",
+  version: "1.3.0 (18)",
 } as const;
 
 // Paths, from the app repo root.
@@ -88,6 +88,8 @@ const SKILLS_LIST = `${F}/UI/Screens/SkillsListView.swift`;
 const CONSENT_VIEW = `${F}/UI/Screens/CloudConsentView.swift`;
 const PRESET = `${F}/Config/SettingsPreset.swift`;
 const PAYWALL_VIEW = `${F}/UI/Screens/PaywallView.swift`;
+const PRICE_COPY = `${F}/Services/Subscription/PriceCopy.swift`;
+const STOREKIT_CONFIG = `${F}/FathomStore.storekit`;
 const CAPABILITY = `${F}/Capabilities/FathomCapability.swift`;
 const SHORTCUTS_SRC = `${F}/Intents/FathomShortcuts.swift`;
 const ONBOARDING = `${F}/Data/OnboardingContent.swift`;
@@ -353,7 +355,7 @@ export const PLAN = {
     ORCHESTRATOR,
     672,
   ),
-  title: fact("Your plan", CONVERSATION_SCREEN, 1087),
+  title: fact("Your plan", CONVERSATION_SCREEN, 1101),
   accept: fact("Accept plan", PLAN_CARD, 139),
   edit: fact("Edit", PLAN_CARD, 155),
   dismiss: fact("Dismiss", PLAN_CARD, 163),
@@ -509,7 +511,7 @@ export const SAFETY = {
   caution: fact(
     "fathom uses AI and it can make mistakes.",
     AUDIO_SERVICE,
-    2715,
+    2990,
     "\"Remember, fathom uses AI and it can make mistakes.\"",
   ),
   keepYourAids: fact(
@@ -521,7 +523,7 @@ export const SAFETY = {
   /** The monthly Cloud AI limit. */
   pastAllowance: fact("Obstacle alerts still work, and it resets next month.", CONVERSATION_TOOLS, 48),
   /** Talking needs Cloud AI. */
-  cloudOffAnswer: fact("I can’t answer questions with Cloud AI off.", CONVERSATION_TOOLS, 71),
+  cloudOffAnswer: fact("I can’t answer questions with Cloud AI off.", CONVERSATION_TOOLS, 75),
 } as const;
 
 /* ---------------------------------------------------------------- *
@@ -544,10 +546,15 @@ export const PAYWALL = {
       128,
     ),
   },
-  offer: fact("7 days free, then $12.99 a month", PAYWALL_VIEW, 136),
-  /** Both read from the offer line above. */
-  price: fact("$12.99", PAYWALL_VIEW, 136, "\"7 days free, then $12.99 a month\""),
-  trial: fact("7 days", PAYWALL_VIEW, 136, "\"7 days free, then $12.99 a month\""),
+  /**
+   * Since build 18 the paywall writes its price line from StoreKit's
+   * displayPrice (PriceCopy.swift), so the app's code holds the line's shape
+   * and the price lives in App Store Connect: USD 12.99, read from the API on
+   * 2026-10-01, and mirrored in the app's StoreKit test file.
+   */
+  offer: fact("7 days free, then $12.99 a month", PRICE_COPY, 26, "7 days free, then \\(price) a month"),
+  price: fact("$12.99", STOREKIT_CONFIG, 79, "\"displayPrice\" : \"12.99\""),
+  trial: fact("7 days", PRICE_COPY, 26, "7 days free, then \\(price) a month"),
 } as const;
 
 /** The trial length as a number, from PAYWALL.trial. */
@@ -670,7 +677,7 @@ export const SPLASH_LINE = fact("Visual assistance", SPLASH, 41);
 
 export const MIN_IOS = fact("17", PBXPROJ, 311, "IPHONEOS_DEPLOYMENT_TARGET = 17.0");
 export const APP_VERSION = fact("1.3.0", PBXPROJ, 410, "MARKETING_VERSION = 1.3.0");
-export const APP_BUILD = fact("17", PBXPROJ, 389, "CURRENT_PROJECT_VERSION = 17");
+export const APP_BUILD = fact("18", PBXPROJ, 389, "CURRENT_PROJECT_VERSION = 18");
 
 /* ---------------------------------------------------------------- *
  * Added for the memory, plan and consent screens (steps 5, 7, 10)
@@ -705,7 +712,7 @@ export const MEMORY_SCREEN = {
 
 /** A running plan's card: the control that moves it on (ConversationScreen.swift:2549). */
 export const PLAN_RUNNING = {
-  next: fact("Next step", CONVERSATION_SCREEN, 2550),
+  next: fact("Next step", CONVERSATION_SCREEN, 2566),
 } as const;
 
 /* ---------------------------------------------------------------- *

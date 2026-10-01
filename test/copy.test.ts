@@ -279,6 +279,8 @@ describe("strings shown inside the phones follow the rules too", () => {
       // The same, shown as EXAMPLES.laundry.skill.saved.
       "SKILLS.saved",
       "SAFETY.caution",
+      // Built in code since build 18, from StoreKit's price (PriceCopy.swift).
+      "PAYWALL.offer",
       "PAYWALL.price",
       "PAYWALL.trial",
       "PLUS_GATE",
