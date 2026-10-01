@@ -48,8 +48,10 @@ describe("privacy policy matches the app", () => {
   });
 
   it("names the analytics switch the app has", () => {
-    // SettingsView.swift, the Subscription & Privacy card.
-    expect(textOf(PrivacyPage)).toContain("turn off the switch called Share anonymous usage data");
+    // SettingsView.swift analyticsTitle, renamed in 1.3 (2026-09-26); 1.2
+    // still says the old name, so the policy gives both.
+    const text = textOf(PrivacyPage);
+    expect(text).toContain("turn off the switch called Share usage data (in fathom 1.2, Share anonymous usage data)");
   });
 
   it("says pictures go every few seconds, not only when asked", () => {
@@ -65,7 +67,8 @@ describe("privacy policy matches the app", () => {
     // field (MemorySettingsView.swift), so a recording can carry the name.
     const text = textOf(PrivacyPage);
     expect(text).not.toMatch(/connect it back to you/);
-    expect(text).toContain("The screen recordings and the text you type can still show your name");
+    expect(text).toContain("The screen recordings and the text you type can show your name");
+    expect(text).not.toMatch(/anonymous analytics|not linked to you|never linked/i);
   });
 
   it("does not suggest that no names reach Google", () => {
@@ -137,7 +140,7 @@ describe("privacy policy matches the app", () => {
     // PostHog keeps the client IP with every event for the 7-year event
     // retention (posthog.com/docs/privacy/data-storage).
     const text = textOf(PrivacyPage);
-    expect(text).toContain("PostHog does store your phone's internet address with it");
+    expect(text).toContain("also stores your phone's internet address with it, and your approximate location");
     expect(text).toContain("PostHog stores the address with the usage data");
     expect(text).toContain(
       "PostHog keeps visit and click data, including your browser and device details and your internet address, for seven years.",
@@ -188,7 +191,13 @@ describe("privacy policy matches the app", () => {
     expect(text).toContain(
       "Google, Supabase, and Resend handle this data for us under data processing terms",
     );
-    expect(text).toContain("PostHog and Vercel handle it under their own terms of service.");
+    // No Vercel Pro (decision 2026-09-26): nothing may say Vercel works under
+    // a data processing agreement.
+    expect(text).toContain(
+      "PostHog and Vercel handle it under their own terms of service; we do not have a data processing agreement with Vercel.",
+    );
+    expect(text).not.toMatch(/Vercel[^.]*under (a )?data processing (terms|agreement)/);
+    expect(text).not.toMatch(/all five providers/);
     expect(text).not.toMatch(/at least as well as this policy/);
     for (const name of ["Google (Gemini AI)", "Supabase", "PostHog", "Vercel", "Resend", "Apple"]) {
       expect(text).toContain(name);
@@ -222,5 +231,28 @@ describe("legal pages and the FAQ use the app's current words", () => {
 
   it.each(pages)("the %s has no em dashes or British spellings", (_name, read) => {
     expectNoMatch(read(), [EM_DASH, BRITISH_SPELLINGS]);
+  });
+
+  it("says usage data is linked to the install, with location and seven years (2026-09-26)", () => {
+    // The App Store label now says linked; PrivacyInfo.xcprivacy in project-homer
+    // declares CoarseLocation, Health and SensitiveInfo as linked.
+    const text = textOf(PrivacyPage);
+    expect(text).toContain("Everything it gets is linked to a random number made on your phone for this install of fathom");
+    expect(text).toContain("fathom's App Store privacy label lists this data as linked to you");
+    expect(text).toContain("such as your city and country");
+    expect(text).toContain("PostHog keeps this data for seven years");
+    expect(text).toContain("Your sight level, such as low vision or totally blind");
+    expect(text).toContain("If you still use fathom 1.2 or earlier");
+  });
+
+  it("Terms promise a free week only where the App Store offers one, at the storefront price", () => {
+    // project-homer isEligibleForTrial() shows the free week only when App Store
+    // Connect has a one-week free trial the person can take; prices come from
+    // Product.displayPrice (2026-09-26).
+    const text = textOf(TermsPage);
+    expect(text).toContain("Where the App Store offers it, new subscribers can start with a seven-day free trial");
+    expect(text).toContain("at the price shown in the App Store before you purchase, in your own currency");
+    expect(text).not.toMatch(/New subscribers get a/);
+    expect(text).not.toMatch(/\$12\.99/);
   });
 });
