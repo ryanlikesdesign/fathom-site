@@ -3,6 +3,8 @@ import { LandingScroll } from './LandingScroll';
 import { StickyPhone } from './StickyPhone';
 import { MobilePhone } from './MobilePhone';
 import { AppleMark } from '@/components/AppleMark';
+import { Film } from './Film';
+import { WatchFilmLink } from './WatchFilmLink';
 import { GlyphSprite } from '@/components/phone';
 import { ConversationHero, SCREENS } from '@/components/phone/screens';
 import { COPY_13 as COPY } from '@/lib/copy-13';
@@ -58,7 +60,7 @@ export function FathomLanding() {
             <a href={APP_STORE_URL} className="btn btn-primary" rel="noopener noreferrer">
               <AppleMark />{hero.ctas.primary}<span className="sr-only">{hero.ctas.primarySr}</span>
             </a>
-            <a href="#features" className="btn btn-ghost">{hero.ctas.secondary}</a>
+            <WatchFilmLink className="btn btn-ghost">{hero.ctas.secondary}</WatchFilmLink>
           </div>
         </div>
         <div className="hero-phone" aria-hidden="true">
@@ -78,6 +80,9 @@ export function FathomLanding() {
 
       {/* Everything from here rides up over the pinned hero. */}
       <div className="hero-cover">
+
+      {/* ── The film ──────────────────────────────────────── */}
+      <Film />
 
       {/* ── The gap ───────────────────────────────────────── */}
       <section className="problem" id="gap" aria-labelledby="gap-title">

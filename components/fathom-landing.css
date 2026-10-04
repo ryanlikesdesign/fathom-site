@@ -104,7 +104,9 @@ body{overflow-x:hidden}
   .hero-inner{max-width:calc(100% - 230px)}
 }
 
-.hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--site-text-secondary);font-size:var(--site-type-footnote-size);letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;width:max-content}
+/* max-width and normal wrapping: with large text the tracked words would
+   otherwise run past a phone's edge (WCAG 1.4.10). One line at normal sizes. */
+.hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--site-text-secondary);font-size:var(--site-type-footnote-size);letter-spacing:.18em;text-transform:uppercase;text-align:center;width:max-content;max-width:calc(100vw - 40px)}
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--site-text-tertiary),transparent);animation:scrollPulse 2.4s ease-in-out infinite}
 @keyframes scrollPulse{0%,100%{transform:scaleY(.6);opacity:.5;transform-origin:top}50%{transform:scaleY(1);opacity:1;transform-origin:top}}
 
@@ -150,6 +152,127 @@ body{overflow-x:hidden}
 .problem-body p{margin:0;font-size:var(--site-type-body-size);line-height:1.55;color:var(--site-text-secondary);text-wrap:pretty}
 .problem-body p.accent{color:var(--site-text-primary);font-weight:500}
 @media (max-width:860px){.problem-body{grid-template-columns:1fr}}
+
+/* ================================================================
+   THE FILM
+   The first thing to ride up over the pinned hero. Rhythm, headline and
+   lede match the gap below it. The frame is the film's own navy in both
+   themes (the video is dark either way), so the play button uses the
+   theme-invariant pair the CTA already does: text-on-accent on
+   accent-fill (11.54:1), with the media-edge role for the orb's ring.
+================================================================ */
+.film{position:relative;padding:clamp(80px,14vh,160px) clamp(20px,5vw,80px)}
+.film::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 62%,color-mix(in oklab,var(--fathom-fathom-900) 26%,transparent) 0%,transparent 70%)}
+[data-theme='light'] .film::before{background:radial-gradient(ellipse 60% 50% at 50% 62%,color-mix(in oklab,var(--fathom-fathom-900) 12%,transparent) 0%,transparent 70%)}
+.film-inner{position:relative;max-width:1200px;margin:0 auto}
+.film-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:end;margin-bottom:var(--fathom-space-10)}
+/* min-width:0 and hyphens: at 200% text on a phone, "conversation." alone
+   is wider than the screen; it breaks rather than widening the page. */
+.film-head>*{min-width:0}
+.film-head .eyebrow{margin:0 0 16px}
+.film-head h2{margin:0;overflow-wrap:break-word;hyphens:auto;font-size:var(--site-type-feature-size);font-weight:var(--site-type-display-weight);letter-spacing:var(--site-type-section-tracking);line-height:1.02;color:var(--site-text-primary)}
+.film-head h2 .muted{color:var(--site-text-secondary);font-weight:400}
+.film-lede{margin:0;max-width:560px;font-size:var(--site-type-lede-size);line-height:var(--site-type-lede-line-height);color:var(--site-text-secondary);text-wrap:pretty}
+@media (max-width:860px){.film-head{grid-template-columns:1fr;align-items:start}}
+
+/* The video, the play button and the error panel share one grid cell, so
+   the frame is as tall as the poster or as its tallest label, whichever is
+   more: at 200% text the button's words grow the frame instead of being
+   cut off. The frame clips the orb's rings and the video's corners, and
+   draws the focus ring for the two things inside it that take focus (an
+   outline inside would be clipped with them). */
+.film-frame{position:relative;display:grid;border-radius:var(--fathom-radius-xl);background:var(--site-accent-fill);box-shadow:var(--site-shadow-lg),0 0 0 var(--fathom-border-default) var(--site-border-divider);overflow:hidden}
+.film-frame>*{grid-area:1/1}
+.film-frame:has(.film-play:focus-visible,.film-video:focus-visible){outline:var(--fathom-focus-ring-width) solid var(--site-focus-ring);outline-offset:var(--fathom-focus-ring-offset)}
+.film-video{display:block;width:100%;height:auto;aspect-ratio:16/9;align-self:start;object-fit:cover;background:var(--site-accent-fill)}
+
+/* The play button is the whole poster: one big target. Its orb and name
+   sit in the poster's open right side (the phone fills the left 43%),
+   centered in the band from 44% across, over a scrim that keeps that
+   ground dark. */
+.film-play{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--fathom-space-5);width:100%;padding:var(--fathom-space-6) var(--fathom-space-4) var(--fathom-space-6) 44%;border:0;background:radial-gradient(ellipse 32% 50% at 72% 50%,color-mix(in oklab,var(--site-accent-fill) 62%,transparent) 0%,transparent 75%);color:var(--site-text-on-accent);text-align:center;cursor:pointer}
+/* The frame carries the ring where :has() works; elsewhere the global ring stays. */
+@supports selector(:has(*)){.film-play:focus-visible,.film-video:focus-visible{outline:none}}
+/* The orb: 88pt, the size of the hero's inner sonar ring, on the CTA navy. */
+.film-orb{position:relative;display:grid;place-items:center;width:88px;height:88px;border-radius:50%;background:var(--site-accent-fill);border:var(--fathom-border-default) solid var(--site-media-edge);box-shadow:0 0 0 var(--fathom-space-1) color-mix(in oklab,var(--site-media-edge) 14%,transparent);transition:transform var(--fathom-motion-hover-duration) var(--fathom-motion-hover-easing)}
+.film-glyph{width:var(--fathom-size-icon-xl);height:var(--fathom-size-icon-xl);margin-left:var(--fathom-space-1)}
+.film-play:hover .film-orb,.film-play:focus-visible .film-orb{transform:scale(1.06)}
+/* The orb's sonar, on the app's pulse: two rings a pulse apart, each one
+   two pulses long, so the orb reads as the app's listening indicator does.
+   At rest (no motion, or off screen) they hold still at their mid sizes. */
+.film-ring{position:absolute;inset:calc(-1 * var(--fathom-border-default));border-radius:50%;border:var(--fathom-border-default) solid var(--site-media-edge);pointer-events:none}
+.film-ring-1{transform:scale(1.32);opacity:.4}
+.film-ring-2{transform:scale(1.66);opacity:.2}
+@media (prefers-reduced-motion:no-preference){
+  .film-frame[data-inview] .film-ring{animation:filmPing calc(2 * var(--fathom-motion-pulse-duration)) var(--fathom-motion-pulse-easing) infinite}
+  .film-frame[data-inview] .film-ring-2{animation-delay:var(--fathom-motion-pulse-duration)}
+}
+@keyframes filmPing{0%{transform:scale(1);opacity:.75}100%{transform:scale(2.2);opacity:0}}
+.film-play-text{display:flex;flex-direction:column;gap:var(--fathom-space-1);line-height:1.35;text-wrap:balance}
+.film-play-label{font-size:var(--site-type-title-xs-size);font-weight:600;letter-spacing:-0.01em}
+.film-play-meta{font-size:var(--site-type-subhead-size);font-variant-numeric:tabular-nums}
+
+/* Error: a themed panel along the bottom of the poster, with a way on. */
+.film-error{align-self:end;margin:var(--fathom-space-4);padding:var(--fathom-space-4);border-radius:var(--fathom-radius-md);background:var(--site-bg-raised);border:var(--fathom-border-default) solid var(--site-border-control);color:var(--site-text-primary)}
+.film-error p{margin:0 0 var(--fathom-space-3);font-size:var(--site-type-subhead-size);line-height:1.45}
+.film-error-actions{display:flex;flex-wrap:wrap;gap:var(--fathom-space-2)}
+
+@media (max-width:860px){
+  .film-play{gap:var(--fathom-space-2);padding:var(--fathom-space-3) var(--fathom-space-2) var(--fathom-space-3) 44%}
+  .film-orb{width:64px;height:64px}
+  .film-glyph{width:var(--fathom-size-icon-lg);height:var(--fathom-size-icon-lg);margin-left:calc(var(--fathom-space-1) / 2)}
+  .film-play-label{font-size:var(--site-type-callout-size)}
+  .film-play-meta{font-size:var(--site-type-footnote-size)}
+  .film-frame{border-radius:var(--fathom-radius-lg)}
+}
+
+/* The frame rises and settles as it comes into view. Resting state is the
+   finished one, so no timelines, print and both no-motion paths see it flat. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    .film-stage{animation:filmRise linear both;animation-timeline:view();animation-range:entry 0% entry 75%}
+  }
+}
+@keyframes filmRise{from{opacity:.4;transform:perspective(1800px) translate3d(0,48px,0) rotateX(5deg) scale(.94)}to{opacity:1;transform:none}}
+
+.film-foot{display:flex;flex-direction:column;align-items:flex-start;gap:var(--fathom-space-4);margin-top:var(--fathom-space-6)}
+.film-whisper{margin:0;font-size:var(--site-type-footnote-size);color:var(--site-text-secondary);max-width:560px;line-height:1.5;letter-spacing:.01em}
+.film-transcript{width:100%}
+/* The summary is the homepage's ghost pill; these add the chevron, drop the
+   marker, and give it the focus ring summary isn't in the global list for. */
+.film-summary{list-style:none}
+.film-summary::-webkit-details-marker{display:none}
+.film-summary:focus-visible{outline:var(--fathom-focus-ring-width) solid var(--site-focus-ring);outline-offset:var(--fathom-focus-ring-offset)}
+.film-chevron{width:var(--fathom-size-icon-md);height:var(--fathom-size-icon-md);transition:transform var(--fathom-motion-hover-duration) var(--fathom-motion-hover-easing)}
+.film-transcript[open] .film-chevron{transform:rotate(180deg)}
+.film-transcript-body{margin-top:var(--fathom-space-4);padding:var(--fathom-space-8) clamp(20px,4vw,40px);max-width:760px;border-radius:var(--fathom-radius-lg);background:var(--site-bg-subtle);border:var(--fathom-border-default) solid var(--site-border-divider)}
+.film-transcript-body>div+div{margin-top:var(--fathom-space-8)}
+.film-transcript-body h3{margin:0 0 var(--fathom-space-3);font-size:var(--site-type-title-xs-size);line-height:var(--fathom-type-title-xs-line-height);font-weight:600;color:var(--site-text-primary)}
+/* The transcript is the film for anyone who can't watch it: primary text. */
+.film-line{margin:0 0 var(--fathom-space-3);font-size:var(--site-type-body-size);line-height:1.55;color:var(--site-text-primary);text-wrap:pretty}
+.film-line:last-child{margin-bottom:0}
+/* What the picture shows and what plays under it, set off by a rule and a
+   label as well as the secondary color. */
+.film-line-scene{padding-left:var(--fathom-space-4);border-left:var(--fathom-border-default) solid var(--site-border-control);color:var(--site-text-secondary)}
+.film-who{font-weight:600;color:var(--site-text-primary)}
+
+/* The hero's "Watch the film" play glyph, sized with the text like the Apple mark. */
+.play-mark{width:.9em;height:.9em;flex:none}
+
+/* Forced colors: the poster stays a picture, so the button's words get a
+   system ground of their own, and the orb keeps its brand colors. */
+@media (forced-colors:active){
+  .film-play-text{background:Canvas;color:CanvasText;padding:var(--fathom-space-1) var(--fathom-space-3);border-radius:var(--fathom-radius-md)}
+  .film-orb{forced-color-adjust:none}
+  .film-frame:has(.film-play:focus-visible,.film-video:focus-visible){outline-color:Highlight}
+}
+@media (max-width:480px){
+  .film{padding:64px 20px}
+  .film-head h2{font-size:var(--site-type-feature-size-compact)}
+  .film-lede{font-size:var(--site-type-callout-size)}
+  .film-line{font-size:var(--site-type-callout-size)}
+  .film-transcript-body{padding:var(--fathom-space-6) var(--fathom-space-4)}
+}
 
 /* ================================================================
    SCROLLY: phone + steps
@@ -399,6 +522,10 @@ body{overflow-x:hidden}
 .signup{padding:clamp(96px,14vh,160px) clamp(20px,5vw,80px);background:var(--site-bg-default);position:relative;overflow:hidden}
 .signup::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 20% 80%,color-mix(in oklab,var(--fathom-fathom-900) 22%,transparent) 0%,transparent 70%)}
 .signup-inner{position:relative;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
+/* Grid items shrink to their track, so large text wraps instead of widening
+   the page: a grid item's min-content (the email address, the button label)
+   would otherwise set the column at 200% text on a phone. */
+.signup-inner>*{min-width:0}
 @media (max-width:860px){.signup-inner{grid-template-columns:1fr}}
 
 .signup-left{padding-top:8px}
@@ -410,7 +537,7 @@ body{overflow-x:hidden}
 .press-line p{margin:0;font-size:var(--site-type-subhead-size);color:var(--site-text-secondary);line-height:1.5}
 /* The link reads in primary text: accent text holds AAA on the page ground only
    (site-roles.json), and this panel is bg-subtle. The accent marks it as a link. */
-.press-line a{color:var(--site-text-primary);border-bottom:var(--fathom-border-default) solid var(--site-accent-fg)}
+.press-line a{color:var(--site-text-primary);border-bottom:var(--fathom-border-default) solid var(--site-accent-fg);overflow-wrap:anywhere}
 
 /* ── Download card ──────────────────────────────────────────── */
 .download-card{
@@ -582,13 +709,13 @@ body{overflow-x:hidden}
    .9), which is the static cue. Note .hero-phone itself keeps its
    translateY centering; only the device inside it carried motion. */
 @media (prefers-reduced-motion: reduce){
-  .ripple,.scroll-line,.reveal,.spec-card .spec-icon,.hero-scroll-cue,.progress-fill,.hero-phone .phone,.hero-ripples,.scrolly-sticky .phone,.scrolly-sticky .phone-screen,.screen,.step-phone,.step-copy{animation:none !important;transition:none !important}
+  .ripple,.scroll-line,.reveal,.spec-card .spec-icon,.hero-scroll-cue,.progress-fill,.hero-phone .phone,.hero-ripples,.scrolly-sticky .phone,.scrolly-sticky .phone-screen,.screen,.step-phone,.step-copy,.film-stage,.film-ring,.film-orb,.film-chevron{animation:none !important;transition:none !important}
   .reveal,.hero-inner>*,.step-phone{opacity:1;transform:none}
   .ripple{transform:translate(-50%,-50%)}
   .hero-ripples{transform:translateY(-50%);opacity:1}
 }
 [data-motion='reduce']{scroll-behavior:auto}
-[data-motion='reduce'] :is(.ripple,.scroll-line,.reveal,.spec-card .spec-icon,.hero-scroll-cue,.progress-fill,.hero-phone .phone,.hero-ripples,.scrolly-sticky .phone,.scrolly-sticky .phone-screen,.screen,.step-phone,.step-copy){animation:none !important;transition:none !important}
+[data-motion='reduce'] :is(.ripple,.scroll-line,.reveal,.spec-card .spec-icon,.hero-scroll-cue,.progress-fill,.hero-phone .phone,.hero-ripples,.scrolly-sticky .phone,.scrolly-sticky .phone-screen,.screen,.step-phone,.step-copy,.film-stage,.film-ring,.film-orb,.film-chevron){animation:none !important;transition:none !important}
 [data-motion='reduce'] :is(.reveal,.hero-inner>*,.step-phone){opacity:1;transform:none}
 [data-motion='reduce'] .ripple{transform:translate(-50%,-50%)}
 [data-motion='reduce'] .hero-ripples{transform:translateY(-50%);opacity:1}

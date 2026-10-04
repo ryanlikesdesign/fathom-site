@@ -1,0 +1,136 @@
+WEBVTT
+
+NOTE
+Every line, for anyone who needs the words larger than the picture draws
+them: caption styles in the OS (size, color, background) reach this track,
+never the captions drawn into the picture. Off by default; the default track
+is fathom-film.en.vtt. Every spoken cue is a line of COPY_13.film.transcript
+(lib/copy-13.ts), held to it by test/film.test.tsx. Times are measured from
+the film's voice and chime tracks; re-time both tracks when its audio changes.
+
+1
+00:00:00.400 --> 00:00:04.000
+Narrator: fathom is an assistant
+with vision, for blind and low-vision people.
+
+2
+00:00:04.490 --> 00:00:05.750
+It used to have five modes.
+
+3
+00:00:05.750 --> 00:00:07.950
+You had to pick one
+before you could ask anything.
+
+4
+00:00:09.040 --> 00:00:10.900
+Now it’s one conversation.
+
+5
+00:00:11.000 --> 00:00:12.600
+You just ask.
+
+6
+00:00:12.700 --> 00:00:14.800
+[Mellow guitar music]
+
+7
+00:00:15.000 --> 00:00:16.700
+[Listening chime]
+You: What’s in front of me?
+
+8
+00:00:16.750 --> 00:00:17.500
+[Heard chime]
+
+9
+00:00:17.550 --> 00:00:20.200
+fathom: A stainless steel kettle
+and your pour-over coffee setup
+
+10
+00:00:20.200 --> 00:00:23.200
+are about 6 feet away,
+at your 11 o’clock.
+
+11
+00:00:23.320 --> 00:00:26.300
+Be careful, just in case
+there’s hot water in the kettle.
+
+12
+00:00:30.375 --> 00:00:31.800
+[Listening chime]
+You: What does this say?
+
+13
+00:00:31.875 --> 00:00:32.600
+[Heard chime]
+
+14
+00:00:32.660 --> 00:00:34.200
+fathom: It’s October’s electric bill.
+
+15
+00:00:34.300 --> 00:00:36.900
+It’s $84.77, due by the 12th.
+
+16
+00:00:36.990 --> 00:00:40.300
+Would you like me
+to read all the details?
+
+17
+00:00:44.250 --> 00:00:46.700
+[Listening chime]
+You: Where did I leave my keys?
+
+18
+00:00:46.750 --> 00:00:47.480
+[Heard chime]
+
+19
+00:00:47.530 --> 00:00:50.450
+fathom: You told me they’re
+on the hook by the door.
+
+20
+00:00:50.660 --> 00:00:52.500
+I remember what you tell me.
+
+21
+00:00:56.250 --> 00:00:57.800
+[Listening chime]
+You: Take me to the kitchen.
+
+22
+00:00:57.875 --> 00:00:58.620
+[Heard chime]
+
+23
+00:00:58.670 --> 00:01:01.300
+fathom: Keep heading forward
+for about 12 feet,
+
+24
+00:01:01.490 --> 00:01:04.100
+and then the door to the kitchen
+will be at 9 o’clock.
+
+25
+00:01:04.100 --> 00:01:07.300
+You’ll notice a change in the floor texture,
+because it’s tile.
+
+26
+00:01:10.310 --> 00:01:13.200
+Narrator: fathom is live on the App Store,
+free to download.
+
+27
+00:01:13.400 --> 00:01:15.350
+Find it at fathomvision.app.
+
+28
+00:01:15.700 --> 00:01:17.500
+Made to be heard.

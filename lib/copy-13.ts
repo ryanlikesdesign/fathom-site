@@ -67,6 +67,18 @@ export interface Step {
   link?: { label: string; href: string };
 }
 
+/** One line of the film's transcript: who speaks, or what the picture shows. */
+export interface FilmLine {
+  who: "Narrator" | "You" | "fathom" | "On screen" | "Sound";
+  text: string;
+}
+
+/** One stretch of the film, under its own heading in the transcript. */
+export interface FilmChapter {
+  heading: string;
+  lines: readonly FilmLine[];
+}
+
 /** Numbers the copy spells out, keyed by the app fact they come from. */
 const SPELLED: Record<number, string> = { 7: "seven", 9: "nine" };
 const spell = (n: number) => {
@@ -288,8 +300,120 @@ export const COPY_13 = {
       /** Visible: "Download free"; "on the App Store" is for screen readers. */
       primary: "Download free",
       primarySr: " on the App Store",
-      secondary: "See what it does",
+      /** Goes to the film, the first thing under the hero. */
+      secondary: "Watch the film",
     },
+  },
+  film: {
+    // The 1.3 promo film, 16:9 (fathom-promo, Descript export), in
+    // public/film. Its words are the film's own: the conversation is
+    // captioned in the picture, and the narration is in the captions track
+    // (public/film/fathom-film.en.vtt). Memory is "You told me": 1.3
+    // remembers what you tell it (REMEMBER.echoLead). Guidance to a room is
+    // Go, fathom plus (FathomCapability.swift:89).
+    eyebrow: "The film",
+    title: ["Four questions.", "One conversation."],
+    lede: "Watch fathom describe a kitchen counter, read a bill, recall where you said your keys are, and guide the way to the kitchen.",
+    play: "Play the film",
+    replay: "Watch again",
+    /** Shown on the poster; the spoken form below is for screen readers. */
+    duration: "1:17",
+    durationSr: "1 minute 17 seconds",
+    // Not "voiceover": a VoiceOver user hears their screen reader's name.
+    features: "Narrated, with captions",
+    videoLabel: "The fathom film",
+    error: "The film didn’t load. The transcript has every word of it.",
+    retry: "Try again",
+    /** The two captions tracks: the narration the picture doesn't show (on by default), and every line, for anyone who needs the words larger than the picture draws them. */
+    captionsNarration: "English, narration",
+    captionsFull: "English, every line",
+    // Go's own description (the Go step): "places you’ve named".
+    whisper: "Describing, reading, and memory are free. Go, which guides you to places you’ve named, is fathom plus.",
+    transcriptSummary: "Read the transcript",
+    transcript: [
+      {
+        heading: "Opening",
+        lines: [
+          { who: "Sound", text: "Mellow guitar music, all the way through." },
+          { who: "On screen", text: "The fathom logo and the line “An assistant with vision.”" },
+          {
+            who: "Narrator",
+            text: "fathom is an assistant with vision, for blind and low-vision people. It used to have five modes. You had to pick one before you could ask anything.",
+          },
+          {
+            who: "On screen",
+            text: "An iPhone running fathom. Five mode buttons, Look Now, Lookout, Go, Task, and Assistant, fly in around it and fold into the orb on its screen.",
+          },
+          { who: "Narrator", text: "Now it’s one conversation. You just ask." },
+          { who: "On screen", text: "The orb pulses, and the words “fathom is one conversation now.” appear beside the phone." },
+        ],
+      },
+      {
+        heading: "Describe",
+        lines: [
+          { who: "On screen", text: "A line drawing of a kitchen counter with a kettle and a pour-over coffee setup." },
+          { who: "Sound", text: "fathom’s listening chime plays before each question, and its heard chime after it." },
+          { who: "You", text: "What’s in front of me?" },
+          {
+            who: "fathom",
+            text: "A stainless steel kettle and your pour-over coffee setup are about 6 feet away, at your 11 o’clock. Be careful, just in case there’s hot water in the kettle.",
+          },
+          { who: "On screen", text: "Labels mark the kettle, the pour-over, “about 6 ft,” and a caution, “may be hot.” A clock dial points to 11." },
+        ],
+      },
+      {
+        heading: "Read",
+        lines: [
+          { who: "On screen", text: "An electric bill for October. Amount due, $84.77. Due by October 12." },
+          { who: "You", text: "What does this say?" },
+          {
+            who: "fathom",
+            text: "It’s October’s electric bill. It’s $84.77, due by the 12th. Would you like me to read all the details?",
+          },
+          { who: "On screen", text: "A prompt under the bill reads “Read all the details?”" },
+        ],
+      },
+      {
+        heading: "Remember",
+        lines: [
+          { who: "On screen", text: "A drawing of keys on a hook by a door." },
+          { who: "You", text: "Where did I leave my keys?" },
+          { who: "fathom", text: "You told me they’re on the hook by the door. I remember what you tell me." },
+          {
+            who: "On screen",
+            text: "A card headed “From your memories” reads “The keys are on the hook by the door,” and under it, “You told fathom.” A tag above it reads “Remembered.”",
+          },
+        ],
+      },
+      {
+        heading: "Guide",
+        lines: [
+          { who: "On screen", text: "A line drawing of a hallway, with the kitchen door on the left wall ahead." },
+          { who: "You", text: "Take me to the kitchen." },
+          {
+            who: "fathom",
+            text: "Keep heading forward for about 12 feet, and then the door to the kitchen will be at 9 o’clock. You’ll notice a change in the floor texture, because it’s tile.",
+          },
+          {
+            who: "On screen",
+            text: "Footsteps lead about 12 feet up the hallway. A clock dial points to 9, toward the kitchen door, where the floor turns to tile.",
+          },
+        ],
+      },
+      {
+        heading: "Closing",
+        lines: [
+          {
+            who: "On screen",
+            text: "The phone turns away. The fathom logo returns with “Made to be heard.” and “Live on the App Store, fathomvision.app.”",
+          },
+          {
+            who: "Narrator",
+            text: "fathom is live on the App Store, free to download. Find it at fathomvision.app. Made to be heard.",
+          },
+        ],
+      },
+    ] satisfies readonly FilmChapter[],
   },
   gap: {
     eyebrow: "Why we built it",

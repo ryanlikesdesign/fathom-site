@@ -143,6 +143,14 @@
       "pageText": { "dark": true, "light": false },
       "why": "Light ember-800 is 4.53:1 on bone-100: a glyph or edge only, never page text."
     },
-    "track": { "dark": "{color-track}", "light": "{color-track}", "kind": "fill" }
+    "track": { "dark": "{color-track}", "light": "{color-track}", "kind": "fill" },
+    "media-edge": {
+      "dark": "{fathom-300}",
+      "light": "{fathom-300}",
+      "kind": "edge",
+      "min": 3,
+      "on": ["accent-fill"],
+      "why": "The homepage film's play orb sits on the film's poster, which is dark navy in both themes, so its edge is the same in both: fathom-300 on fathom-900 (the orb's fill, accent-fill). Its label is text-on-accent on the same fill. Web addition: the film player."
+    }
   }
 }

@@ -36,6 +36,7 @@
   --site-hazard-fg: var(--fathom-color-hazard-fg); /* 7.51:1 on bg-default */
   --site-caution-fg: var(--fathom-color-caution-fg); /* 9.06:1 on bg-default */
   --site-track: var(--fathom-color-track);
+  --site-media-edge: var(--fathom-fathom-300); /* 4.53:1 on accent-fill */
   /* Shadow bridge for Tailwind's shadow-* (never none: see the note above) */
   --site-shadow-sm: var(--fathom-shadow-sm);
   --site-shadow-lg: var(--fathom-shadow-lg);
@@ -67,6 +68,7 @@
   --site-hazard-fg: var(--fathom-color-hazard-fg); /* 5.29:1 on bg-default */
   --site-caution-fg: var(--fathom-color-caution-fg); /* 4.53:1 on bg-default */
   --site-track: var(--fathom-color-track);
+  --site-media-edge: var(--fathom-fathom-300); /* 4.53:1 on accent-fill */
   /* Shadow bridge for Tailwind's shadow-* (never none: see the note above) */
   --site-shadow-sm: var(--fathom-shadow-sm);
   --site-shadow-lg: var(--fathom-shadow-lg);
