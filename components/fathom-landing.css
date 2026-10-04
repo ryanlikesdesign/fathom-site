@@ -104,7 +104,9 @@ body{overflow-x:hidden}
   .hero-inner{max-width:calc(100% - 230px)}
 }
 
-.hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--site-text-secondary);font-size:var(--site-type-footnote-size);letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;width:max-content}
+/* max-width and normal wrapping: with large text the tracked words would
+   otherwise run past a phone's edge (WCAG 1.4.10). One line at normal sizes. */
+.hero-scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--site-text-secondary);font-size:var(--site-type-footnote-size);letter-spacing:.18em;text-transform:uppercase;text-align:center;width:max-content;max-width:calc(100vw - 40px)}
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--site-text-tertiary),transparent);animation:scrollPulse 2.4s ease-in-out infinite}
 @keyframes scrollPulse{0%,100%{transform:scaleY(.6);opacity:.5;transform-origin:top}50%{transform:scaleY(1);opacity:1;transform-origin:top}}
 
@@ -164,8 +166,11 @@ body{overflow-x:hidden}
 [data-theme='light'] .film::before{background:radial-gradient(ellipse 60% 50% at 50% 62%,color-mix(in oklab,var(--fathom-fathom-900) 12%,transparent) 0%,transparent 70%)}
 .film-inner{position:relative;max-width:1200px;margin:0 auto}
 .film-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:end;margin-bottom:var(--fathom-space-10)}
+/* min-width:0 and hyphens: at 200% text on a phone, "conversation." alone
+   is wider than the screen; it breaks rather than widening the page. */
+.film-head>*{min-width:0}
 .film-head .eyebrow{margin:0 0 16px}
-.film-head h2{margin:0;font-size:var(--site-type-feature-size);font-weight:var(--site-type-display-weight);letter-spacing:var(--site-type-section-tracking);line-height:1.02;color:var(--site-text-primary)}
+.film-head h2{margin:0;overflow-wrap:break-word;hyphens:auto;font-size:var(--site-type-feature-size);font-weight:var(--site-type-display-weight);letter-spacing:var(--site-type-section-tracking);line-height:1.02;color:var(--site-text-primary)}
 .film-head h2 .muted{color:var(--site-text-secondary);font-weight:400}
 .film-lede{margin:0;max-width:560px;font-size:var(--site-type-lede-size);line-height:var(--site-type-lede-line-height);color:var(--site-text-secondary);text-wrap:pretty}
 @media (max-width:860px){.film-head{grid-template-columns:1fr;align-items:start}}
@@ -517,6 +522,10 @@ body{overflow-x:hidden}
 .signup{padding:clamp(96px,14vh,160px) clamp(20px,5vw,80px);background:var(--site-bg-default);position:relative;overflow:hidden}
 .signup::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 20% 80%,color-mix(in oklab,var(--fathom-fathom-900) 22%,transparent) 0%,transparent 70%)}
 .signup-inner{position:relative;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
+/* Grid items shrink to their track, so large text wraps instead of widening
+   the page: a grid item's min-content (the email address, the button label)
+   would otherwise set the column at 200% text on a phone. */
+.signup-inner>*{min-width:0}
 @media (max-width:860px){.signup-inner{grid-template-columns:1fr}}
 
 .signup-left{padding-top:8px}
@@ -528,7 +537,7 @@ body{overflow-x:hidden}
 .press-line p{margin:0;font-size:var(--site-type-subhead-size);color:var(--site-text-secondary);line-height:1.5}
 /* The link reads in primary text: accent text holds AAA on the page ground only
    (site-roles.json), and this panel is bg-subtle. The accent marks it as a link. */
-.press-line a{color:var(--site-text-primary);border-bottom:var(--fathom-border-default) solid var(--site-accent-fg)}
+.press-line a{color:var(--site-text-primary);border-bottom:var(--fathom-border-default) solid var(--site-accent-fg);overflow-wrap:anywhere}
 
 /* ── Download card ──────────────────────────────────────────── */
 .download-card{
