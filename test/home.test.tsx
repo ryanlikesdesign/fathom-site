@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { axe } from "jest-axe";
+import { axe } from "./helpers/axe";
 import Home from "@/app/page";
 
 describe("Home", () => {

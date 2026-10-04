@@ -386,7 +386,8 @@ export const SITE_COLORS = {
     "success-wash": "#7a8f6a2e",
     "hazard-fg": "#e68b6e",
     "caution-fg": "#e8a64b",
-    "track": "#2a3038"
+    "track": "#2a3038",
+    "media-edge": "#6fa8c9"
   },
   "light": {
     "bg-default": "#f2ede4",
@@ -412,7 +413,8 @@ export const SITE_COLORS = {
     "success-wash": "#eef2ea",
     "hazard-fg": "#9a4a33",
     "caution-fg": "#8f6324",
-    "track": "#dfd9cc"
+    "track": "#dfd9cc",
+    "media-edge": "#6fa8c9"
   },
   "dark-more": {
     "bg-default": "#08090b",
@@ -438,7 +440,8 @@ export const SITE_COLORS = {
     "success-wash": "#a0b88a73",
     "hazard-fg": "#ed9379",
     "caution-fg": "#f0b247",
-    "track": "#2e343d"
+    "track": "#2e343d",
+    "media-edge": "#6fa8c9"
   },
   "light-more": {
     "bg-default": "#f2ede4",
@@ -464,7 +467,8 @@ export const SITE_COLORS = {
     "success-wash": "#eef2ea",
     "hazard-fg": "#9a4a33",
     "caution-fg": "#8f6324",
-    "track": "#dfd9cc"
+    "track": "#dfd9cc",
+    "media-edge": "#6fa8c9"
   }
 } as const;
 
@@ -614,6 +618,13 @@ export const SITE_ROLE_RULES = {
   },
   "track": {
     "kind": "fill"
+  },
+  "media-edge": {
+    "kind": "edge",
+    "min": 3,
+    "on": [
+      "accent-fill"
+    ]
   }
 } as const;
 

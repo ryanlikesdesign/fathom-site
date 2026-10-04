@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { axe } from "jest-axe";
+import { axe } from "./helpers/axe";
 import { FathomLanding } from "@/components/FathomLanding";
 import { COPY_13 as COPY } from "@/lib/copy-13";
 import { isPhoneString, marketingViolations } from "./helpers/copy-rules";
@@ -94,7 +94,7 @@ describe("the homepage tells the 1.3 story", () => {
   it("gives every section a heading and passes axe", async () => {
     const { container } = render(<FathomLanding />);
     const sections = container.querySelectorAll("section");
-    expect(sections.length).toBe(6);
+    expect(sections.length).toBe(7);
     sections.forEach((s) => {
       expect(s.querySelector("h1, h2"), s.className).not.toBeNull();
     });

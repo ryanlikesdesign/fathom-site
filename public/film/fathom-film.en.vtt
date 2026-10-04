@@ -1,0 +1,81 @@
+WEBVTT
+
+NOTE
+The default track. The film's conversation (you and fathom) is captioned in
+the picture, so this track carries what the picture does not: the narration,
+the music, and fathom's listening and heard chimes (set at the top, clear of
+the picture's own captions). fathom-film.en-full.vtt has every line. Each
+narration cue is a line of COPY_13.film.transcript (lib/copy-13.ts), and
+test/film.test.tsx holds the two together. Times are measured from the
+film's narration and chime tracks; re-time both tracks when its audio changes.
+
+1
+00:00:00.400 --> 00:00:04.000
+Narrator: fathom is an assistant
+with vision, for blind and low-vision people.
+
+2
+00:00:04.490 --> 00:00:05.750
+It used to have five modes.
+
+3
+00:00:05.750 --> 00:00:07.950
+You had to pick one
+before you could ask anything.
+
+4
+00:00:09.040 --> 00:00:10.900
+Now it’s one conversation.
+
+5
+00:00:11.000 --> 00:00:12.600
+You just ask.
+
+6
+00:00:12.700 --> 00:00:14.800
+[Mellow guitar music]
+
+7
+00:00:15.000 --> 00:00:16.200 line:6%
+[Listening chime]
+
+8
+00:00:16.750 --> 00:00:17.700 line:6%
+[Heard chime]
+
+9
+00:00:30.375 --> 00:00:31.500 line:6%
+[Listening chime]
+
+10
+00:00:31.875 --> 00:00:32.800 line:6%
+[Heard chime]
+
+11
+00:00:44.250 --> 00:00:45.500 line:6%
+[Listening chime]
+
+12
+00:00:46.750 --> 00:00:47.700 line:6%
+[Heard chime]
+
+13
+00:00:56.250 --> 00:00:57.400 line:6%
+[Listening chime]
+
+14
+00:00:57.875 --> 00:00:58.800 line:6%
+[Heard chime]
+
+15
+00:01:10.310 --> 00:01:13.200
+Narrator: fathom is live on the App Store,
+free to download.
+
+16
+00:01:13.400 --> 00:01:15.350
+Find it at fathomvision.app.
+
+17
+00:01:15.700 --> 00:01:17.500
+Made to be heard.

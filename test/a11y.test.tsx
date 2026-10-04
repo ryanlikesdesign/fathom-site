@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { render } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { axe } from "jest-axe";
+import { axe } from "./helpers/axe";
 
 // The redeem page reads the request and the code database on the server;
 // both are stubbed so it renders its "found" state for a fixed id. posthog-js
