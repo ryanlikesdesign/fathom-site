@@ -175,14 +175,25 @@ describe("the film", () => {
     expect(screen.getByRole("button", { name: PLAY_NAME })).toBeInTheDocument();
     expect(screen.getByRole("status").textContent).toBe("");
 
-    // "Watch again" reloads the sources, and the skip fires again: it plays on.
+    // The reset to the poster at the end reloads the sources, and the skip
+    // fires again: "Watch again" stays, with focus on it.
     const video = container.querySelector("video")!;
     await clickPlay();
     await act(async () => fireEvent.ended(video));
-    await act(async () => fireEvent.click(screen.getByRole("button", { name: new RegExp(`^${film.replay}`) })));
+    await act(async () => fireEvent.error(wide));
+    const again = screen.getByRole("button", { name: new RegExp(`^${film.replay}`) });
+    expect(document.activeElement).toBe(again);
+    expect(screen.getByRole("status").textContent).toBe("");
+
+    // Playing again, it plays on.
+    await act(async () => fireEvent.click(again));
     await act(async () => fireEvent.error(wide));
     expect(video.controls).toBe(true);
     expect(screen.getByRole("status").textContent).toBe("");
+  });
+
+  it("counts an error on the last source as every source failing, so the last has no media query", () => {
+    expect("media" in FILM_SOURCES[FILM_SOURCES.length - 1]).toBe(false);
   });
 
   it("says so when the video itself fails while playing", async () => {
@@ -192,6 +203,14 @@ describe("the film", () => {
     await act(async () => fireEvent.error(video));
     expect(screen.getByRole("status").textContent).toBe(film.error);
     expect(video.controls).toBe(false);
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: film.retry }));
+  });
+
+  it("puts the play button and the error panel above the video, which is a layer of its own", () => {
+    // Unpositioned, they paint under the video in iOS Safari, and Chromium
+    // gives the video their taps: only the orb would answer.
+    const css = readFileSync(join(__dirname, "..", "components", "fathom-landing.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(css).toContain(".film-play,.film-error{position:relative;z-index:1}");
   });
 
   it("goes back to the play button when the browser wants a tap on the player itself", async () => {

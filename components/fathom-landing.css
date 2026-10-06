@@ -280,10 +280,15 @@ body{overflow-x:hidden}
 }
 /* A phone's poster is too short to hold the error panel: it goes under the
    picture instead of over it, its buttons stacked full width like the
-   hero's (up to the same 540px). */
+   hero's (up to the same 540px). There it sits on the frame's navy, where
+   the dark panel's border-control edge is 2.86:1: media-edge, the role for
+   edges on the film's navy, is 4.53:1. Contrast Boost keeps its own. */
 @media (max-width:540px){
   .film-error{grid-area:2/1;align-self:auto}
   .film-error-actions .btn{width:100%}
+}
+@media (max-width:540px) and (prefers-contrast:no-preference){
+  .film-error{border-color:var(--site-media-edge)}
 }
 
 /* ================================================================
