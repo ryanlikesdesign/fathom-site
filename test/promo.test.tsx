@@ -253,11 +253,16 @@ describe("PromoBoard handing out a code", () => {
     mockApi();
     await unlock();
     await userEvent.click(screen.getAllByRole("button", { name: /get a code/i })[0]);
-    await screen.findByText("TESTCODE1234567890");
+    const visible = await screen.findByText("TESTCODE1234567890");
 
     // Visible string is aria-hidden; a sibling carries the NATO reading.
-    expect(screen.getByText(/Tango, Echo, Sierra, Tango/)).toBeInTheDocument();
+    // Asked of the code itself, not the page: the live region spells it out
+    // too, a frame later, so a page-wide query races the announcement.
+    expect(visible.getAttribute("aria-hidden")).toBe("true");
+    expect(visible.nextElementSibling?.textContent).toMatch(/^Code: Tango, Echo, Sierra, Tango/);
     expect(document.querySelector("p[aria-label]")).toBeNull();
+    // And the announcement, spelled the same way.
+    await waitFor(() => expect(screen.getByRole("status").textContent).toMatch(/code reserved: Tango, Echo, Sierra, Tango/));
   });
 
   it("claimed-code state has no axe violations", async () => {
