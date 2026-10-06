@@ -584,7 +584,7 @@ body{overflow-x:hidden}
   .hero{padding:100px 20px 116px;min-height:90vh;min-height:90svh}
   .hero-title{font-size:clamp(36px,9.6vw,46px);margin-bottom:24px}
   .hero-lede{font-size:var(--site-type-callout-size);margin-bottom:32px}
-  /* Stack the App Store badge + "See what it does" at even (full) widths */
+  /* Stack the App Store badge + "Watch the film" at even (full) widths */
   .hero-actions{flex-direction:column;gap:10px;width:100%;align-items:stretch}
   .hero-actions .btn{width:100%;justify-content:center;min-height:52px}
   .hero-eyebrow{margin-bottom:20px}
