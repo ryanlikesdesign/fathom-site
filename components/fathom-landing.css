@@ -183,6 +183,11 @@ body{overflow-x:hidden}
    outline inside would be clipped with them). */
 .film-frame{position:relative;display:grid;border-radius:var(--fathom-radius-xl);background:var(--site-accent-fill);box-shadow:var(--site-shadow-lg),0 0 0 var(--fathom-border-default) var(--site-border-divider);overflow:hidden}
 .film-frame>*{grid-area:1/1}
+/* The poster's button and the error panel sit over the video. A <video> is
+   its own layer, which paints over (iOS Safari) and takes taps from
+   (Chromium) a later sibling that isn't positioned: the button would answer
+   only on its orb, and the panel would hide under the poster. */
+.film-play,.film-error{position:relative;z-index:1}
 .film-frame:has(.film-play:focus-visible,.film-video:focus-visible){outline:var(--fathom-focus-ring-width) solid var(--site-focus-ring);outline-offset:var(--fathom-focus-ring-offset)}
 .film-video{display:block;width:100%;height:auto;aspect-ratio:16/9;align-self:start;object-fit:cover;background:var(--site-accent-fill)}
 
@@ -270,6 +275,10 @@ body{overflow-x:hidden}
   .film{padding:64px 20px}
   .film-head h2{font-size:var(--site-type-feature-size-compact)}
   .film-lede{font-size:var(--site-type-callout-size)}
+  /* A phone's poster is too short to hold the error panel: it goes under the
+     picture instead of over it, and its buttons fill the width. */
+  .film-error{grid-area:2/1;align-self:auto}
+  .film-error-actions .btn{flex:1 1 auto}
   .film-line{font-size:var(--site-type-callout-size)}
   .film-transcript-body{padding:var(--fathom-space-6) var(--fathom-space-4)}
 }

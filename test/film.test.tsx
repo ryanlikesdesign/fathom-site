@@ -165,6 +165,23 @@ describe("the film", () => {
     expect(container.querySelector("video")!.controls).toBe(true);
   });
 
+  it("stays on the poster when the browser skips a source made for wider windows", async () => {
+    // A <source> whose media query doesn't match fires error on every load:
+    // on a phone, the 1080p file's. React hands it to the video's onError too.
+    const { container } = render(<Film />);
+    const [wide] = container.querySelectorAll("source");
+    expect(wide.getAttribute("media")).toBe(FILM_SOURCES[0].media);
+    await act(async () => fireEvent.error(wide));
+    expect(screen.getByRole("button", { name: PLAY_NAME })).toBeInTheDocument();
+    expect(screen.getByRole("status").textContent).toBe("");
+
+    // Playing, and after "Watch again" reloads the sources, it keeps playing.
+    await clickPlay();
+    await act(async () => fireEvent.error(wide));
+    expect(container.querySelector("video")!.controls).toBe(true);
+    expect(screen.getByRole("status").textContent).toBe("");
+  });
+
   it("goes back to the play button when the browser wants a tap on the player itself", async () => {
     playSpy.mockImplementationOnce(() => Promise.reject(new DOMException("gesture", "NotAllowedError")));
     render(<Film />);
