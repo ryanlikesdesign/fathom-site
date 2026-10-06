@@ -165,6 +165,54 @@ describe("the film", () => {
     expect(container.querySelector("video")!.controls).toBe(true);
   });
 
+  it("stays on the poster when the browser skips a source made for wider windows", async () => {
+    // A <source> whose media query doesn't match fires error on every load:
+    // on a phone, the 1080p file's. React hands it to the video's onError too.
+    const { container } = render(<Film />);
+    const [wide] = container.querySelectorAll("source");
+    expect(wide.getAttribute("media")).toBe(FILM_SOURCES[0].media);
+    await act(async () => fireEvent.error(wide));
+    expect(screen.getByRole("button", { name: PLAY_NAME })).toBeInTheDocument();
+    expect(screen.getByRole("status").textContent).toBe("");
+
+    // The reset to the poster at the end reloads the sources, and the skip
+    // fires again: "Watch again" stays, with focus on it.
+    const video = container.querySelector("video")!;
+    await clickPlay();
+    await act(async () => fireEvent.ended(video));
+    await act(async () => fireEvent.error(wide));
+    const again = screen.getByRole("button", { name: new RegExp(`^${film.replay}`) });
+    expect(document.activeElement).toBe(again);
+    expect(screen.getByRole("status").textContent).toBe("");
+
+    // Playing again, it plays on.
+    await act(async () => fireEvent.click(again));
+    await act(async () => fireEvent.error(wide));
+    expect(video.controls).toBe(true);
+    expect(screen.getByRole("status").textContent).toBe("");
+  });
+
+  it("counts an error on the last source as every source failing, so the last has no media query", () => {
+    expect("media" in FILM_SOURCES[FILM_SOURCES.length - 1]).toBe(false);
+  });
+
+  it("says so when the video itself fails while playing", async () => {
+    const { container } = render(<Film />);
+    const video = container.querySelector("video")!;
+    await clickPlay();
+    await act(async () => fireEvent.error(video));
+    expect(screen.getByRole("status").textContent).toBe(film.error);
+    expect(video.controls).toBe(false);
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: film.retry }));
+  });
+
+  it("puts the play button and the error panel above the video, which is a layer of its own", () => {
+    // Unpositioned, they paint under the video in iOS Safari, and Chromium
+    // gives the video their taps: only the orb would answer.
+    const css = readFileSync(join(__dirname, "..", "components", "fathom-landing.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(css).toContain(".film-play,.film-error{position:relative;z-index:1}");
+  });
+
   it("goes back to the play button when the browser wants a tap on the player itself", async () => {
     playSpy.mockImplementationOnce(() => Promise.reject(new DOMException("gesture", "NotAllowedError")));
     render(<Film />);

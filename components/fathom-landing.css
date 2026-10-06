@@ -175,14 +175,19 @@ body{overflow-x:hidden}
 .film-lede{margin:0;max-width:560px;font-size:var(--site-type-lede-size);line-height:var(--site-type-lede-line-height);color:var(--site-text-secondary);text-wrap:pretty}
 @media (max-width:860px){.film-head{grid-template-columns:1fr;align-items:start}}
 
-/* The video, the play button and the error panel share one grid cell, so
-   the frame is as tall as the poster or as its tallest label, whichever is
-   more: at 200% text the button's words grow the frame instead of being
-   cut off. The frame clips the orb's rings and the video's corners, and
+/* The video, the play button and the error panel share one grid cell (on
+   phones the panel moves under the poster, below), so the frame is as tall
+   as the poster or as its tallest label, whichever is more: at 200% text
+   the button's words grow the frame instead of being cut off. The frame clips the orb's rings and the video's corners, and
    draws the focus ring for the two things inside it that take focus (an
    outline inside would be clipped with them). */
 .film-frame{position:relative;display:grid;border-radius:var(--fathom-radius-xl);background:var(--site-accent-fill);box-shadow:var(--site-shadow-lg),0 0 0 var(--fathom-border-default) var(--site-border-divider);overflow:hidden}
 .film-frame>*{grid-area:1/1}
+/* The poster's button and the error panel sit over the video. A <video> is
+   its own layer, which paints over (iOS Safari) and takes taps from
+   (Chromium) a later sibling that isn't positioned: the button would answer
+   only on its orb, and the panel would hide under the poster. */
+.film-play,.film-error{position:relative;z-index:1}
 .film-frame:has(.film-play:focus-visible,.film-video:focus-visible){outline:var(--fathom-focus-ring-width) solid var(--site-focus-ring);outline-offset:var(--fathom-focus-ring-offset)}
 .film-video{display:block;width:100%;height:auto;aspect-ratio:16/9;align-self:start;object-fit:cover;background:var(--site-accent-fill)}
 
@@ -272,6 +277,18 @@ body{overflow-x:hidden}
   .film-lede{font-size:var(--site-type-callout-size)}
   .film-line{font-size:var(--site-type-callout-size)}
   .film-transcript-body{padding:var(--fathom-space-6) var(--fathom-space-4)}
+}
+/* A phone's poster is too short to hold the error panel: it goes under the
+   picture instead of over it, its buttons stacked full width like the
+   hero's (up to the same 540px). There it sits on the frame's navy, where
+   the dark panel's border-control edge is 2.86:1: media-edge, the role for
+   edges on the film's navy, is 4.53:1. Contrast Boost keeps its own. */
+@media (max-width:540px){
+  .film-error{grid-area:2/1;align-self:auto}
+  .film-error-actions .btn{width:100%}
+}
+@media (max-width:540px) and (prefers-contrast:no-preference){
+  .film-error{border-color:var(--site-media-edge)}
 }
 
 /* ================================================================

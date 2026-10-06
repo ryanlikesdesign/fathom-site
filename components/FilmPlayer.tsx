@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import { ensurePostHogReady } from '@/lib/posthog';
 import { COPY_13 } from '@/lib/copy-13';
 import {
@@ -191,6 +191,17 @@ export function FilmPlayer() {
     setPhase((p) => (p === 'server' ? p : 'error'));
   }, []);
 
+  // React hands a <source>'s error to the <video>'s onError as well, as if it
+  // bubbled. A source whose media query doesn't match fires one on every
+  // load, so on a phone the 1080p file's would land here: only the video's
+  // own errors count. The last source reports every source failing.
+  const onVideoError = useCallback(
+    (e: SyntheticEvent<HTMLVideoElement>) => {
+      if (e.target === e.currentTarget) onError();
+    },
+    [onError],
+  );
+
   useEffect(() => {
     const v = video.current;
     const el = frame.current;
@@ -233,7 +244,7 @@ export function FilmPlayer() {
         tabIndex={covered ? -1 : 0}
         onPlay={onPlay}
         onEnded={onEnded}
-        onError={onError}
+        onError={onVideoError}
       >
         {FILM_SOURCES.map((s, i) => (
           <source
