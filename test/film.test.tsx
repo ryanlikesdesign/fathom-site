@@ -175,11 +175,23 @@ describe("the film", () => {
     expect(screen.getByRole("button", { name: PLAY_NAME })).toBeInTheDocument();
     expect(screen.getByRole("status").textContent).toBe("");
 
-    // Playing, and after "Watch again" reloads the sources, it keeps playing.
+    // "Watch again" reloads the sources, and the skip fires again: it plays on.
+    const video = container.querySelector("video")!;
     await clickPlay();
+    await act(async () => fireEvent.ended(video));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: new RegExp(`^${film.replay}`) })));
     await act(async () => fireEvent.error(wide));
-    expect(container.querySelector("video")!.controls).toBe(true);
+    expect(video.controls).toBe(true);
     expect(screen.getByRole("status").textContent).toBe("");
+  });
+
+  it("says so when the video itself fails while playing", async () => {
+    const { container } = render(<Film />);
+    const video = container.querySelector("video")!;
+    await clickPlay();
+    await act(async () => fireEvent.error(video));
+    expect(screen.getByRole("status").textContent).toBe(film.error);
+    expect(video.controls).toBe(false);
   });
 
   it("goes back to the play button when the browser wants a tap on the player itself", async () => {
