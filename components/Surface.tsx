@@ -18,16 +18,19 @@ const GRAIN_URL =
 export function Surface({
   register = "lift",
   as: Tag = "div",
+  id,
   className = "",
   children,
 }: {
   register?: Register;
+  id?: string;
   as?: keyof JSX.IntrinsicElements;
   className?: string;
   children: ReactNode;
 }) {
   return (
     <Tag
+      id={id}
       data-register={register}
       className={`relative overflow-hidden rounded-[var(--radius-card)] border ${className}`}
       style={{

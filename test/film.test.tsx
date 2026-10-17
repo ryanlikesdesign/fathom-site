@@ -64,9 +64,11 @@ afterEach(() => vi.restoreAllMocks());
 const clickPlay = () => act(async () => fireEvent.click(screen.getByRole("button", { name: PLAY_NAME })));
 
 describe("the film", () => {
-  it("sits first under the hero, and the hero's second button goes to it with a play glyph", () => {
+  it("sits first under the hero, after the one-line release bar, and the hero's second button goes to it with a play glyph", () => {
     const { container } = render(<FathomLanding />);
-    expect(container.querySelector(".hero-cover")?.firstElementChild?.id).toBe("film");
+    const cover = Array.from(container.querySelector(".hero-cover")?.children ?? []);
+    expect(cover[0]?.classList.contains("release-bar")).toBe(true);
+    expect(cover[1]?.id).toBe("film");
     const link = screen.getByRole("link", { name: COPY.hero.ctas.secondary });
     expect(link.getAttribute("href")).toBe("#film");
     expect(link.querySelector("svg.play-mark")?.getAttribute("aria-hidden")).toBe("true");

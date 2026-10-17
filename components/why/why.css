@@ -1,0 +1,777 @@
+/* ================================================================
+   The /why page: a founder's essay, read start to finish.
+
+   Three layouts, one page (components/why/gate.ts decides):
+   - static (no html[data-why]): the finished page. One column, each
+     section with its finished drawing (the hero's beside its words on a
+     wide window). Reduced motion, Pause motion, more contrast, forced
+     colors, no script, text zoom, windows under 320 x 520, print.
+   - pocket (data-why="pocket"): phones and other smaller windows. The
+     static layout, with each drawing a pocket: an art band that rises in
+     as the drawing the band before it ended on, reforms it into its own on
+     the way up, pins under the header between two blocks of text while the
+     rest of its pieces reform, then scrolls away with the page. Every band
+     is the text column's width at the shape of the drawings it plays, so
+     the drawing fills the column and the art and the text share both
+     edges; never under text, never more than 42svh tall. The hero's band
+     and its sentences pin together as one frame for 110svh, the one block
+     of essay text a phone ever pins (Ryan's hero exception), and only on a
+     portrait screen they fit on whole; there the phone in the drawing
+     stands upright, as tall as the screen above the words allows, where it
+     fits at nearly its full height, and lies on its side on a shorter
+     screen; otherwise the hero's band pins alone. The five machines, the
+     four pairs and the hands step in flow: the band sits above its text,
+     no taller than 32svh, never pins, and steps as each item comes up the
+     screen. The ceiling's and the summit's bands play their one move as
+     they rise and never pin; the people's pins alone. The pivot is one
+     scene centered on the screen: the mark across the column, the line
+     under it.
+   - stage (data-why="stage"): 1024 x 720 CSS px and up. One sticky art
+     pane beside the text column for the whole essay. Two blocks of text
+     pin while the art plays against them, the two Ryan granted: the
+     hero's sentences (150svh) and the four pairs (96svh). Every other
+     sentence, the five machines' eras included, is plain flow and never
+     pins, and no text ever moves, fades or dims. Only aria-hidden art
+     moves, and only with scroll.
+
+   Every motion rule sits in a media block that mirrors the gate, so the
+   page releases to plain flow the moment an OS setting or the Pause
+   motion control changes, before any script reacts.
+
+   Type: seven roles, a few big moves against quiet text, and nothing in
+   between them.
+     display    the h1 and the pivot (its answer)       --site-type-hero-size
+     section    the h2s, the beats, the closing clause  --site-type-section-size
+     statement  the claims                              --why-type-statement
+     title      the four jobs, a step under a claim     --why-type-job
+     lede       what supports a claim, the timeline     --site-type-lede-size
+     body       running text, the consumer uses         --site-type-body-size
+     label      the eras, the one legend, the byline    --site-type-callout-size
+   Each section has one entry (its h2) and one exit (a beat or a statement).
+
+   Rhythm: one scale for the whole page, on the DS's 8px spacing step and
+   sized against the body line (about 28px: body 18px at the reading line
+   height 26/17). Every margin and gap below is one of the --why-rhythm-*
+   steps; nothing else spaces the text (test/why/css.test.ts). Proximity
+   does the grouping: tight inside a unit, five times that between units,
+   twice that again between movements and around statements, and the
+   section padding (--site-section-y, 96px) plus a change of ground
+   between sections. One left edge per column: no indents, markers, bars
+   or rules.
+
+   Colors, type, spacing and motion are tokens. The --why-* values below
+   are page-local constants derived from them, logged in the site spec
+   decision log; they are not design-system tokens.
+   ================================================================ */
+
+.why {
+  /* Vertical rhythm: 8px steps (--fathom-space-2) against the body's
+     28px line. Phones step down one notch at the unit and group levels
+     (the 640px block below restores them). */
+  --why-rhythm-in: var(--fathom-space-2); /* inside a unit: label to value, consumer to job, line to line of a lede: 8px, under a third of a line */
+  --why-rhythm-para: var(--fathom-space-4); /* paragraph to paragraph, a claim to its lede: 16px, about half a line */
+  --why-rhythm-head: var(--fathom-space-6); /* a heading to its first text: 24px, under one line */
+  --why-rhythm-unit: var(--fathom-space-8); /* between units (eras, pairs), a headline to its claim: 32px on phones */
+  --why-rhythm-group: calc(var(--fathom-space-8) * 2); /* between movements, around statements: 64px on phones */
+  --why-rhythm-turn: calc(var(--fathom-space-8) * 3); /* a section's turn from its problem to its answer: a group and a unit, 96px on phones */
+
+  /* Statement size: the DS title-lg at the site's optical scale (36px), title-md on phones. */
+  --why-type-statement: calc(var(--fathom-type-title-md-size) * var(--site-type-optical-scale));
+  --why-type-statement-lh: var(--fathom-type-title-md-line-height);
+  /* A job: the DS title-md at the optical scale (29.7px), title-sm on phones:
+     one step under the statement that closes the movement, so the four jobs
+     build to it rather than match it. */
+  --why-type-job: calc(var(--fathom-type-title-sm-size) * var(--site-type-optical-scale));
+  --why-type-job-lh: var(--fathom-type-title-sm-line-height);
+
+  /* The stage's content width: 80rem, wider than the page's 64rem, so
+     the art can take about half a 1440 window beside a full-measure column. */
+  --why-wide: calc(var(--container-5xl) * 1.25);
+  /* The essay column on the stage: 60ch at most, never past 46% of the width. */
+  --why-copy-w: min(60ch, 46%);
+  --why-pane-gap: var(--fathom-space-10);
+  /* The art column: everything the essay column and the gutter leave. */
+  --why-pane-w: calc(100% - var(--why-copy-w) - var(--why-pane-gap));
+  /* The hero's text pins for this much scroll on the stage while its four abilities play. */
+  --why-hero-run: 150svh;
+  /* The four pairs pin on the stage, this far down the viewport (formations/essay.ts
+     FRAME_TOP reads the same 32svh), for this much scroll while the viewfinder re-targets
+     pair by pair. The five machines never pin: each steps as its era comes up. */
+  --why-frame-top: 32svh;
+  --why-pairs-run: 96svh;
+  /* The pivot's stage: it rises (the orb re-spaces into the mark and the mark holds on one
+     ground), pins full height while the iris opens out of the mark and the words build, then
+     lets go (formations/essay.ts PIVOT_STAGE reads the same 220svh). */
+  --why-pivot-stage: 220svh;
+  /* Pockets (phones): a band is the text column's width at its own view's
+     shape (the box of the drawings it plays, morph/index.ts POCKET_VIEWS,
+     as --vw and --vh on the pocket), so its drawing fills it edge to edge
+     of the column, the art and the text share both edges, and a wide
+     drawing makes a short band instead of empty ground above and below
+     it; never taller than this share of the screen. And the runway the
+     reader scrolls while it is pinned, between list items, between
+     sections, and at the climax. A band pinned alone leaves its runway
+     empty under it, so a section's is only as long as its one move needs
+     (a phone's 100px). */
+  --why-band-max: 42svh;
+  /* A keyed band (in flow over the list it steps through, never pinned) is a little shorter, so the
+     items it lands on are still under it on screen as they come up. */
+  --why-band-keyed-max: 32svh;
+  --why-run-item: 24svh;
+  --why-run-section: 12svh;
+  --why-run-climax: 40svh;
+  /* The hero's frame (its band and its sentences) pins on a phone for this much scroll
+     while its five beats play (each move over 100px of scroll on a 390 x 844 phone). No
+     other text pins on a phone: the machines', the pairs' and the hands' bands step in
+     flow, and the summit's band pins alone before its beat. */
+  --why-hero-frame-run: 110svh;
+  /* The pivot's stage on a phone: the band reforms into the mark, the iris opens out of it, the words build
+     as soon as the navy covers them, and the line lets go a short hold after "fathom." is built, so the
+     people's band (rising as the listening orb) comes into view while the line is still on screen. */
+  --why-pivot-pocket: 176svh;
+  /* The pivot's own height off the stage: the approved 80svh navy block (under the stage's width, the
+     whole screen under the header: the static pivot below). */
+  --why-pivot-h: 80svh;
+  /* A still is never taller than this share of the viewport (art.css). */
+  --why-still-h: 60svh;
+  /* Derived alias: 2px, 4px under Contrast Boost. */
+  --why-stroke: calc(var(--fathom-border-default) * 2);
+  /* Atkinson Hyperlegible Next's first baseline below the middle of its line, in em
+     (WhyDirector BASELINE_EM): where a line of text sits on a line of the art. */
+  --why-baseline: 0.31;
+  /* The hero's horizon on the art's 600 x 800 grid (formations F01-F02: y 340). */
+  --why-hero-horizon: calc(340 / 800);
+
+  color: var(--site-text-primary);
+}
+
+@media (min-width: 640px) {
+  .why {
+    --why-type-statement: calc(var(--fathom-type-title-lg-size) * var(--site-type-optical-scale));
+    --why-type-statement-lh: var(--fathom-type-title-lg-line-height);
+    --why-type-job: calc(var(--fathom-type-title-md-size) * var(--site-type-optical-scale));
+    --why-type-job-lh: var(--fathom-type-title-md-line-height);
+    --why-rhythm-unit: var(--fathom-space-10); /* 40px, a line and a half */
+    --why-rhythm-group: calc(var(--fathom-space-10) * 2); /* 80px, three lines */
+    --why-rhythm-turn: calc(var(--fathom-space-10) * 3); /* 120px */
+  }
+}
+
+.why p,
+.why li { margin: 0; font-size: var(--site-type-body-size); line-height: var(--fathom-type-body-reading-line-height); }
+/* No automatic hyphens: a word broken across lines costs a low-vision
+   reader a re-read, and a ragged 60ch measure never needs one. The essay
+   keeps only its authored hyphens. */
+.why p,
+.why li { -webkit-hyphens: manual; hyphens: manual; }
+
+/* ---------------- hero ---------------- */
+
+/* The hero sits inside <article>, so the first-section header clearance in
+   globals.css (main > .page-section:first-of-type) never reaches it. */
+.why .why-hero { padding-block-start: calc(var(--site-section-y) + var(--site-header-h)); }
+.why-hero h1 {
+  margin: 0;
+  font-size: var(--site-type-hero-size);
+  font-weight: var(--site-type-display-weight);
+  line-height: var(--site-type-hero-line-height);
+  letter-spacing: var(--site-type-hero-tracking);
+  max-inline-size: 14ch;
+  text-wrap: balance;
+}
+/* The claim, its three abilities and the turn: one group under the
+   headline. The claim and the turn are statements; the three abilities
+   between them are one lede, half a line apart (the paragraph step: more
+   than the leading inside one, so a sentence that wraps still reads as
+   one of three), half a line under the claim, and a unit above the turn. */
+.why-lede { margin-block-start: var(--why-rhythm-unit); }
+.why .why-lede p { max-inline-size: 30ch; text-wrap: balance; }
+.why .why-lede .why-claim,
+.why .why-lede .why-turn {
+  font-size: var(--why-type-statement);
+  line-height: var(--why-type-statement-lh);
+  font-weight: var(--site-type-display-weight);
+  color: var(--site-text-primary);
+  max-inline-size: 20ch;
+}
+.why-abilities { margin-block-start: var(--why-rhythm-para); display: grid; gap: var(--why-rhythm-para); }
+.why .why-abilities p {
+  font-size: var(--site-type-lede-size);
+  line-height: var(--site-type-lede-line-height);
+  color: var(--site-text-secondary);
+  max-inline-size: 42ch;
+}
+.why .why-lede .why-turn { margin-block-start: var(--why-rhythm-unit); }
+/* The byline is the essay's signature and the hero's exit: set apart from
+   the turn by a group step, at the lede size on one baseline, the name in
+   the body's strong weight and full ink, the role quieter after it. */
+.why .why-byline {
+  margin-block-start: var(--why-rhythm-group);
+  font-size: var(--site-type-lede-size);
+  line-height: var(--site-type-lede-line-height);
+  color: var(--site-text-secondary);
+}
+.why-byline-name { color: var(--site-text-primary); font-weight: var(--fathom-type-body-strong-weight); }
+
+/* The pinned runways exist only with motion: the stage's hero, and the frames'. */
+.why-hero-run,
+.why-frame-run { display: block; block-size: 0; }
+/* A frame is the art's band and the text it steps with (the hero's
+   sentences, the machines, the pairs). Plain flow unless it pins (the
+   hands' wrapper never does: its band pins alone). */
+.why-frame { position: relative; }
+/* A section whose band opens it (the ceiling's, the people's): no group
+   step above it, the section's own padding is the air. */
+.why-copy > .why-still:first-child { margin-block-start: 0; }
+/* A frame under its section's headline (the hands'): a head step, as the
+   headline's text would stand; the band's own margins take over where it
+   shows and does not pin, and they collapse into this one. */
+.why-copy > .why-h2 + .why-frame-pin { margin-block-start: var(--why-rhythm-head); }
+
+/* The finished page on a wide window (reduced motion, Pause motion, more
+   contrast, forced colors, no script): the hero is still one composed first
+   viewport, the words at the start of the content box and the finished
+   drawing beside them, as the stage sets them. Its wrappers step aside so
+   the drawing can take the second column. */
+@media (min-width: 1024px) {
+  :root:not([data-why]) .why-hero .why-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--why-pane-gap);
+    align-items: center;
+  }
+  :root:not([data-why]) .why-hero :is(.why-hero-frame-pin, .why-hero-frame) { display: contents; }
+  :root:not([data-why]) .why-hero .why-frame-run { display: none; }
+  :root:not([data-why]) .why-hero :is(h1, .why-lede, .why-byline) { grid-column: 1; }
+  :root:not([data-why]) .why-hero .why-still { grid-column: 2; grid-row: 1 / span 3; justify-self: center; margin-block: 0; }
+}
+
+/* ---------------- sections ---------------- */
+
+.why-h2 {
+  margin: 0;
+  max-inline-size: 18ch;
+  font-size: var(--site-type-section-size);
+  font-weight: var(--site-type-display-weight);
+  line-height: var(--site-type-section-line-height);
+  letter-spacing: var(--site-type-section-tracking);
+  text-wrap: balance;
+}
+.why-body { margin-block-start: var(--why-rhythm-head); max-inline-size: 60ch; }
+/* Paragraph to paragraph, across a still that is hidden (the stage) or
+   shown (its own margins then collapse with this one), and inside a frame.
+   :where keeps it under the beats' and the statements' own steps. */
+.why-body :where(p, .why-still, .why-frame-pin) + p { margin-block-start: var(--why-rhythm-para); }
+/* Two paragraphs open a second movement inside their section, so they stand
+   off the one before: the people's account of how fathom is tested, after
+   the claim that blind people shape it, a group step; and the hands'
+   answer, the wearable, after the problem, a turn (a group and a unit):
+   the section's hinge, where the drawing of the problem becomes the
+   drawing of the answer before the answer is read. */
+.why-body > p[data-why-at='people-p2'] { margin-block-start: var(--why-rhythm-group); }
+.why-body > p[data-why-at='hands-p2'] { margin-block-start: var(--why-rhythm-turn); }
+/* On a wide window the running text is the lede size, so the argument is
+   never quieter than the lists it introduces: body, label and the few big
+   moves, nothing in between. */
+@media (min-width: 1024px) {
+  :where(.why .why-body) p:not([class]) { font-size: var(--site-type-lede-size); line-height: var(--site-type-lede-line-height); }
+}
+
+/* The essay is a run of sections on alternating grounds, so a change of
+   section reads as a change of light. The pivot sits on the accent fill
+   (text-on-accent: 11.54:1). */
+.why-scene.is-tone { background: var(--site-bg-sheet); }
+.why-scene.is-accent { background: var(--site-accent-fill); color: var(--site-text-on-accent); }
+
+/* The timeline: an ordered list, so a screen reader announces "list, 5
+   items" and the order is the story. Each step is one paragraph at the
+   lede size in full ink, its era run in at its head in the strong weight
+   (as the byline sets the name before the role): five lead-ins down one
+   left edge, and a unit of space to the next. A label line over each
+   would cost the list five lines, and with them the screen it pins on
+   beside its machines. The list stays quiet so the beat after it ("Then
+   it stopped.") is the section's one big exit. */
+.why-timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--why-rhythm-unit); }
+.why-body > .why-frame-pin[data-why-frame='arrives'],
+.why-body > .why-frame-pin[data-why-frame='pace'] { margin-block-start: var(--why-rhythm-group); }
+.why .why-timeline li {
+  font-size: var(--site-type-lede-size);
+  line-height: var(--site-type-lede-line-height);
+  color: var(--site-text-primary);
+  max-inline-size: 38ch;
+  text-wrap: pretty;
+}
+.why-era { margin-inline-end: var(--fathom-space-1); font-weight: var(--fathom-type-body-strong-weight); }
+
+/* The beats: large, alone, and not headings: they are lines of the essay,
+   so they stay paragraphs. */
+.why .why-beat {
+  margin-block-start: var(--why-rhythm-group);
+  font-size: var(--site-type-section-size);
+  font-weight: var(--site-type-display-weight);
+  line-height: var(--site-type-section-line-height);
+  letter-spacing: var(--site-type-section-tracking);
+}
+
+/* Catch up now, movement one: the four re-targets, closed by its
+   statement. Each pair is a unit: the consumer use at the body size,
+   quiet, and the assistive job at the title size in full ink, tight
+   under it on a phone and on its baseline in a second column on a wider
+   window, where every job shares one left edge facing the viewfinder.
+   Scale, weight, position and space carry the change, nothing else.
+   Where the pairs sit in two columns, one legend heads them once, on the
+   columns' own edges; stacked (a phone, a narrow column) the pair's two
+   sizes say it, so the legend steps aside. Either way the labels are sr-only on every
+   pair, so a screen reader hears each pair whole. */
+.why .why-legend {
+  display: none;
+  margin-block-end: var(--why-rhythm-head);
+  font-size: var(--site-type-callout-size);
+  color: var(--site-text-secondary);
+}
+.why-pairs { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--why-rhythm-unit); }
+.why-pair dl { margin: 0; display: grid; row-gap: var(--why-rhythm-in); }
+.why-pair dd { margin: 0; }
+.why-built { font-size: var(--site-type-body-size); line-height: var(--fathom-type-body-reading-line-height); color: var(--site-text-secondary); }
+.why-pointed {
+  font-size: var(--why-type-job);
+  line-height: var(--why-type-job-lh);
+  font-weight: var(--site-type-display-weight);
+  color: var(--site-text-primary);
+}
+/* Side by side only where both columns set every pair on one line (the
+   longest use, "Previewing a couch in your living room", and the longest
+   job, "Describing a street", with a head step between them: 36.5rem), so
+   the four rows step evenly and each sits level with its viewfinder; the
+   columns share the measure about as the two texts do. Narrower, the pairs
+   stack, and their two sizes say it. On one baseline, so every job sits at
+   the same depth in its row. */
+.why-pairs-block { container: why-pairs / inline-size; }
+@container why-pairs (min-width: 36.5rem) {
+  .why .why-legend,
+  .why-pair dl {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    column-gap: var(--why-rhythm-head);
+    align-items: baseline;
+  }
+}
+/* Movement one's close and movement two: the same generous group step
+   above and below the statement, so it stands alone between the pairs
+   and the keep. Movement two is the section's exit: its lead-in at the
+   lede size, and its last clause, the point, at the section size on a
+   line of its own, tight under it. */
+.why .why-statement {
+  margin-block: var(--why-rhythm-group);
+  font-size: var(--why-type-statement);
+  line-height: var(--why-type-statement-lh);
+  font-weight: var(--site-type-display-weight);
+  container-type: inline-size;
+}
+/* The statement breaks where it is said, never where the column runs out:
+   its two phrases, "Point that tech at the right problems" and "and
+   accessibility catches up fast.", each a line where the column holds the
+   longer one whole (17.2em: its 16.5em and a margin for the face's
+   rendering), and otherwise each balanced over two lines of one width
+   (9.6em), a four-line stack: "Point that tech at / the right problems /
+   and accessibility / catches up fast." Never three lines, two short over
+   one long. */
+.why-statement .why-phrase { display: block; text-wrap: balance; }
+@container (width < 17.2em) {
+  .why-statement .why-phrase { max-inline-size: 9.6em; }
+}
+.why .why-keep {
+  font-size: var(--site-type-lede-size);
+  line-height: var(--site-type-lede-line-height);
+  max-inline-size: 42ch;
+}
+.why-keep-clause {
+  display: block;
+  margin-block-start: var(--why-rhythm-in);
+  font-size: var(--site-type-section-size);
+  font-weight: var(--site-type-display-weight);
+  line-height: var(--site-type-section-line-height);
+  letter-spacing: var(--site-type-section-tracking);
+  container-type: inline-size;
+}
+/* The clause breaks where it is said, as the statement does: "at the same
+   speed," over "not a decade behind.", each phrase a line of its own. Where
+   the column cannot hold the longer phrase at the section size (9.2em: a phone),
+   both phrases step down to the statement's own size rather than breaking
+   inside a phrase; display weight and their own lines keep the emphasis. */
+.why-keep-clause .why-phrase { display: block; text-wrap: balance; }
+@container (width < 9.3em) {
+  .why-keep-clause .why-phrase { font-size: var(--why-type-statement); line-height: var(--why-type-statement-lh); letter-spacing: normal; }
+}
+
+.why-close { margin-block-start: var(--why-rhythm-group); display: flex; flex-wrap: wrap; gap: var(--why-rhythm-para); align-items: center; }
+
+/* The art pane exists only on the stage. */
+.why-pane { display: none; }
+
+/* ---------------- the pivot ---------------- */
+
+/* "That's why I built fathom." The hero's answer, so it takes the h1's
+   display treatment at the h1's left edge in the copy column. The sr-only
+   sentence is read once; the drawn words beside it are aria-hidden. On the
+   static page it is a navy block with the line finished. */
+.why-pivot { min-block-size: var(--why-pivot-h); display: grid; align-content: center; }
+.why-pivot p.why-pivot-line {
+  margin: 0;
+  font-size: var(--site-type-hero-size);
+  font-weight: var(--site-type-display-weight);
+  line-height: var(--site-type-hero-line-height);
+  letter-spacing: var(--site-type-hero-tracking);
+  max-inline-size: 14ch;
+  /* "That’s why I / built fathom.", rhyming with the h1's "Why I / built fathom" at every width. */
+  text-wrap: balance;
+}
+.why-words span { display: inline-block; }
+/* Forced colors paint a backplate behind each inline-block word, and at the
+   display leading the second line's plates would cover the first line's
+   descenders: the words run inline there, on a looser line. */
+@media (forced-colors: active) {
+  .why-words span { display: inline; }
+  .why-pivot p.why-pivot-line { line-height: var(--fathom-type-title-lg-line-height); }
+}
+/* The fathom mark, exact and at rest, on the static page's navy block: the
+   hero's promise kept. In motion the art draws it (the pieces become it,
+   and the iris opens out of it). On-accent, CanvasText in forced colors
+   (currentColor). Above the line on a narrow window, beside it on a wide one. */
+.why-pivot-mark { color: var(--site-text-on-accent); margin-block-end: var(--why-rhythm-unit); }
+.why-pivot-mark svg { display: block; inline-size: min(40vw, calc(var(--why-still-h) / 2)); block-size: auto; }
+/* Under the stage's width the static block is the scene the pocket composes in motion: the navy fills the
+   screen under the header, and the mark is as large as the column and the screen allow once the section's
+   padding, the unit step and the line's two lines are set (and no taller than the pocket's mark, a band's
+   share of the screen), never smaller than the wide window's mark.
+   Centered together in the block, mark, line and air read as one scene with no empty ground under them.
+   It stays in flow, so text zoom and browser zoom only make it taller. */
+@media (max-width: 1023.98px) {
+  .why-pivot { min-block-size: calc(100svh - var(--site-header-h)); }
+  .why-pivot-mark svg {
+    inline-size: min(
+      100%,
+      var(--why-band-max),
+      max(
+        min(40vw, calc(var(--why-still-h) / 2)),
+        calc(
+          100svh - var(--site-header-h) - 2 * var(--site-section-y) - var(--why-rhythm-unit)
+            - 2 * var(--site-type-hero-size) * var(--site-type-hero-line-height)
+        )
+      )
+    );
+  }
+}
+@media (min-width: 1024px) {
+  :root:not([data-why]) .why-pivot .why-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--why-pane-gap);
+    align-items: center;
+  }
+  :root:not([data-why]) .why-pivot .why-pivot-line { grid-column: 1; grid-row: 1; }
+  :root:not([data-why]) .why-pivot .why-pivot-mark { grid-column: 2; grid-row: 1; justify-self: center; margin: 0; }
+}
+/* The iris: a navy plane the director opens out of the mark. It exists
+   only with motion; the static block is navy itself. */
+.why-iris { display: none; }
+/* The phone's band that holds the mark through the pivot: pockets only. */
+.why-pivot-stage > .why-pocket { display: none; }
+
+/* With motion (stage or pocket), the section's navy moves onto the iris
+   plane behind the line, and the director clips it. Until its first
+   write the plane is unclipped and the words are in place, so the pivot
+   looks exactly like the static block. */
+@media screen and (prefers-reduced-motion: no-preference) and (prefers-contrast: no-preference) and (forced-colors: none) {
+  /* The director keeps the reader's place itself (a pinned block's runway appears and goes as it
+     measures): the browser's own scroll anchoring would move the page a second time. */
+  :root[data-why]:not([data-motion='reduce']) { overflow-anchor: none; }
+  :root[data-why]:not([data-motion='reduce']) .why-pivot-mark { display: none; }
+  :root[data-why]:not([data-motion='reduce']) .why-pivot { position: relative; isolation: isolate; }
+  :root[data-why]:not([data-motion='reduce']) .why-pivot.is-accent { background: transparent; }
+  :root[data-why]:not([data-motion='reduce']) .why-iris {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--site-accent-fill);
+  }
+}
+
+/* Pocket: phones and other smaller windows at default text size, at least
+   320 x 520 (research: "pinned pockets", with the scroll-linked entrance of
+   sites that keep their motion on phones). Each still is a pocket: the band
+   (the art) rises into view as the drawing the band before it ended on and
+   reforms it into its own on the way up; then it sticks under the header
+   while the reader scrolls its runway (the ::after below), the director
+   plays the rest of its formations on the first 80% and holds the last
+   20%, and the band scrolls away with the page, the next block of text
+   just under it (a band with one move, "rise", plays it on the way up and
+   has no runway). Nothing in a pocket is text or focusable, and no text
+   ever passes under a band: the text is above it or below it. The band
+   is the column's width at its own view's shape (--vw, --vh), never over
+   42svh, so even pinned it leaves more than half the screen. It waits
+   unseen for the director's first write, so it never shows the static
+   still's crop first. The pivot pins with its band: the mark held over
+   the line, the two centered together on the screen, while the iris
+   opens out of the mark and the words build below it. */
+@media screen and (prefers-reduced-motion: no-preference) and (prefers-contrast: no-preference) and (forced-colors: none) and (min-width: 320px) and (min-height: 520px) {
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket {
+    --why-band-h: min(var(--why-band-max), 100cqi * var(--vh) / var(--vw));
+    container-type: inline-size;
+    inline-size: 100%;
+    aspect-ratio: auto;
+    overflow: visible;
+    margin-block: var(--why-rhythm-unit);
+  }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket::after { content: ""; display: block; block-size: var(--why-run-section); }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='item']::after { block-size: var(--why-run-item); }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='climax']::after { block-size: var(--why-run-climax); }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='steps']::after { block-size: var(--why-run, var(--why-run-section)); }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='none']::after,
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='rise']::after { content: none; }
+  /* A keyed pocket (the machines' and the pairs' where their frame does not fit, the hands'): the band
+     sits in flow directly above its text, no runway and no pin, and each step plays as its item comes up
+     the screen (WhyDirector keyed pockets). */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='keyed']::after { content: none; }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-run='keyed'] { --why-band-h: min(var(--why-band-keyed-max), 100cqi * var(--vh) / var(--vw)); }
+  /* Native sticky places the band, anchored to the top only (iOS strands
+     bottom-anchored sticky boxes when its toolbar hides); the director
+     only writes the pieces inside it. */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket-band {
+    position: sticky;
+    inset: auto;
+    inset-block-start: var(--site-header-h);
+    block-size: var(--why-band-h);
+  }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket:not([data-ready]) .why-pocket-band { visibility: hidden; }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket-band > .why-morph { --why-u: min(100cqw / var(--vw), 100cqh / var(--vh)); }
+
+  /* The hero's frame on a phone, when its band and its sentences fit on a
+     portrait screen together (the director measures, shortens the band if
+     it must, and sets data-pin; when they cannot fit, or the window is
+     wider than tall, a zoomed desktop's, the band is a pocket before the
+     text): the band and the text pin as one block under the header while
+     the five beats play against the words each one shows; then the frame
+     lets go with the page. Nothing passes under the band: the frame is one
+     block. */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-frame-pin[data-pin] > .why-frame {
+    position: sticky;
+    inset-block-start: var(--site-header-h);
+  }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-frame-pin[data-pin] > .why-frame > .why-pocket { margin-block: 0; }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-frame-pin[data-pin] > .why-frame > .why-pocket::after { content: none; }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-frame-pin[data-pin] > .why-frame .why-pocket-band {
+    position: relative;
+    inset-block-start: auto;
+    block-size: var(--why-frame-band, var(--why-band-h));
+  }
+  /* One step around every band, pinned with its text or not: a unit from the headline above the frame, and
+     a unit from the band to the words under it, as a band in flow stands a unit from its text. */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-hero h1 + .why-frame-pin[data-pin] { margin-block-start: var(--why-rhythm-unit); }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-frame-pin[data-pin] > .why-frame > .why-pocket + * { margin-block-start: var(--why-rhythm-unit); }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-frame-pin[data-pin][data-why-frame='hero'] > .why-frame-run { block-size: var(--why-hero-frame-run); }
+  /* A placement only the static page draws (none today: the summit is a
+     band of its own on a phone). */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pocket[data-why-static] { display: none; }
+
+  /* The pivot: one scene, composed on the screen under the header. Its
+     band spans the whole stage, above the pinned section, so the mark
+     stays where the reader saw it form: the mark's box (the band's view at
+     the column's width, never over --why-band-max), a unit step, and the
+     line's two lines at the display size ("That’s why I / built
+     fathom."), centered together in the screen under the header, the mark
+     on the line's left edge (morph/index.ts POCKET_ALIGN). The iris opens
+     out of the mark's center and no word ever passes behind the band.
+     100cqi is the stage's width wherever these are read: nothing between
+     the stage and the band, the line or the section is a container. */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pivot-stage {
+    position: relative;
+    block-size: var(--why-pivot-pocket);
+    container-type: inline-size;
+    --why-pivot-mark-h: min(var(--why-band-max), (100cqi - 2 * var(--fathom-space-6)) * var(--vh) / var(--vw));
+    --why-pivot-line-h: calc(2 * var(--site-type-hero-size) * var(--site-type-hero-line-height));
+    --why-pivot-air: max(0svh, (100svh - var(--site-header-h) - var(--why-pivot-mark-h) - var(--why-rhythm-unit) - var(--why-pivot-line-h)) / 2);
+  }
+  /* The band lets go exactly when the pinned section starts to leave (the
+     stage's bottom at the viewport's), so the mark and the words scroll away
+     together and no word ever passes under the band: the box ends one
+     viewport, less the header, the air above the mark and the mark's box,
+     before the stage does. */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pivot-stage > .why-pocket {
+    display: block;
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    block-size: calc(100% - 100svh + var(--site-header-h) + var(--why-pivot-air) + var(--why-pivot-mark-h));
+    margin: 0;
+    padding-inline: var(--fathom-space-6);
+    pointer-events: none;
+    container-type: normal;
+  }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pivot-stage > .why-pocket::after { content: none; }
+  /* Pinned under the header, the band holds the scene's air above the mark's box. It does not clip: the
+     viewfinder it opens on reaches a little past the orb on every side as it closes into it, into the air
+     above and the step below, before the line is drawn (the words build only once the navy is behind
+     them, and by then the band holds the mark alone). */
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pivot-stage > .why-pocket > .why-pocket-band {
+    block-size: calc(var(--why-pivot-air) + var(--why-pivot-mark-h));
+    padding-block-start: var(--why-pivot-air);
+    overflow: visible;
+  }
+  :root[data-why='pocket']:not([data-motion='reduce']) .why-pivot {
+    position: sticky;
+    top: 0;
+    block-size: 100svh;
+    min-block-size: 0;
+    align-content: start;
+    padding-block-start: calc(var(--site-header-h) + var(--why-pivot-air) + var(--why-pivot-mark-h) + var(--why-rhythm-unit));
+  }
+}
+
+/* ================================================================
+   Stage: 1024 x 720 and up, motion allowed, Pause motion off, no
+   contrast or forced-color preference, and the gate said "stage".
+
+   The reel is a one-column grid: its sections (and the pivot's stage)
+   stack in rows 1..7 at full bleed, so their tone edges pass behind the
+   pane, and the pane, the reel's last child, spans every row and sticks
+   under the header. The text column takes the start of the content box
+   and the pane the rest, so the art can never reach the words.
+   ================================================================ */
+@media screen and (prefers-reduced-motion: no-preference) and (prefers-contrast: no-preference) and (forced-colors: none) and (min-width: 1024px) and (min-height: 720px) {
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(7, auto); }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > * { grid-column: 1; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(1) { grid-row: 1; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(2) { grid-row: 2; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(3) { grid-row: 3; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(4) { grid-row: 4; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(5) { grid-row: 5; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(6) { grid-row: 6; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel > :nth-child(7) { grid-row: 7; }
+
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pane {
+    display: block;
+    grid-row: 1 / -1;
+    grid-column: 1;
+    align-self: start;
+    justify-self: center;
+    position: sticky;
+    top: var(--site-header-h);
+    z-index: 1;
+    inline-size: 100%;
+    /* The sections' content box on the stage: --why-wide inside px-6. */
+    max-inline-size: calc(var(--why-wide) + 2 * var(--fathom-space-6));
+    padding-inline: var(--fathom-space-6);
+    block-size: calc(100svh - var(--site-header-h));
+    pointer-events: none;
+  }
+  /* Hidden until the director's first write, so a half-styled frame never
+     shows. The text is readable throughout. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pane:not([data-ready]) { visibility: hidden; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pane-col {
+    position: relative;
+    margin-inline-start: auto;
+    inline-size: var(--why-pane-w);
+    block-size: 100%;
+  }
+  /* On the stage the column takes a spacing step past the 46% share, so the
+     statement's longer phrase holds on one line (17.2em at its size) and the
+     statement sets as its two phrases; the art column gives up the same. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why { --why-copy-w: calc(min(60ch, 46%) + var(--fathom-space-8)); }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-copy { max-inline-size: var(--why-copy-w); }
+  /* The sections widen with the pane, so the essay column and the art share
+     one content box: the column at its start, the art filling the rest. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why-reel .page-section > div { max-inline-size: var(--why-wide); }
+  /* The formation svg fills the art column at full pane height. The
+     column clips: pieces may use its spare width, never the text's.
+     --why-u is one grid unit in px, for strokes that scale with the art. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pane-col:has(> .why-morph) { container-type: size; overflow: clip; }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pane-col > .why-morph {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    --why-u: min(100cqw / 600, 100cqh / 800);
+  }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-still { display: none; }
+
+  /* The hero: its text block pins under the header while the four
+     abilities and the feed play over --why-hero-run of scroll; then it lets
+     go with the page. One composed frame with the art: the block is set so
+     the lede ("The phone in your pocket can see in the dark.") sits on the
+     art's horizon, which runs from its line through the phone. Where the
+     horizon is: the art is the pane column's 600 x 800 grid drawn as large
+     as the column allows (--why-art-w wide, --why-art-h tall), centered,
+     and the horizon is --why-hero-horizon of its height. Above the lede's
+     first baseline: the h1's two lines, the unit step, and half the lede's
+     line plus its baseline (the same arithmetic WhyDirector's leader uses
+     for the other sentences). */
+  :root[data-why='stage']:not([data-motion='reduce']) .why .why-hero { padding-block-start: var(--site-header-h); }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-hero-pin {
+    --why-art-w: calc(100% - var(--why-copy-w) - var(--why-pane-gap));
+    --why-art-h: calc(100svh - var(--site-header-h));
+    --why-art-drawn: min(var(--why-art-w) * 4 / 3, var(--why-art-h));
+    position: sticky;
+    top: var(--site-header-h);
+    min-block-size: calc(100svh - var(--site-header-h));
+    display: grid;
+    align-content: start;
+    padding-block: max(
+        var(--fathom-space-8),
+        calc(
+          (var(--why-art-h) - var(--why-art-drawn)) / 2 + var(--why-art-drawn) * var(--why-hero-horizon)
+            - 2 * var(--site-type-hero-size) * var(--site-type-hero-line-height) - var(--why-rhythm-unit)
+            - var(--why-type-statement) * (var(--why-type-statement-lh) / 2 + var(--why-baseline))
+        )
+      )
+      var(--fathom-space-8);
+  }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-hero-run { block-size: var(--why-hero-run); }
+  /* A short stage window: the signature a unit under the turn, so the whole
+     hero block stays on screen while it pins with the lede on the horizon. */
+  @media (max-height: 800px) {
+    :root[data-why='stage']:not([data-motion='reduce']) .why .why-byline { margin-block-start: var(--why-rhythm-unit); }
+  }
+
+  /* The four pairs: the list pins, its first item level with the art's
+     working height, while the viewfinder re-targets each pair's job in
+     turn; then it lets go with the page and the statement that closes it
+     follows it up, the viewfinder rising with it. Nothing in them moves or
+     dims. The five eras do not pin: each machine lands as its era comes up
+     the screen. Nor do the hands' paragraphs: the pane plays beside them. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why-frame-pin[data-why-frame='pace'] > .why-frame {
+    position: sticky;
+    top: var(--why-frame-top);
+  }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-frame-pin[data-why-frame='pace'] > .why-frame-run { block-size: var(--why-pairs-run); }
+  /* The page's last image: the summit is whole beside "That’s the next summit." and the pane stays
+     pinned while it is read, so the essay's close never lifts away under the header mid-sentence:
+     the section's padding twice over, enough for the beat and the two buttons to reach the
+     reading line with the pane still on screen, and no dead ground under them. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why .why-hands { padding-block-end: calc(var(--site-section-y) * 2); }
+
+  /* The pivot pins. Its stage is 220svh: the section rises, pins full
+     height while the iris opens out of the mark (held in the pane) and the
+     words build, holds the finished line, then lets go with the page. The
+     words sit in the copy column at the h1's left edge, the mark on the
+     pane side, where the hero's orb was. */
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pivot-stage { block-size: var(--why-pivot-stage); }
+  :root[data-why='stage']:not([data-motion='reduce']) .why-pivot {
+    position: sticky;
+    top: 0;
+    block-size: 100svh;
+    min-block-size: 0;
+  }
+}
+
+/* While the director measures (a few synchronous reads, never painted),
+   every sticky block sits where the flow put it, so anchors read their
+   natural positions whatever the scroll. */
+.why[data-why-measuring] :is(.why-frame, .why-hero-pin, .why-pivot, .why-pocket-band, .why-pane) { position: relative !important; inset: auto !important; }
+
+@media print {
+  .why-hero-run,
+  .why-frame-run,
+  .why-pane { display: none; }
+}

@@ -1,0 +1,162 @@
+{
+ "size": "1440x900",
+ "mode": "stage",
+ "at": {
+  "hero-dark": {
+   "top": 395.6,
+   "height": 86.9
+  },
+  "hero-sign": {
+   "top": 498.5,
+   "height": 33
+  },
+  "hero-room": {
+   "top": 547.5,
+   "height": 33
+  },
+  "hero-ai": {
+   "top": 596.5,
+   "height": 33
+  },
+  "hero-scroll": {
+   "top": 669.5,
+   "height": 43.5
+  },
+  "hero-run": {
+   "top": 900,
+   "height": 1350
+  },
+  "arrives-h2": {
+   "top": 2442,
+   "height": 133.1
+  },
+  "arrives-p1": {
+   "top": 2599.1,
+   "height": 132
+  },
+  "arrives-p2": {
+   "top": 2747.1,
+   "height": 33
+  },
+  "timeline": {
+   "top": 2860.1,
+   "height": 523
+  },
+  "era-1": {
+   "top": 2860.1,
+   "height": 99
+  },
+  "era-2": {
+   "top": 2999.1,
+   "height": 66
+  },
+  "era-3": {
+   "top": 3105.1,
+   "height": 66
+  },
+  "era-4": {
+   "top": 3211.1,
+   "height": 66
+  },
+  "era-5": {
+   "top": 3317.1,
+   "height": 66
+  },
+  "beat-stop": {
+   "top": 3463.1,
+   "height": 66.5
+  },
+  "ceil-h2": {
+   "top": 3721.6,
+   "height": 133.1
+  },
+  "ceil-p": {
+   "top": 3878.7,
+   "height": 99
+  },
+  "pace-h2": {
+   "top": 4169.7,
+   "height": 133.1
+  },
+  "pace-p1": {
+   "top": 4326.8,
+   "height": 99
+  },
+  "pace-pairs": {
+   "top": 4505.8,
+   "height": 316.1
+  },
+  "pair-1": {
+   "top": 4555.8,
+   "height": 36.5
+  },
+  "pair-2": {
+   "top": 4632.3,
+   "height": 36.5
+  },
+  "pair-3": {
+   "top": 4708.8,
+   "height": 36.5
+  },
+  "pair-4": {
+   "top": 4785.4,
+   "height": 36.5
+  },
+  "pace-p2": {
+   "top": 5765.9,
+   "height": 86.9
+  },
+  "pace-p3": {
+   "top": 5932.8,
+   "height": 207.1
+  },
+  "pivot-stage": {
+   "top": 6235.9,
+   "height": 1980
+  },
+  "pivot": {
+   "top": 6604.3,
+   "height": 163.2
+  },
+  "people-h2": {
+   "top": 8311.9,
+   "height": 133.1
+  },
+  "people-p1": {
+   "top": 8469,
+   "height": 33
+  },
+  "people-p2": {
+   "top": 8582,
+   "height": 132
+  },
+  "people-p3": {
+   "top": 8730,
+   "height": 66
+  },
+  "hands-h2": {
+   "top": 8988,
+   "height": 133.1
+  },
+  "hands-p1": {
+   "top": 9145.1,
+   "height": 66
+  },
+  "hands-p2": {
+   "top": 9331.1,
+   "height": 99
+  },
+  "hands-p3": {
+   "top": 9446.1,
+   "height": 165
+  },
+  "hands-summit": {
+   "top": 9691.1,
+   "height": 133.1
+  }
+ },
+ "svh": 9,
+ "maxScroll": 9661,
+ "headerH": 80,
+ "unit": 1.025
+}

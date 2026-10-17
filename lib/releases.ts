@@ -21,6 +21,69 @@ export interface Release {
 // release shipped under (Snapshot, Live Task) stay, since they are history.
 export const RELEASES: Release[] = [
   {
+    version: '1.3.0',
+    date: '2026-10-01',
+    // From the App Store “What’s New” for 1.3.0 (App Store Connect, en-US), quotes made curly. One heading is reworded: the store’s “your voice stays on your phone” is a retired claim on this site (test/helpers/copy-rules.ts).
+    intro: 'fathom is one conversation now. Ask by voice or by typing on one screen. Look Now, Lookout, Go and Task all run there. Past sessions are in History, in the menu.',
+    sections: [
+      { label: 'You’ll see the Cloud AI question once more', items: [
+        'If you use Cloud AI, a short pop-up now says exactly what fathom sends to Google, including what it remembers for you. Choose Allow cloud AI or Keep fathom on-device.',
+      ] },
+      { label: 'Hazards have sounds', items: [
+        'A short sound plays at a step down or a drop-off, and when you walk into something.',
+        'Hazard words are short, like “Step down ahead,” and wait for the end of fathom’s sentence unless a step or drop-off can’t wait.',
+        'Speak hazard alerts is now on by default. With the sounds on, fathom names steps, drop-offs and things the camera spots close by, and you feel walls as vibrations. Change both in Settings, under Narration and haptics.',
+        'Vibrations play either way, and urgent ones always play at full strength.',
+      ] },
+      { label: 'Obstacle alerts pause while you type', items: [
+        'Opening Type pauses them, and fathom says so. They also pause while Settings or another full screen is open, and come back when you close it.',
+      ] },
+      { label: 'Tell it the whole job', items: [
+        'Say something like “find my cup and fill it at the water dispenser.” fathom may ask a few short questions, then reads you the whole plan. Accept, change or dismiss it. While it runs, pause, change or end it.',
+        'Step-by-step plans are part of fathom plus.',
+      ] },
+      { label: 'fathom remembers what you tell it', items: [
+        'Say “remember my keys are on the hook,” and it says back exactly what it saved. Later, ask “where are my keys?” fathom asks before it saves anything it suggested.',
+        'Read, edit or forget memories in Settings, under More options, then Memory. Memory is free.',
+      ] },
+      { label: 'Pin a spot and find it again', items: [
+        'Stand at the front door and say “remember where the front door is.” fathom saves it and pins the spot. Later, say “take me to the front door,” and Go guides you back, even when the spot is behind you.',
+        'Pinning needs an iPhone with a LiDAR Scanner. Go is part of fathom plus.',
+      ] },
+      { label: 'Go asks when you’ve arrived', items: [
+        'When fathom thinks you’re there, it asks, and waits for your answer. You can also tap I’ve arrived, or shake your phone.',
+      ] },
+      { label: 'Teach it a routine', items: [
+        'Say “teach you how I make coffee,” then talk through the steps. Later, say “run” and the skill’s name. Running a skill is part of fathom plus.',
+      ] },
+      { label: 'Take a closer look', items: [
+        'After fathom describes something, choose Take a closer look, or say it, for a fresh picture and a more careful look.',
+      ] },
+      { label: 'Siri knows more', items: [
+        'Say “fathom, remember this” or “fathom, where is it,” and Siri answers without opening the app. “Look with fathom” describes what’s in front of you. Siri can also take you to a place you taught fathom, or run a skill.',
+        'Siri’s phrase to stop fathom is gone. In the app, say stop or use End.',
+      ] },
+      { label: 'Your voice and your language', items: [
+        'With VoiceOver off, you can choose fathom’s voice in Settings.',
+        'fathom answers in your iPhone’s language when it can also understand speech in it. If it can’t, it tells you once and uses English.',
+      ] },
+      { label: 'More works without the internet', items: [
+        'Reading text works with no connection. On iOS 27 with Apple Intelligence on, Look Now can describe what’s around you without the cloud.',
+      ] },
+      { label: 'Outside Live mode, your speech becomes text on your phone', items: [
+        'fathom turns what you say into text on the phone, and with Cloud AI on, only the text is sent. If your iPhone can’t do that for your language, fathom tells you, and you can type.',
+        'You feel a tap when the microphone opens and when it closes. It closes when you stop talking.',
+      ] },
+      { label: 'Your data can move with you', items: [
+        'In Settings, under More options, then Your data, you can export your profile, memories, skills and routes to one file, import it, or delete them.',
+      ] },
+      { label: 'Also in this release', items: [
+        'Snapshot is now Look Now. Live Task is now Live mode, a fathom plus switch for Task.',
+        'fathom has a new look and app icon, and its screens fit the largest text sizes.',
+      ] },
+    ],
+  },
+  {
     version: '1.2.0',
     date: '2026-08-29',
     added: [
@@ -98,3 +161,13 @@ export const RELEASES: Release[] = [
       'fathom is an assistive aid, not a replacement for a white cane, guide dog, or orientation-and-mobility training.',
   },
 ];
+
+/** The in-page anchor for a version on /release-notes, e.g. "v1-3-0". */
+/** A version as people say it: "1.3" for 1.3.0, the patch only when it is not zero ("1.2.1"). The release bar and the release notes both name a version this way. */
+export function versionName(version: string): string {
+  return version.replace(/\.0$/, "");
+}
+
+export function releaseId(version: string): string {
+  return `v${version.replace(/\./g, "-")}`;
+}

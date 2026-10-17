@@ -115,3 +115,30 @@ describe("MotionToggle", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("MotionToggle: its words", () => {
+  it("shows its words and a tip as aria-hidden copies, so the name is read once", () => {
+    const { container } = render(<MotionToggle />);
+    const button = screen.getByRole("button", { name: "Pause motion" });
+    const hidden = Array.from(button.querySelectorAll("[aria-hidden='true']")).map((e) => e.textContent?.trim());
+    expect(hidden).toContain("Pause motion"); // the visible label and the tip
+    expect(container.querySelector(".motion-label")?.getAttribute("aria-hidden")).toBe("true");
+    expect(container.querySelector(".motion-tip")?.getAttribute("aria-hidden")).toBe("true");
+    // The visible words are contained in the accessible name (WCAG 2.5.3).
+    expect(button.getAttribute("aria-label")).toContain(container.querySelector(".motion-label")!.textContent!);
+  });
+
+  it("says what the device did when the OS setting is on, in the label and in the name", () => {
+    withOsReduceMotion(true);
+    const { container } = render(<MotionToggle />);
+    const button = screen.getByRole("button", { name: "Motion off, set by your device" });
+    expect(container.querySelector(".motion-label")?.textContent).toBe("Motion off");
+    expect(button.getAttribute("aria-label")).toContain("Motion off");
+  });
+
+  it("has no axe violations with the label and tip in place", async () => {
+    const { container } = render(<MotionToggle />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+});
+

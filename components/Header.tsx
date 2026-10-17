@@ -9,9 +9,9 @@ import { MotionToggle } from "@/components/MotionToggle";
 
 const NAV = [
   { href: "/", label: "Home" },
+  { href: "/why", label: "Why fathom" },
   { href: "/support", label: "Support" },
   { href: "/feedback", label: "Feedback" },
-  { href: "/release-notes", label: "Release notes" },
 ];
 
 export function Header() {

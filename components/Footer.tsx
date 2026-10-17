@@ -14,6 +14,7 @@ export function Footer() {
           <div>
             <h2 className="footer-heading label-caps">Product</h2>
             <Link href="/">Home</Link>
+            <Link href="/why">Why fathom</Link>
             <Link href="/release-notes">Release notes</Link>
             <a href="https://apps.apple.com/us/app/fathom-visual-assistance/id6760924183" rel="noopener noreferrer">Download on the App Store</a>
           </div>
