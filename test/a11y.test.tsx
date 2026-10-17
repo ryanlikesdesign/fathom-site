@@ -27,6 +27,7 @@ import ReleaseNotesPage from "@/app/release-notes/page";
 import PrivacyPage from "@/app/privacy/page";
 import TermsPage from "@/app/terms/page";
 import AccessibilityPage from "@/app/accessibility/page";
+import WhyPage from "@/app/why/page";
 import NotFound from "@/app/not-found";
 import ErrorPage from "@/app/error";
 import GlobalError from "@/app/global-error";
@@ -42,6 +43,7 @@ const pages: [string, () => JSX.Element | Promise<JSX.Element>][] = [
   ["Privacy", PrivacyPage],
   ["Terms", TermsPage],
   ["Accessibility", AccessibilityPage],
+  ["Why", WhyPage],
   ["NotFound", NotFound],
   ["Error", () => <ErrorPage error={stubError} reset={() => {}} />],
   ["GlobalError", () => <GlobalError error={stubError} reset={() => {}} />],

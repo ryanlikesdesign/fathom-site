@@ -91,6 +91,8 @@ export function MotionToggle() {
           </svg>
         )}
       </span>
+      <span className="motion-label" aria-hidden="true">{osReduced ? "Motion off" : "Pause motion"}</span>
+      <span className="motion-tip" aria-hidden="true">{osReduced ? "Motion off, set by your device" : "Pause motion"}</span>
     </button>
   );
 }

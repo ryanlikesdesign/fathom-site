@@ -44,3 +44,6 @@ next-env.d.ts
 
 # brainstorming visual-companion mockups (local only)
 .superpowers/
+
+# /why drawing work files (scripts/why)
+/scripts/why/.out/

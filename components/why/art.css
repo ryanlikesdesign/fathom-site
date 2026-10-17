@@ -1,0 +1,80 @@
+/* ================================================================
+   /why art: the formation engine's svg, its stills and pockets, and the
+   line vocabulary.
+
+   One svg per placement, on the 600 x 800 grid every formation shares,
+   one path per piece of the pool (components/why/morph/). The director
+   writes each path's d and its look inline (stroke, fill, width and
+   opacity: morph/render.ts); the colors are the role aliases below, and
+   a width may add a band in grid units times --why-u (one grid unit in px
+   where the svg is drawn). Strokes keep their width at any size (non-scaling), with
+   round caps and joins. Every art color holds 3:1 on its ground
+   (test/why/contrast.test.ts). The brand mark layer is the exact mark,
+   filled, never stroked.
+   ================================================================ */
+
+.why-morph {
+  display: block;
+  overflow: visible;
+  color: var(--site-text-primary);
+  /* The roles (morph/render.ts ROLE_VAR, FILL_VAR), on the page's ground. */
+  --why-c-ink: var(--site-text-primary);
+  --why-c-soft: var(--site-text-secondary);
+  --why-c-accent: var(--site-accent-fg);
+  --why-c-ghost: var(--site-border-control);
+  --why-c-navy: var(--site-accent-fill);
+  --why-c-glass: var(--site-accent-wash);
+  /* The accent's stroke weight (morph/render.ts accentWidth). */
+  --why-accent-k: 1;
+}
+/* Light theme: the accent navy sits close to the ink, so the orb also
+   reads by weight: its rings half again as heavy, its core a navy fill. */
+[data-theme='light'] .why-morph { --why-accent-k: 1.5; }
+/* The same pieces where the pivot's navy is behind them: the mark's own
+   on-accent color, and the media edge for what is soft (both 3:1 or more
+   on the navy, test/why/contrast.test.ts). */
+.why-morph .why-on-navy {
+  --why-c-ink: var(--site-text-on-accent);
+  --why-c-soft: var(--site-media-edge);
+  --why-c-accent: var(--site-text-on-accent);
+  --why-c-ghost: var(--site-media-edge);
+}
+/* A piece's stroke, fill, width and opacity are inline (morph/render.ts
+   styleString), its caps, joins and non-scaling stroke presentation
+   attributes, so its copy on the navy draws exactly the same way. */
+.why-morph .why-morph-mark path { fill: var(--m-f, currentColor); stroke: none; }
+.why-morph clipPath path { fill: initial; stroke: none; }
+
+/* ---------------- stills and pockets ---------------- */
+
+/* A section's finished drawing on the static page: the svg's viewBox is
+   the formation's crop [--cx, --cy, --cw, --ch] and it fills the frame, so
+   the frame keeps the crop's shape and one grid unit is the frame's width
+   over the crop's. On a phone with motion the same element is a pocket
+   (why.css). */
+.why-still {
+  position: relative;
+  inline-size: min(100%, var(--fathom-layout-content-max), calc(var(--why-still-h) * var(--cw) / var(--ch)));
+  aspect-ratio: var(--cw) / var(--ch);
+  min-block-size: 0;
+  overflow: clip;
+  margin-block: var(--why-rhythm-group, var(--fathom-space-10));
+}
+.why-pocket-band { position: absolute; inset: 0; container-type: size; overflow: clip; }
+.why-pocket-band > .why-morph { inline-size: 100%; block-size: 100%; --why-u: min(100cqw / var(--cw), 100cqh / var(--ch)); }
+
+/* ---------------- forced colors ---------------- */
+
+/* Static page only (the gate releases motion here). The art keeps its
+   shapes and takes the system palette: lines in CanvasText, the accent
+   role in Highlight, fills as Canvas outlined in CanvasText (ink and
+   accent fills as solid CanvasText and Highlight), the mark in CanvasText. */
+@media (forced-colors: active) {
+  .why-morph { forced-color-adjust: none; color: CanvasText; }
+  .why-morph path[data-piece] { stroke: CanvasText !important; }
+  .why-morph path[data-role='accent'] { stroke: Highlight !important; }
+  .why-morph path:is([data-fill='navy'], [data-fill='glass']) { fill: Canvas !important; }
+  .why-morph path[data-fill='ink'] { fill: CanvasText !important; }
+  .why-morph path[data-fill='accent'] { fill: Highlight !important; }
+  .why-morph .why-morph-mark path { fill: CanvasText; stroke: none; }
+}

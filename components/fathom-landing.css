@@ -161,6 +161,12 @@ body{overflow-x:hidden}
    theme-invariant pair the CTA already does: text-on-accent on
    accent-fill (11.54:1), with the media-edge role for the orb's ring.
 ================================================================ */
+.release-bar{padding:var(--fathom-space-6) clamp(20px,5vw,80px);border-bottom:1px solid var(--site-border-divider)}
+.release-bar-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:var(--fathom-space-6);row-gap:var(--fathom-space-1)}
+.release-bar-title{margin:0;font-size:var(--site-type-callout-size);line-height:var(--fathom-type-callout-line-height);font-weight:var(--fathom-type-body-strong-weight);letter-spacing:normal;color:var(--site-text-primary)}
+.release-bar-text{margin:0;flex:1 1 32ch;text-wrap:balance;font-size:var(--site-type-callout-size);line-height:var(--fathom-type-body-reading-line-height);color:var(--site-text-secondary)}
+.release-bar-link{display:inline-flex;align-items:center;min-height:44px;font-size:var(--site-type-callout-size);font-weight:var(--fathom-type-body-strong-weight);color:var(--site-accent-fg);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.release-bar-link:hover{text-decoration-thickness:2px}
 .film{position:relative;padding:clamp(80px,14vh,160px) clamp(20px,5vw,80px)}
 .film::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 62%,color-mix(in oklab,var(--fathom-fathom-900) 26%,transparent) 0%,transparent 70%)}
 [data-theme='light'] .film::before{background:radial-gradient(ellipse 60% 50% at 50% 62%,color-mix(in oklab,var(--fathom-fathom-900) 12%,transparent) 0%,transparent 70%)}

@@ -1,6 +1,6 @@
 import { Section } from "@/components/Section";
 import { Surface } from "@/components/Surface";
-import { RELEASES } from "@/lib/releases";
+import { RELEASES, releaseId, versionName } from "@/lib/releases";
 import { pageMeta } from "@/lib/pageMeta";
 
 export const metadata = pageMeta(
@@ -28,18 +28,20 @@ export default function ReleaseNotesPage() {
     <Section labelledBy="rn-h">
       <p className="eyebrow">What’s new</p>
       <h1 id="rn-h" className="font-display text-5xl">Release notes</h1>
-      <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">What’s new in each version of fathom.</p>
+      <p className="mt-4 max-w-2xl text-lg text-text-secondary">What’s new in each version of fathom.</p>
       <ol className="mt-10 max-w-3xl space-y-8">
         {RELEASES.map((r) => (
-          <Surface key={r.version} register="lift" as="li" className="p-6">
+          // The anchor is the whole card, a step clear of the header (scroll-mt-6 on top of the page's
+          // scroll-padding for the header), so a link from the release bar lands on the card's top edge.
+          <Surface key={r.version} id={releaseId(r.version)} register="lift" as="li" className="scroll-mt-6 p-6">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="font-display text-3xl">Version {r.version}</h2>
-              <time dateTime={r.date} className="text-sm text-[var(--text-muted)]">
+              <h2 className="font-display text-3xl">Version {versionName(r.version)}</h2>
+              <time dateTime={r.date} className="text-sm text-text-muted">
                 {/* ISO dates parse as UTC midnight; format in UTC too so the day never slips. */}
                 {new Date(r.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
               </time>
             </div>
-            {r.intro && <p className="mt-4 text-[var(--text-secondary)]">{r.intro}</p>}
+            {r.intro && <p className="mt-4 text-text-secondary">{r.intro}</p>}
             {r.sections
               ? r.sections.map((s) => <Group key={s.label} label={s.label} items={s.items} />)
               : <>
@@ -47,7 +49,7 @@ export default function ReleaseNotesPage() {
                   <Group label="Improved" items={r.improved} />
                   <Group label="Fixed" items={r.fixed} />
                 </>}
-            {r.closing && <p className="mt-6 text-sm italic text-[var(--text-muted)]">{r.closing}</p>}
+            {r.closing && <p className="mt-6 text-sm italic text-text-muted">{r.closing}</p>}
           </Surface>
         ))}
       </ol>

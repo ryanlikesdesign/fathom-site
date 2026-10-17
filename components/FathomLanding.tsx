@@ -3,6 +3,7 @@ import { LandingScroll } from './LandingScroll';
 import { StickyPhone } from './StickyPhone';
 import { MobilePhone } from './MobilePhone';
 import { AppleMark } from '@/components/AppleMark';
+import { ReleaseBar } from './ReleaseBar';
 import { Film } from './Film';
 import { WatchFilmLink } from './WatchFilmLink';
 import { GlyphSprite } from '@/components/phone';
@@ -80,6 +81,9 @@ export function FathomLanding() {
 
       {/* Everything from here rides up over the pinned hero. */}
       <div className="hero-cover">
+
+      {/* ── What's new: the latest release, one line ──────── */}
+      <ReleaseBar />
 
       {/* ── The film ──────────────────────────────────────── */}
       <Film />

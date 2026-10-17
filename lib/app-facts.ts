@@ -640,6 +640,23 @@ export const SIRI = {
   ),
 } as const;
 
+const SETTINGS_SCREEN = `${F}/UI/Screens/SettingsView.swift`;
+const NARRATION_SECTION = `${F}/UI/Components/NarrationAndHapticsSection.swift`;
+const MENU_SHEET = `${F}/UI/Components/AssistantMenuSheet.swift`;
+
+/**
+ * The settings and places the release notes name (lib/releases.ts, 1.3.0), so a rename in the app fails
+ * the checker. `narrationHaptics` is the name as VoiceOver says it (the row's hint): the screen's title is
+ * drawn "Narration & haptics", and the notes spell the "and" out.
+ */
+export const SETTINGS_NAMES = {
+  narrationHaptics: fact("Narration and haptics", NARRATION_SECTION, 242, "Opens Narration and haptics"),
+  speakHazardAlerts: fact("Speak hazard alerts", NARRATION_SECTION, 116),
+  moreOptions: fact("More options", SETTINGS_SCREEN, 217),
+  yourData: fact("Your data", ADVANCED_SETTINGS, 363),
+  history: fact("History", MENU_SHEET, 195),
+} as const;
+
 /** The haptic patterns setup teaches, by name. */
 export const HAPTICS = {
   headline: fact("Feel the language", ONBOARDING, 95),
