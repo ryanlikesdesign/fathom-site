@@ -15,7 +15,7 @@ export default function PrivacyPage() {
     <Section labelledBy="pp-h" className={LEGAL_PROSE}>
       <p className="eyebrow">Legal</p>
       <h1 id="pp-h" className="font-display text-5xl">Privacy Policy</h1>
-      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: September 26, 2026</p>
+      <p className="mt-4 text-sm text-[var(--text-muted)]">Last updated: November 10, 2026</p>
 
       <p>
         fathom is made by Unruly Vision, LLC. This policy explains what fathom collects, where it
@@ -161,8 +161,9 @@ export default function PrivacyPage() {
         </li>
         <li>
           Some of your words: the goal you give a task, the place you ask Go to take you, and any
-          feedback you send. It also receives some of what fathom says while guiding a task, such
-          as why a step can&apos;t go ahead.
+          feedback you send. From version 1.3.1, it receives the text of what you say to fathom.
+          It also receives some of what fathom says while guiding a task, such as why a step
+          can&apos;t go ahead.
         </li>
         <li>
           Your sight level, such as low vision or totally blind, and how many travel aids you
