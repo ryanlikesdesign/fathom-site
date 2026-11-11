@@ -8,8 +8,8 @@ import { RELEASES, releaseId, versionName } from "@/lib/releases";
 // prefetch schedules a timer, and the homepage's scenes promise none at rest
 // (test/scrolly.test.tsx).
 export const RELEASE_BAR = {
-  version: "1.3.0",
-  summary: "One conversation for asking, looking and getting around. Hazards have sounds, and fathom remembers what you tell it.",
+  version: "1.3.1",
+  summary: "Talk tasks through, get back to where you started, and ask where your keys are. Faster answers, and more use every month.",
   link: "Read the release notes",
 };
 

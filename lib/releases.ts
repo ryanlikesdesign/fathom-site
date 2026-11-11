@@ -21,6 +21,24 @@ export interface Release {
 // release shipped under (Snapshot, Live Task) stay, since they are history.
 export const RELEASES: Release[] = [
   {
+    version: '1.3.1',
+    date: '2026-11-10',
+    // From the App Store “What’s New” for 1.3.1 (docs/appstore/LISTING-1.3.1.md in project-homer), quotes made curly.
+    added: [
+      'Talk tasks through. Tap Talk it through and talk with fathom while you work.',
+      'Get back to where you started. Say “take me back.”',
+      'Find your things. Ask “where are my keys?”',
+      'Summaries for long reads.',
+      'Faster answers, and more use every month.',
+      'Shorter setup, and fathom answers your how-to questions.',
+    ],
+    fixed: [
+      'fathom says the way is clear only when its depth sensor agrees.',
+      'Step warnings are no longer lost while you’re talking.',
+      'fathom tells you if the camera stops.',
+    ],
+  },
+  {
     version: '1.3.0',
     date: '2026-10-01',
     // From the App Store “What’s New” for 1.3.0 (App Store Connect, en-US), quotes made curly. One heading is reworded: the store’s “your voice stays on your phone” is a retired claim on this site (test/helpers/copy-rules.ts).
